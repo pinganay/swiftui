@@ -11,6 +11,7 @@
 		EDA3E65E2A3E2E6500FB3483 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3E65D2A3E2E6500FB3483 /* ContentView.swift */; };
 		EDA3E6602A3E2E6900FB3483 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA3E65F2A3E2E6900FB3483 /* Assets.xcassets */; };
 		EDA3E6632A3E2E6900FB3483 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA3E6622A3E2E6900FB3483 /* Preview Assets.xcassets */; };
+		EDA3E66A2A401F4A00FB3483 /* WeSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA3E6692A401F4A00FB3483 /* WeSplitView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		EDA3E65D2A3E2E6500FB3483 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		EDA3E65F2A3E2E6900FB3483 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDA3E6622A3E2E6900FB3483 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		EDA3E6692A401F4A00FB3483 /* WeSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeSplitView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +54,9 @@
 			isa = PBXGroup;
 			children = (
 				EDA3E65B2A3E2E6500FB3483 /* WeSplitApp.swift */,
-				EDA3E65D2A3E2E6500FB3483 /* ContentView.swift */,
+				EDA3E6692A401F4A00FB3483 /* WeSplitView.swift */,
 				EDA3E65F2A3E2E6900FB3483 /* Assets.xcassets */,
+				EDA3E65D2A3E2E6500FB3483 /* ContentView.swift */,
 				EDA3E6612A3E2E6900FB3483 /* Preview Content */,
 			);
 			path = WeSplit;
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDA3E66A2A401F4A00FB3483 /* WeSplitView.swift in Sources */,
 				EDA3E65E2A3E2E6500FB3483 /* ContentView.swift in Sources */,
 				EDA3E65C2A3E2E6500FB3483 /* WeSplitApp.swift in Sources */,
 			);

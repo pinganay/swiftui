@@ -13,6 +13,10 @@ struct ContentView: View {
     @State private var name = ""
     let numList = [1,2,3,4,5]
     @State private var selectedNum = 1
+    let employees = [0:"xyz", 1:"", 2:"Maria", 3:"Ted", 4:"Delia"]
+        
+    
+    @State private var selectedEmployee = ""
     
     
     var body: some View {
@@ -26,6 +30,7 @@ struct ContentView: View {
                             Text(String(num))
                         }
                     }
+                    
                     Text("You have selected \(selectedNum)")
                     
                     
@@ -42,7 +47,11 @@ struct ContentView: View {
                 TextField("Enter your name here", text: $name)
                 Text("Your name is: \(name)")
                 
-                
+                Picker("Select Your Employee", selection: $selectedEmployee) {
+                    ForEach(Array(employees.keys), id: \.self) {
+                        Text(employees[$0] ?? "N/A")
+                    }
+                }
                 
             }
             .navigationTitle("SwiftUI")
