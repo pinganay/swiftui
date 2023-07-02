@@ -57,6 +57,7 @@ struct WeSplitView: View {
                 
                 Section {
                     Text(totalCheckAmount, format: localCurrency)
+                        .foregroundColor(tipPercentage == 0 ? .red : .black)
                 } header: {
                     Text("Total Check Amount")
                 }
@@ -69,7 +70,7 @@ struct WeSplitView: View {
                 
                     
                 
-//                Text("Split Amount: \(splitAmount)", format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+
             }
             .navigationTitle("WeSplit")
             .toolbar {
