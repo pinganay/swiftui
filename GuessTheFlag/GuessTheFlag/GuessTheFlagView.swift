@@ -18,6 +18,14 @@ struct GuessTheFlagView: View {
     @State private var qCount = 1
     @State private var isGameOver = false
     
+    struct FlagModifiers: ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .clipShape(Capsule())
+                .shadow(radius: 10)
+        }
+    }
+    
     var body: some View {
         ZStack {
             
@@ -43,9 +51,7 @@ struct GuessTheFlagView: View {
                             flagWasTapped(number)
                         } label: {
                             Image(countries[number])
-                                .renderingMode(.original)
-                                .clipShape(Capsule())
-                                .shadow(radius: 10)
+                                .modifier(FlagModifiers())
                         }
                     }
                 }
