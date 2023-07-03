@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    struct largeFont: ViewModifier {
+        func body(content: Content) -> some View {
+            content
+                .font(.largeTitle)
+                .foregroundColor(.blue)
+        }
+    }
+    
     var body: some View {
         ZStack {
             Color.purple
@@ -16,6 +25,7 @@ struct ContentView: View {
                     .frame(height: 60)
                 Text("First Text")
                     .background(.green)
+                    .modifier(largeFont())
                 Spacer()
                 HStack(spacing: 20) {
                     VStack {
