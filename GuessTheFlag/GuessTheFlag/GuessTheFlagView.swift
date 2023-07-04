@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-
-
 struct GuessTheFlagView: View {
     @State private var showingScore = false
     @State private var scoreTitle = ""
@@ -17,14 +15,6 @@ struct GuessTheFlagView: View {
     @State private var score = 0
     @State private var qCount = 1
     @State private var isGameOver = false
-    
-    struct FlagModifiers: ViewModifier {
-        func body(content: Content) -> some View {
-            content
-                .clipShape(Capsule())
-                .shadow(radius: 10)
-        }
-    }
     
     var body: some View {
         ZStack {
@@ -50,8 +40,7 @@ struct GuessTheFlagView: View {
                         Button {
                             flagWasTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .modifier(FlagModifiers())
+                            FlagImageView(countryName: countries[number])
                         }
                     }
                 }
