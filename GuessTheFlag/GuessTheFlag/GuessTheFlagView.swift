@@ -15,6 +15,8 @@ struct GuessTheFlagView: View {
     @State private var score = 0
     @State private var qCount = 1
     @State private var isGameOver = false
+    @State private var animationAmount = 0.0
+    
     
     var body: some View {
         ZStack {
@@ -91,8 +93,6 @@ struct GuessTheFlagView: View {
             score -= 10
         }
         showingScore = true
-        
-        
     }
     
     func askQuestion() {
