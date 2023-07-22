@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+struct Seperator: View {
+    var body: some View {
+        Rectangle()
+            .frame(height: 2)
+            .foregroundColor(.lightBackround)
+            .padding(.vertical)
+    }
+}
+
 struct CrewMemeber {
     let role: String
     let astronaut: Astronuat
@@ -28,23 +37,21 @@ struct MissionView: View {
                         .frame(maxWidth: geo.size.width * 0.6)
                         .padding(.top)
                     
-                    Text(mission.formattedLaunchDate)
+                    HStack {
+                        Image(systemName: "calendar.circle.fill")
+                        Text(mission.formattedLaunchDate)
+                    }
                     
                     VStack(alignment: .leading) {
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundColor(.lightBackround)
-                            .padding(.vertical)
+                        
+                        Seperator()
                         
                         Text("Mission Highlights")
                             .font(.title.bold())
                             .padding(.bottom, 5)
                         Text(mission.description)
                         
-                        Rectangle()
-                            .frame(height: 2)
-                            .foregroundColor(.lightBackround)
-                            .padding(.vertical)
+                        Seperator()
                         
                         Text("Crew")
                             .font(.title.bold())
