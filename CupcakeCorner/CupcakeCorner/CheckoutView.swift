@@ -24,7 +24,7 @@ struct CheckoutView: View {
                         ProgressView()
                     }
                     
-                    Text("Your total is \(order.cost.formatted(.currency(code: "USD")))")
+                    Text("Your total is \(order.orderDetails.cost.formatted(.currency(code: "USD")))")
                         .font(.title)
                     
                     Button("Place order") {
@@ -56,17 +56,17 @@ struct CheckoutView: View {
         
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        //request.httpMethod = "POST"
+        request.httpMethod = "POST"
         
         do {
             let (data, _) = try await URLSession.shared.upload(for: request, from: encodedData)
             
             let decodedData = try JSONDecoder().decode(Order.self, from: data)
             
-            confirmation = "Your order of \(decodedData.cakeAmount)x \(Order.types[decodedData.type].lowercased()) cupcakes are on their way!"
+            confirmation = "Your order of \(decodedData.orderDetails.cakeAmount)x \(Order.types[decodedData.orderDetails.type].lowercased()) cupcakes are on their way!"
             showOrderAlert = true
         } catch {
-            confirmation = "ERROR: Your order failed to be sent to server. Please try again."
+            confirmation = "ERROR: Your order failed to be sent to server. Please try again. \n\n \(error.localizedDescription)"
             showOrderAlert = true
 
         }
