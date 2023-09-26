@@ -87,26 +87,30 @@ struct UserProfile: View {
                 }
                 .navigationTitle("Profile")
             }
-            .task {
-                do {
-                    //try await UserManager.shared.writeUserData(user: user)
-                    //try await UserManager.shared.readUserData()
-                    //try await UserManager.shared.writeUserData(user: user)
-                    //try await UserManager.shared.readUserData(id: "77777777")
-                    let userdata = try await UserManager.shared.readUserData(userId: "77777777")
-                    print(userdata.name)
-                } catch {
-                    print("ERROR: \(error.localizedDescription)")
-                }
-            }
+//            .task {
+//                do {
+//                    //try await UserManager.shared.writeUserData(user: user)
+//                    //try await UserManager.shared.readUserData()
+//                    //try await UserManager.shared.writeUserData(user: user)
+//                    //try await UserManager.shared.readUserData(id: "77777777")
+//                    //let userdata = try await UserManager.shared.readUserData(userId: "77777777")
+//                    print(userdata.name)
+//                } catch {
+//                    print("ERROR: \(error.localizedDescription)")
+//                }
+//            }
             .toolbar {
                 ToolbarItem {
                     Button("Log Out", role: .destructive) {
                         viewModel.signOut()
+                        print("Succesfully Logged out User")
                         showSignInView = true
                     }
 
                 }
+            }
+            .fullScreenCover(isPresented: $showSignInView) {
+                SignInView()
             }
         }
 //        .onAppear {

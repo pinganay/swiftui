@@ -12,28 +12,32 @@ import SwiftUI
     @Published var password = ""
     
     
-    func createUser() {
+    func signUp() async throws {
         guard !email.isEmpty, !password.isEmpty else {
             print("Email or password is empty")
             return
         }
         
-        Task {
-            do {
-                let returnedUserData = try await AuthManager.shared.createUser(email: email, password: password)
-                print("Successfully created user")
-                print(returnedUserData)
-            } catch {
-                print(error)
-            }
+        let returnedUserData = try await AuthManager.shared.createUser(email: email, password: password)
+        print("SignInEmailViewModel: Successfully created user")
+        print(returnedUserData)
+    }
+    
+    func signIn() async throws {
+        guard !email.isEmpty, !password.isEmpty else {
+            print("Email or password is empty")
+            return
         }
+        
+        try await AuthManager.shared.signIn(email: email, password: password)
+        print("SignInEmailViewModel: Successfully logged in user")
     }
 }
 
 struct SignInEmailView: View {
     @StateObject var viewModel = SignInEmailViewModel()
     @Binding var showSignInView: Bool
-    @State var showUserProfile = false
+    @Binding var showUserProfile: Bool
     
     var body: some View {
         NavigationView {
@@ -48,8 +52,25 @@ struct SignInEmailView: View {
                     .cornerRadius(10)
                 
                 Button {
-                    viewModel.createUser()
-                    showUserProfile = true
+                    Task {
+                        do {
+                            try await viewModel.signUp()
+                            showUserProfile = true
+                            showSignInView = false
+                            return
+                        } catch {
+                            print("SignInEmailView: Sign up failed, \(error.localizedDescription)")
+                        }
+                        
+                        do {
+                            try await viewModel.signIn()
+                            showUserProfile = true
+                            showSignInView = false
+                            return
+                        } catch {
+                            print("SignInEmailView: Sign in failed, \(error.localizedDescription)")
+                        }
+                    }
                 } label: {
                     Text("Sign In")
                         .font(.headline)
@@ -81,6 +102,6 @@ struct SignInEmailView: View {
 
 struct SignInEmailView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInEmailView(showSignInView: .constant(true))
+        SignInEmailView(showSignInView: .constant(true), showUserProfile: .constant(false))
     }
 }

@@ -23,8 +23,15 @@ final class AuthManager {
     static let shared = AuthManager()
     private init() {}
     
-    func createUser(email: String, password: String) async throws -> AuthDataResultModel{
+    @discardableResult
+    func createUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
+        return AuthDataResultModel(user: authDataResult.user)
+    }
+    
+    @discardableResult
+    func signIn(email: String, password: String) async throws -> AuthDataResultModel {
+        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
         return AuthDataResultModel(user: authDataResult.user)
     }
     
