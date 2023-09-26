@@ -9,8 +9,8 @@ import SwiftUI
 
 @MainActor final class UserProfileViewModel: ObservableObject {
     @Published var user = DBUser.sampleUser
-    var userHobbies: [String] { getUserHobbies(user: user) }
-    var userMemberships: [Community] { getUserMembership(user: user, communities: Community.sampleCommunities) }
+//    var userHobbies: [String] { getUserHobbies(user: user) }
+//    var userMemberships: [Community] { getUserMembership(user: user, communities: Community.sampleCommunities) }
     
     func signOut()  {
         do {
@@ -20,38 +20,38 @@ import SwiftUI
         }
     }
     
-    func getUserHobbies(user: DBUser) -> [String] {
-        var hobbies = [String]()
-        
-        for hobby in user.hobbies {
-            switch hobby {
-            case .Painting:
-                hobbies.append("Painting")
-            case .Soccer:
-                hobbies.append("Soccer")
-            case .Cricket:
-                hobbies.append("Cricket")
-            case .Chess:
-                hobbies.append("Chess")
-            }
-        }
-        
-        return hobbies
-    }
+//    func getUserHobbies(user: DBUser) -> [String] {
+//        var hobbies = [String]()
+//
+//        for hobby in user.hobbies {
+//            switch hobby {
+//            case .Painting:
+//                hobbies.append("Painting")
+//            case .Soccer:
+//                hobbies.append("Soccer")
+//            case .Cricket:
+//                hobbies.append("Cricket")
+//            case .Chess:
+//                hobbies.append("Chess")
+//            }
+//        }
+//
+//        return hobbies
+//    }
     
-    func getUserMembership(user: DBUser, communities: [Community]) -> [Community] {
-        var memberships = [Community]()
-        
-        for community in communities {
-            for member in community.members {
-                if user.name == member.name {
-                    memberships.append(community)
-                }
-            }
-        }
-        
-        return memberships
-    }
+//    func getUserMembership(user: DBUser, communities: [Community]) -> [Community] {
+//        var memberships = [Community]()
+//
+//        for community in communities {
+//            for member in community.members {
+//                if user.name == member.name {
+//                    memberships.append(community)
+//                }
+//            }
+//        }
+//
+//        return memberships
+//    }
 }
 
 struct UserProfile: View {
@@ -61,31 +61,10 @@ struct UserProfile: View {
     var body: some View {
         NavigationView {
             VStack {
-                
-                Text("Hey, \(viewModel.user.name)")
+                Text("Hey, \(viewModel.user.firstName) \(viewModel.user.lastName)")
                     .padding(.trailing, 225)
                     .font(.title)
-                
-                List {
-                   
-                    
-                    Section {
-                        ForEach(viewModel.userHobbies, id: \.self) { hobby in
-                            Text(hobby)
-                        }
-                    } header: {
-                        Text("Hobbies")
-                    }
-                    
-                    Section {
-                        ForEach(viewModel.userMemberships, id: \.name) { membership in
-                            Text(membership.name)
-                        }
-                    } header: {
-                        Text("Community Memberships")
-                    }
-                }
-                .navigationTitle("Profile")
+                    .navigationTitle("Profile")
             }
 //            .task {
 //                do {

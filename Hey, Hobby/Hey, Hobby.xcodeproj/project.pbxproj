@@ -17,13 +17,13 @@
 		EDB863F62AB7BA4D00DBB6E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */; };
 		EDB863F92AB7BA4D00DBB6E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDB863F82AB7BA4D00DBB6E3 /* Preview Assets.xcassets */; };
 		EDB864002AB7BA7300DBB6E3 /* DBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */; };
-		EDB864022AB7F98C00DBB6E3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB864012AB7F98C00DBB6E3 /* HomeView.swift */; };
 		EDB864042AB94FE500DBB6E3 /* SeperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */; };
 		EDB864062AB963C400DBB6E3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDB864052AB963C400DBB6E3 /* GoogleService-Info.plist */; };
 		EDB864092AB964E200DBB6E3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EDB864082AB964E200DBB6E3 /* FirebaseAnalytics */; };
 		EDB8640B2AB964E200DBB6E3 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EDB8640A2AB964E200DBB6E3 /* FirebaseAnalyticsSwift */; };
 		EDB8640E2ABAB54900DBB6E3 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EDB8640D2ABAB54900DBB6E3 /* FirebaseFirestore */; };
 		EDB864102ABAB54900DBB6E3 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EDB8640F2ABAB54900DBB6E3 /* FirebaseFirestoreSwift */; };
+		EDBA31FA2AC25E9F009D3B73 /* UserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,9 +37,9 @@
 		EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDB863F82AB7BA4D00DBB6E3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUser.swift; sourceTree = "<group>"; };
-		EDB864012AB7F98C00DBB6E3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeperatorView.swift; sourceTree = "<group>"; };
 		EDB864052AB963C400DBB6E3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +98,8 @@
 				ED8290DB2ABBB3C300552D6D /* FirebaseFirestore */,
 				EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */,
 				ED858E3C2ABFBD17005997B9 /* SignInView.swift */,
+				EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */,
 				ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */,
-				EDB864012AB7F98C00DBB6E3 /* HomeView.swift */,
 				EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */,
 				EDB863F32AB7BA4A00DBB6E3 /* UserProfile.swift */,
 				EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */,
@@ -206,11 +206,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDBA31FA2AC25E9F009D3B73 /* UserDetailsView.swift in Sources */,
 				ED8290DD2ABBB3DF00552D6D /* UserManager.swift in Sources */,
 				ED858E3B2ABFBACD005997B9 /* AuthManager.swift in Sources */,
 				EDB864042AB94FE500DBB6E3 /* SeperatorView.swift in Sources */,
 				EDB863F42AB7BA4A00DBB6E3 /* UserProfile.swift in Sources */,
-				EDB864022AB7F98C00DBB6E3 /* HomeView.swift in Sources */,
 				EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */,
 				ED858E3D2ABFBD17005997B9 /* SignInView.swift in Sources */,
 				ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */,

@@ -11,7 +11,6 @@ import SwiftUI
     @Published var email = ""
     @Published var password = ""
     
-    
     func signUp() async throws {
         guard !email.isEmpty, !password.isEmpty else {
             print("Email or password is empty")
@@ -38,6 +37,7 @@ struct SignInEmailView: View {
     @StateObject var viewModel = SignInEmailViewModel()
     @Binding var showSignInView: Bool
     @Binding var showUserProfile: Bool
+    @State var showUserDetails = false
     
     var body: some View {
         NavigationView {
@@ -55,7 +55,8 @@ struct SignInEmailView: View {
                     Task {
                         do {
                             try await viewModel.signUp()
-                            showUserProfile = true
+//                            showUserProfile = true
+                            showUserDetails = true
                             showSignInView = false
                             return
                         } catch {
@@ -89,13 +90,9 @@ struct SignInEmailView: View {
             .fullScreenCover(isPresented: $showUserProfile) {
                 UserProfile(showSignInView: $showSignInView)
             }
-//            .onAppear {
-//                let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
-//                showSignInView = authenticatedUser == nil
-//            }
-//            .fullScreenCover(isPresented: $showSignInView) {
-//                //UserProfile(showSignInView: $showSignInView)
-//            }
+            .fullScreenCover(isPresented: $showUserDetails) {
+                UserDetailsView()
+            }
         }
     }
 }
