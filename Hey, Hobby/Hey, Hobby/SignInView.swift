@@ -10,11 +10,12 @@ import SwiftUI
 struct SignInView: View {
     @State var showSignInView = true
     @State var showUserProfile = false
+    @State var showUserDetails = false
     var body: some View {
         NavigationView {
             VStack {
                 NavigationLink {
-                    SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile)
+                    SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails)
                 } label: {
                     Text("Sign In With Email")
                         .font(.headline)
@@ -34,11 +35,14 @@ struct SignInView: View {
             let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
             showUserProfile = authenticatedUser != nil
             showSignInView = !showUserProfile
+            showUserDetails = false
         }
         .fullScreenCover(isPresented: $showUserProfile) {
             UserProfile(showSignInView: $showSignInView)
         }
-        
+        .fullScreenCover(isPresented: $showUserDetails) {
+            UserDetailsView(showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showSignInView: $showSignInView)
+        }
     }
 }
 

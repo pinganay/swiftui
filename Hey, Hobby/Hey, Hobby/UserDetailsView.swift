@@ -27,7 +27,9 @@ final class UserDetailsViewModel: ObservableObject {
 struct UserDetailsView: View {
     @StateObject var viewModel = UserDetailsViewModel()
     @Environment(\.dismiss) var dismiss
-    @State private var showUserProfile = false
+    @Binding var showUserProfile: Bool
+    @Binding var showUserDetails: Bool
+    @Binding var showSignInView: Bool
     
     var body: some View {
         NavigationView {
@@ -43,8 +45,10 @@ struct UserDetailsView: View {
                 
                 Button("Save") {
                     viewModel.save()
-//                    showUserProfile = true
-//                    dismiss()
+                    showUserProfile = true
+                    showUserDetails = false
+                    showSignInView = false
+                    dismiss()
                 }
             }
             .padding()
@@ -56,6 +60,6 @@ struct UserDetailsView: View {
 
 struct UserDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        UserDetailsView()
+        UserDetailsView(showUserProfile: .constant(true), showUserDetails: .constant(false), showSignInView: .constant(false))
     }
 }
