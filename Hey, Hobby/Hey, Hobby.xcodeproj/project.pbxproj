@@ -13,7 +13,7 @@
 		ED858E3D2ABFBD17005997B9 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3C2ABFBD17005997B9 /* SignInView.swift */; };
 		ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */; };
 		EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */; };
-		EDB863F42AB7BA4A00DBB6E3 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863F32AB7BA4A00DBB6E3 /* UserProfile.swift */; };
+		EDB863F42AB7BA4A00DBB6E3 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */; };
 		EDB863F62AB7BA4D00DBB6E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */; };
 		EDB863F92AB7BA4D00DBB6E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDB863F82AB7BA4D00DBB6E3 /* Preview Assets.xcassets */; };
 		EDB864002AB7BA7300DBB6E3 /* DBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */; };
@@ -33,7 +33,7 @@
 		ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		EDB863EE2AB7BA4A00DBB6E3 /* Hey, Hobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hey, Hobby.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hey__HobbyApp.swift; sourceTree = "<group>"; };
-		EDB863F32AB7BA4A00DBB6E3 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDB863F82AB7BA4D00DBB6E3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUser.swift; sourceTree = "<group>"; };
@@ -101,7 +101,7 @@
 				EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */,
 				ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */,
 				EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */,
-				EDB863F32AB7BA4A00DBB6E3 /* UserProfile.swift */,
+				EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */,
 				EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */,
 				EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */,
 				EDB864052AB963C400DBB6E3 /* GoogleService-Info.plist */,
@@ -210,7 +210,7 @@
 				ED8290DD2ABBB3DF00552D6D /* UserManager.swift in Sources */,
 				ED858E3B2ABFBACD005997B9 /* AuthManager.swift in Sources */,
 				EDB864042AB94FE500DBB6E3 /* SeperatorView.swift in Sources */,
-				EDB863F42AB7BA4A00DBB6E3 /* UserProfile.swift in Sources */,
+				EDB863F42AB7BA4A00DBB6E3 /* UserProfileView.swift in Sources */,
 				EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */,
 				ED858E3D2ABFBD17005997B9 /* SignInView.swift in Sources */,
 				ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */,
