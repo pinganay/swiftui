@@ -29,9 +29,30 @@ import SwiftUI
         didSet {
             Task {
                 let user = try await readUserData(userId: selectedFriendId)
-                let result = searchFor(user: user, in: friendsList)
-                friendsList.append(user)
+                let isDuplicate = searchFor(user: user, in: friendsList)
+                if isDuplicate {
+                    print("UserProfileViewModel Error: User already in friends list")
+                } else {
+                    friendsList.append(user)
+                    let currentUser = await readCurrentUser()
+                    updateFriendsIdForCurrentUserInDB(currentUserId: currentUser.id)
+                }
             }
+        }
+    }
+    
+    func updateFriendsIdForCurrentUserInDB(currentUserId: String) {
+        UserManager.shared.updateFriendsIdForCurrentUser(friendId: selectedFriendId, currentUserId: currentUserId)
+    }
+    
+    func readCurrentUser() async -> DBUser {
+        do {
+            let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
+            let currentUser = try await UserManager.shared.readUserData(userId: authenticatedUser.uid)
+            return currentUser
+        } catch {
+            print("UserProfileViewModel Error: \(error.localizedDescription)")
+            return DBUser.sampleUser
         }
     }
     
@@ -72,6 +93,19 @@ import SwiftUI
         }
     }
     
+    func loadCurrentUserFriendsList(userIdList: [String]) {
+        for id in userIdList {
+            Task {
+                do {
+                    let user = try await readUserData(userId: id)
+                    friendsList.append(user)
+                } catch {
+                    print("UserProfileViewModel Error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
     func readUserData(userId: String) async throws -> DBUser {
         
         let readUserDataTask =  Task { () -> DBUser in
@@ -98,13 +132,15 @@ import SwiftUI
                 print("There was an error: \(error.localizedDescription)")
             }
         }
+        
+        
     }
 }
 
 struct UserProfile: View {
     @StateObject var viewModel = UserProfileViewModel()
     @Binding var showSignInView: Bool
-    @State var loggedinUser: DBUser = DBUser.sampleUser
+    @State var loggedInUser: DBUser = DBUser.sampleUser
 //        let getLoggedInUserTask = Task { () -> DBUser in
 //           return await viewModel.getLoggedInUser()
 //        }
@@ -122,7 +158,7 @@ struct UserProfile: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Hey, \(loggedinUser.firstName) \(loggedinUser.lastName)")
+                Text("Hey, \(loggedInUser.firstName) \(loggedInUser.lastName)")
                     .padding(.trailing, 225)
                     .font(.title)
                     
@@ -152,7 +188,7 @@ struct UserProfile: View {
             }
             .navigationTitle("Profile")
             .task {
-                loggedinUser = await viewModel.getLoggedInUser()
+                loggedInUser = await viewModel.getLoggedInUser()
             }
             .toolbar {
                 ToolbarItem {
@@ -167,14 +203,11 @@ struct UserProfile: View {
             .fullScreenCover(isPresented: $showSignInView) {
                 SignInView()
             }
+            .task {
+                let currentUser = await viewModel.readCurrentUser()
+                viewModel.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
+            }
         }
-//        .onAppear {
-//            let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
-//            showSignInView = authenticatedUser == nil
-//        }
-//        .fullScreenCover(isPresented: $showSignInView) {
-//            SignInView()
-//        }
     }
 }
 

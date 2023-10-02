@@ -49,51 +49,13 @@ final class UserManager {
         return userList
     }
     
-//    func readUserData() async throws {
-//        db.collection("users").getDocuments { querySnapshot, error in
-//            if let error = error {
-//                print("There was an error reading the data from 'users' collection: \(error.localizedDescription)")
-//            } else {
-//                guard let querySnapshot = querySnapshot else {
-//                    print("The querySnapshot has no data")
-//                    return
-//                }
-//
-//                let documents = querySnapshot.documents
-//
-//                for document in documents {
-//                    print("\(document.documentID) -> \(document.data())")
-//                }
-//            }
-//        }
-//    }
-    
-//    func readUserData(id: String) async throws {
-//        let idRef = db.collection("users")
-//        let query = idRef.whereField("id", isEqualTo: id)
-//        
-//        query.getDocuments { querySnapshot, error in
-//            if let error = error {
-//                print("There was an error reading the data from 'users' collection: \(error.localizedDescription)" )
-//            } else {
-//                guard let querySnapshot = querySnapshot else {
-//                    print("The querySnapshot has no data")
-//                    return
-//                }
-//                
-//                let documents = querySnapshot.documents
-//                
-//                if documents.count == 1 {
-//                    print(documents[0].data())
-//                } else {
-//                    print("There was duplicate data for the user with id: \(id)")
-//                    return
-//                }
-//            }
-//        }
-//    }
-    
     func writeUserData(user: DBUser) async throws {
         try db.collection("users").document(user.id).setData(from: user)
+    }
+    
+    func updateFriendsIdForCurrentUser(friendId: String, currentUserId: String) {
+        db.collection("users").document(currentUserId).updateData([
+            "friendsId": FieldValue.arrayUnion([friendId])
+        ])
     }
 }
