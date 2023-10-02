@@ -8,20 +8,6 @@
 import SwiftUI
 
 @MainActor final class UserProfileViewModel: ObservableObject {
-//    var loggedIUser: DBUser {
-//        let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
-//        var user = Any.self
-//
-//        guard let authenticatedUser = authenticatedUser else {
-//            print("UserProfileViewModel Error: failed to get authenticated user")
-//        }
-//
-//        Task {
-//            user = try? await readUserData(userId: authenticatedUser.uid)
-//        }
-//
-//        return user
-//    }
     
     @Published var userList = [DBUser]()
     @Published var friendsList = [DBUser]()
@@ -124,16 +110,22 @@ import SwiftUI
         }
     }
     
-    func getAllUsers() {
+    /*
+     getting all users from DB
+     filtering out current user from userList
+     */
+    
+    func getAllUsersWithoutCurrentUser() {
         Task {
+            let loggedInUser = await getLoggedInUser()
+            
             do {
                 userList = try await UserManager.shared.readAllUsers()
+                userList = userList.filter { $0 != loggedInUser }
             } catch {
                 print("There was an error: \(error.localizedDescription)")
             }
         }
-        
-        
     }
 }
 
@@ -184,7 +176,8 @@ struct UserProfile: View {
                 }
             }
             .onAppear {
-                viewModel.getAllUsers()
+                //when this view loaded, get all users from DB and display them
+                viewModel.getAllUsersWithoutCurrentUser()
             }
             .navigationTitle("Profile")
             .task {

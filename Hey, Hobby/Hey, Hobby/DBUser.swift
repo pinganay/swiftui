@@ -14,15 +14,15 @@ enum Hobby: String, Codable {
     case Painting = "Painting"
 }
 
-struct DBUser: Codable, Hashable {
+struct DBUser: Codable, Hashable, Equatable {
     var id: String
     var firstName: String
     var lastName: String
     var friendsId = [String]()
     
-//    static func ==(lhs: DBUser, rhs: DBUser) -> Bool {
-//        return lhs.id == rhs.id
-//    }
+    static func ==(lhs: DBUser, rhs: DBUser) -> Bool {
+        return lhs.id == rhs.id
+    }
     
     static let sampleUser = DBUser(id: "Dummy", firstName: "Dummy", lastName: "Dummy")
 }
