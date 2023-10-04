@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.me.sahu.anay.Hey--Hobby</string>
+	<string>com.anay.HeyHobby</string>
 	<key>PROJECT_ID</key>
 	<string>heyhobby-bcf76</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:327459150891:ios:1a1e79ecdeef9a69cc5e6e</string>
+	<string>1:327459150891:ios:d8e6319bf95a9b98cc5e6e</string>
 </dict>
 </plist>
