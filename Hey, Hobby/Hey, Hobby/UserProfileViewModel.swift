@@ -10,6 +10,7 @@ import CloudKit
 
 @MainActor class UserProfileViewModel: ObservableObject {
     
+    @Published var messageList = [String]()
     @Published var userMessage = ""
     @Published var userList = [DBUser]()
     @Published var friendsList = [DBUser]()
@@ -32,6 +33,7 @@ import CloudKit
     init() {
         getiCloudStatus()
         requestiCloudPermission()
+        fetchMessages()
     }
     
     enum CloudKitError: String, LocalizedError {
@@ -78,6 +80,8 @@ import CloudKit
     }
     
     func addMessage(message: String) {
+        guard !userMessage.isEmpty else { return }
+        
         let newNotification = CKRecord(recordType: "Notifications")
         newNotification["Message"] = message
         saveMessage(record: newNotification)
@@ -88,6 +92,43 @@ import CloudKit
             print("Record: \(String(describing: record))")
             print("Error: \(String(describing: error))")
         }
+        
+        userMessage = ""
+    }
+    
+    func fetchMessages() {
+        let predicate = NSPredicate(value: true)
+        let query = CKQuery(recordType: "Notifications", predicate: predicate)
+        let queryOperation = CKQueryOperation(query: query)
+        
+        var returnedMessages = [String]()
+        
+        queryOperation.recordMatchedBlock = { (recordID, result) in
+            switch result {
+            case .success(let record):
+                guard let message = record["Message"] as? String else { return }
+                returnedMessages.append(message)
+            case .failure(let error):
+                print("fetchMessages Error: \(error)")
+            }
+        }
+        
+        queryOperation.queryResultBlock = { [weak self] result in
+            print("fetchMessages Result: \(result)")
+            DispatchQueue.main.async {
+                self?.messageList = returnedMessages
+            }
+        }
+        
+        addOperation(operation: queryOperation)
+    }
+    
+    func addOperation(operation: CKDatabaseOperation) {
+        CKContainer.default().publicCloudDatabase.add(operation)
+    }
+    
+    func updateMessageList(message: String) {
+        self.messageList.append(message)
     }
     
     func updateFriendsIdForCurrentUserInDB(currentUserId: String) {
