@@ -7,6 +7,8 @@
 
 import Foundation
 import CloudKit
+import UserNotifications
+import UIKit
 
 @MainActor class UserProfileViewModel: ObservableObject {
     
@@ -41,6 +43,52 @@ import CloudKit
         case iCloudAccountRestricted
         case iCloudAccountNotFound
         case iCloudAccountUnknown
+    }
+    
+    func requestNotificationPermissions() {
+        let options: UNAuthorizationOptions = [.alert, .badge, .sound]
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: options) { success, error in
+            if let error = error {
+                print("requestNotificationPermissions Error: \(error.localizedDescription)")
+            } else if success {
+                print("requestNotificationPermissions: Notification Permissions Success")
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            } else {
+                print("requestNotificationPermissions: Notification Permissions Failure")
+            }
+        }
+    }
+    
+    func subscibeToNotifications() {
+        let predicate = NSPredicate(value: true)
+        let subscription = CKQuerySubscription(recordType: "Notifications", predicate: predicate, subscriptionID: "notification_added_to_database", options: .firesOnRecordCreation)
+        let notification = CKSubscription.NotificationInfo()
+        notification.title = "Hey, Hobby!"
+        notification.alertBody = "\(userMessage)"
+        notification.soundName = "default"
+        
+        subscription.notificationInfo = notification
+        
+        CKContainer.default().publicCloudDatabase.save(subscription) { subcription, error in
+            if let error = error {
+                print("subscibeToNotifications Error: \(error.localizedDescription)")
+            } else {
+                print("subscibeToNotifications: Successfully subscribed to Notifications")
+            }
+        }
+    }
+    
+    func unsubscibeToNotifications() {
+        CKContainer.default().publicCloudDatabase.delete(withSubscriptionID: "notification_added_to_database") { id, error in
+            if let error = error {
+                print("unsubscibeToNotifications Error: \(error.localizedDescription)")
+            } else {
+                print("unsubscibeToNotifications: Successfully unsubscribed to Notifications")
+            }
+        }
     }
     
     func requestiCloudPermission() {

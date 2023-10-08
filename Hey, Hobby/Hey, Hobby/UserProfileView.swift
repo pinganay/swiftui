@@ -84,6 +84,20 @@ struct UserProfile: View {
                         }
                     }
                     
+                    Section {
+                        Button("Request notification Permissions") {
+                            viewModel.requestNotificationPermissions()
+                        }
+                        
+                        Button("Subscribe to notificatios") {
+                            viewModel.subscibeToNotifications()
+                        }
+                        
+                        Button("Unsubscribe to notificatios") {
+                            viewModel.unsubscibeToNotifications()
+                        }
+                    }
+                    
                     Spacer()
                     
                 }
