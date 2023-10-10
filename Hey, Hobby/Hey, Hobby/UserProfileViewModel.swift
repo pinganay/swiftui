@@ -63,20 +63,23 @@ import UIKit
     }
     
     func subscibeToNotifications() {
-        let predicate = NSPredicate(value: true)
-        let subscription = CKQuerySubscription(recordType: "Notifications", predicate: predicate, subscriptionID: "notification_added_to_database", options: .firesOnRecordCreation)
-        let notification = CKSubscription.NotificationInfo()
-        notification.title = "Hey, Hobby!"
-        notification.alertBody = "\(userMessage)"
-        notification.soundName = "default"
-        
-        subscription.notificationInfo = notification
-        
-        CKContainer.default().publicCloudDatabase.save(subscription) { subcription, error in
-            if let error = error {
-                print("subscibeToNotifications Error: \(error.localizedDescription)")
-            } else {
-                print("subscibeToNotifications: Successfully subscribed to Notifications")
+        for friend in friendsList {
+            let predicate = NSPredicate(format: "UserId = %@", friend.id)
+            
+            let subscription = CKQuerySubscription(recordType: "Notifications", predicate: predicate, subscriptionID: "notification_added_to_database", options: .firesOnRecordCreation)
+            let notification = CKSubscription.NotificationInfo()
+            notification.title = "Hey, Hobby2!"
+            notification.alertBody = "\(userMessage)"
+            notification.soundName = "default"
+            
+            subscription.notificationInfo = notification
+            
+            CKContainer.default().publicCloudDatabase.save(subscription) { subcription, error in
+                if let error = error {
+                    print("subscibeToNotifications Error: \(error.localizedDescription)")
+                } else {
+                    print("subscibeToNotifications: Successfully subscribed to Notifications")
+                }
             }
         }
     }
@@ -127,11 +130,12 @@ import UIKit
         }
     }
     
-    func addMessage(message: String) {
+    func addMessage(message: String, userId: String) {
         guard !userMessage.isEmpty else { return }
         
         let newNotification = CKRecord(recordType: "Notifications")
         newNotification["Message"] = message
+        newNotification["UserId"] = userId
         saveMessage(record: newNotification)
     }
     
