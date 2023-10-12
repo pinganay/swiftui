@@ -68,9 +68,18 @@ import UIKit
             
             let subscription = CKQuerySubscription(recordType: "Notifications", predicate: predicate, subscriptionID: "notification_added_to_database", options: .firesOnRecordCreation)
             let notification = CKSubscription.NotificationInfo()
-            notification.title = "Hey, Hobby2!"
-            notification.alertBody = "\(userMessage)"
+            //notification.title = "Hey, Hobby!"
+//            notification.subtitleLocalizationKey = "%1$@"
+//            notification.subtitleLocalizationArgs = ["UserName"]
+            notification.titleLocalizationKey = "%1$@"
+            notification.titleLocalizationArgs = ["UserName"]
+            notification.alertLocalizationKey = "%1$@"
+            notification.alertLocalizationArgs = ["Message"]
+            notification.desiredKeys = ["Message", "UserName"]
+            notification.shouldSendContentAvailable = true
+            notification.shouldBadge = true
             notification.soundName = "default"
+            
             
             subscription.notificationInfo = notification
             
@@ -130,12 +139,13 @@ import UIKit
         }
     }
     
-    func addMessage(message: String, userId: String) {
+    func addMessage(message: String, userId: String, currentUserName: String) {
         guard !userMessage.isEmpty else { return }
         
         let newNotification = CKRecord(recordType: "Notifications")
         newNotification["Message"] = message
         newNotification["UserId"] = userId
+        newNotification["UserName"] = currentUserName
         saveMessage(record: newNotification)
     }
     

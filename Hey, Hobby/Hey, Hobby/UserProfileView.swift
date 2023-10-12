@@ -61,7 +61,8 @@ struct UserProfile: View {
                             .padding()
                         
                         Button("Send Message") {
-                            viewModel.addMessage(message: viewModel.userMessage, userId: loggedInUser.id)
+                            let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
+                            viewModel.addMessage(message: viewModel.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
                         }
                         .font(.headline)
                         .foregroundColor(.white)
