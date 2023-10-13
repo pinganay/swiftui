@@ -18,17 +18,7 @@ import UIKit
     @Published var friendsList = [DBUser]()
     @Published var selectedFriendId = "" {
         didSet {
-            Task {
-                let user = try await readUserData(userId: selectedFriendId)
-                let isDuplicate = searchFor(user: user, in: friendsList)
-                if isDuplicate {
-                    print("UserProfileViewModel Error: User already in friends list")
-                } else {
-                    friendsList.append(user)
-                    let currentUser = await readCurrentUser()
-                    updateFriendsIdForCurrentUserInDB(currentUserId: currentUser.id)
-                }
-            }
+            updateFriendList()
         }
     }
     
@@ -68,16 +58,21 @@ import UIKit
             
             let subscription = CKQuerySubscription(recordType: "Notifications", predicate: predicate, subscriptionID: "notification_added_to_database", options: .firesOnRecordCreation)
             let notification = CKSubscription.NotificationInfo()
-            //notification.title = "Hey, Hobby!"
-//            notification.subtitleLocalizationKey = "%1$@"
-//            notification.subtitleLocalizationArgs = ["UserName"]
-            notification.titleLocalizationKey = "%1$@"
+            /*
+             Reads data from CloudKit then shows body and title on notification
+             The value of the "Message" field from CloudKit gets passed as the body of the notification
+             The value of the "UserName" field from CloudKit gets passed as the title of the notification
+             */
+            notification.titleLocalizationKey = "Hey Hobby!\nFrom: %1$@"
             notification.titleLocalizationArgs = ["UserName"]
+            
             notification.alertLocalizationKey = "%1$@"
             notification.alertLocalizationArgs = ["Message"]
+            
             notification.desiredKeys = ["Message", "UserName"]
             notification.shouldSendContentAvailable = true
-            notification.shouldBadge = true
+            
+//            notification.shouldBadge = true
             notification.soundName = "default"
             
             
@@ -195,6 +190,20 @@ import UIKit
     
     func updateFriendsIdForCurrentUserInDB(currentUserId: String) {
         UserManager.shared.updateFriendsIdForCurrentUser(friendId: selectedFriendId, currentUserId: currentUserId)
+    }
+    
+    func updateFriendList() {
+        Task {
+            let user = try await readUserData(userId: selectedFriendId)
+            let isDuplicate = searchFor(user: user, in: friendsList)
+            if isDuplicate {
+                print("UserProfileViewModel Error: User already in friends list")
+            } else {
+                friendsList.append(user)
+                let currentUser = await readCurrentUser()
+                updateFriendsIdForCurrentUserInDB(currentUserId: currentUser.id)
+            }
+        }
     }
     
     func readCurrentUser() async -> DBUser {

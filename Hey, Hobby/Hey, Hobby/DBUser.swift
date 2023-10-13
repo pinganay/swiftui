@@ -31,6 +31,4 @@ struct Community {
     var id: String
     let name: String
     var members: [DBUser]
-    
-    
 }

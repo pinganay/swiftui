@@ -12,7 +12,6 @@ struct UserProfile: View {
     @StateObject var viewModel = UserProfileViewModel()
     @Binding var showSignInView: Bool
     @State var loggedInUser: DBUser = DBUser.sampleUser
-    var array = ["Bob", "aa", "bb"]
     
     var body: some View {
         NavigationView {
@@ -27,7 +26,7 @@ struct UserProfile: View {
                     
                     Picker("People", selection: $viewModel.selectedFriendId) {
                         ForEach(viewModel.userList, id: \.id) { user in
-                            Text(user.firstName)
+                            Text(user.firstName + user.lastName)
                         }
                     }
                     .pickerStyle(.menu)
