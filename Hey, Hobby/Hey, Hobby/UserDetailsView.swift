@@ -30,6 +30,7 @@ struct UserDetailsView: View {
     @Binding var showUserProfile: Bool
     @Binding var showUserDetails: Bool
     @Binding var showSignInView: Bool
+    @Binding var showWelcomeView: Bool
     
     var body: some View {
         NavigationView {
@@ -45,9 +46,10 @@ struct UserDetailsView: View {
                 
                 Button("Save") {
                     viewModel.save()
-                    showUserProfile = true
+                    showWelcomeView = true
                     showUserDetails = false
                     showSignInView = false
+                    showUserProfile = false
                     dismiss()
                 }
             }
@@ -60,6 +62,6 @@ struct UserDetailsView: View {
 
 struct UserDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        UserDetailsView(showUserProfile: .constant(true), showUserDetails: .constant(false), showSignInView: .constant(false))
+        UserDetailsView(showUserProfile: .constant(true), showUserDetails: .constant(false), showSignInView: .constant(false), showWelcomeView: .constant(false))
     }
 }

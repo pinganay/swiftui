@@ -11,6 +11,8 @@ import Firebase
 @main
 struct Hey__HobbyApp: App {
     
+    @StateObject var vm = UserProfileViewModel()
+    
     init() {
         FirebaseApp.configure()
         print("Configured Firebase succesfully")
@@ -19,6 +21,7 @@ struct Hey__HobbyApp: App {
     var body: some Scene {
         WindowGroup {
             SignInView()
+                .environmentObject(vm)
         }
     }
 }

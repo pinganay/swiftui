@@ -9,7 +9,7 @@ import SwiftUI
 import CloudKit
 
 struct UserProfile: View {
-    @StateObject var viewModel = UserProfileViewModel()
+    @EnvironmentObject var vm: UserProfileViewModel
     @Binding var showSignInView: Bool
     @State var loggedInUser: DBUser = DBUser.sampleUser
     
@@ -21,11 +21,8 @@ struct UserProfile: View {
                         .padding(.trailing, 225)
                         .font(.largeTitle)
                     
-                    //Spacer()
-                        
-                    
-                    Picker("People", selection: $viewModel.selectedFriendId) {
-                        ForEach(viewModel.userList, id: \.id) { user in
+                    Picker("People", selection: $vm.selectedFriendId) {
+                        ForEach(vm.userList, id: \.id) { user in
                             Text(user.firstName + user.lastName)
                         }
                     }
@@ -38,7 +35,7 @@ struct UserProfile: View {
                             .font(.largeTitle)
                         
                         VStack {
-                            ForEach(viewModel.friendsList, id: \.id) { friend in
+                            ForEach(vm.friendsList, id: \.id) { friend in
                                 Text(friend.firstName + " " + friend.lastName)
                             }
                         }
@@ -51,7 +48,7 @@ struct UserProfile: View {
                             .padding(.trailing, 5)
                             .font(.largeTitle)
                         
-                        TextField("Enter Message", text: $viewModel.userMessage)
+                        TextField("Enter Message", text: $vm.userMessage)
                             .font(.headline)
                             .frame(height: 55)
                             .frame(maxWidth: .infinity)
@@ -61,7 +58,7 @@ struct UserProfile: View {
                         
                         Button("Send Message") {
                             let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
-                            viewModel.addMessage(message: viewModel.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
+                            vm.addMessage(message: vm.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
                         }
                         .font(.headline)
                         .foregroundColor(.white)
@@ -79,22 +76,22 @@ struct UserProfile: View {
                             .padding(.trailing, 5)
                             .font(.largeTitle)
                         
-                        ForEach(viewModel.messageList, id: \.self) { message in
+                        ForEach(vm.messageList, id: \.self) { message in
                             Text(message)
                         }
                     }
                     
                     Section {
                         Button("Request notification Permissions") {
-                            viewModel.requestNotificationPermissions()
+                            vm.requestNotificationPermissions()
                         }
                         
                         Button("Subscribe to notificatios") {
-                            viewModel.subscibeToNotifications()
+                            vm.subscibeToNotifications()
                         }
                         
                         Button("Unsubscribe to notificatios") {
-                            viewModel.unsubscibeToNotifications()
+                            vm.unsubscibeToNotifications()
                         }
                     }
                     
@@ -103,16 +100,16 @@ struct UserProfile: View {
                 }
                 .onAppear {
                     //when this view loaded, get all users from DB and display them
-                    viewModel.getAllUsersWithoutCurrentUser()
+                    vm.getAllUsersWithoutCurrentUser()
                 }
                 .navigationTitle("Profile")
                 .task {
-                    loggedInUser = await viewModel.getLoggedInUser()
+                    loggedInUser = await vm.getLoggedInUser()
                 }
                 .toolbar {
                     ToolbarItem {
                         Button("Log Out", role: .destructive) {
-                            viewModel.signOut()
+                            vm.signOut()
                             print("Succesfully Logged out User")
                             showSignInView = true
                         }
@@ -123,8 +120,8 @@ struct UserProfile: View {
                     SignInView()
                 }
                 .task {
-                    let currentUser = await viewModel.readCurrentUser()
-                    viewModel.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
+                    let currentUser = await vm.readCurrentUser()
+                    vm.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
                 }
             }
         }

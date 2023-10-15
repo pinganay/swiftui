@@ -9,13 +9,14 @@ import SwiftUI
 
 struct SignInView: View {
     @State var showSignInView = true
+    @State var showWelcomeView = false
     @State var showUserProfile = false
     @State var showUserDetails = false
     var body: some View {
         NavigationView {
             VStack {
                 NavigationLink {
-                    SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails)
+                    SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
                 } label: {
                     Text("Sign In With Email")
                         .font(.headline)
@@ -33,15 +34,16 @@ struct SignInView: View {
         }
         .onAppear {
             let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
-            showUserProfile = authenticatedUser != nil
-            showSignInView = !showUserProfile
+            showWelcomeView = authenticatedUser != nil
+            showSignInView = false
             showUserDetails = false
+            showUserProfile = false
         }
-        .fullScreenCover(isPresented: $showUserProfile) {
-            UserProfile(showSignInView: $showSignInView)
+        .fullScreenCover(isPresented: $showWelcomeView) {
+            WelcomeView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
         }
         .fullScreenCover(isPresented: $showUserDetails) {
-            UserDetailsView(showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showSignInView: $showSignInView)
+            UserDetailsView(showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showSignInView: $showSignInView, showWelcomeView: $showWelcomeView)
         }
     }
 }

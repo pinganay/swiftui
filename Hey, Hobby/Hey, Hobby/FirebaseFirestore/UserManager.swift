@@ -58,4 +58,48 @@ final class UserManager {
             "friendsId": FieldValue.arrayUnion([friendId])
         ])
     }
+    
+    func getUsersBy(fieldName: String, fieldValue: String) async throws -> [DBUser] {
+        var userList = [DBUser]()
+        
+        let querySnapshot = try await db.collection("users").whereField(fieldName, isEqualTo: fieldValue).getDocuments()
+        
+        for document in querySnapshot.documents {
+            guard let user = try? document.data(as: DBUser.self) else {
+                print("UserManager getUsersBy Error: Document is not correct")
+                return userList
+            }
+            
+            print("UserManager getUsersBy: \(user.firstName)")
+            userList.append(user)
+            print("UserManager COunt: \(userList.count)")
+        }
+
+        
+//        db.collection("users").whereField(fieldName, isEqualTo: fieldValue).getDocuments { querySnapshot, error in
+//            if let error = error {
+//                print(error)
+//                return
+//            }
+//
+//            if let querySnapshot = querySnapshot {
+//                for document in querySnapshot.documents {
+//                    guard let user = try? document.data(as: DBUser.self) else {
+//                        print("UserManager getUsersBy Error: Document is not correct")
+//                        return
+//                    }
+//
+//                    print("UserManager getUsersBy: \(user.firstName)")
+//                    userList.append(user)
+//                    print("UserManager COunt: \(userList.count)")
+//                }
+//
+//
+//            } else {
+//                print("The query snapshot was empty.")
+//            }
+//        }
+        print("UserManager final COunt: \(userList.count)")
+        return userList
+    }
 }

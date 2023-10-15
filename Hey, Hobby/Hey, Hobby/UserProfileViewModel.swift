@@ -192,6 +192,10 @@ import UIKit
         UserManager.shared.updateFriendsIdForCurrentUser(friendId: selectedFriendId, currentUserId: currentUserId)
     }
     
+    func updateFriendsIdForCurrentUserInDB(currentUserId: String, friendId: String) {
+        UserManager.shared.updateFriendsIdForCurrentUser(friendId: friendId, currentUserId: currentUserId)
+    }
+    
     func updateFriendList() {
         Task {
             let user = try await readUserData(userId: selectedFriendId)

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED2A00B92ADB25360002DA74 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A00B82ADB25360002DA74 /* AddFriendView.swift */; };
 		ED8290DD2ABBB3DF00552D6D /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8290DC2ABBB3DF00552D6D /* UserManager.swift */; };
 		ED858E382ABFBA66005997B9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = ED858E372ABFBA66005997B9 /* FirebaseAuth */; };
 		ED858E3B2ABFBACD005997B9 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3A2ABFBACD005997B9 /* AuthManager.swift */; };
@@ -24,11 +25,13 @@
 		EDB864102ABAB54900DBB6E3 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EDB8640F2ABAB54900DBB6E3 /* FirebaseFirestoreSwift */; };
 		EDBA31FA2AC25E9F009D3B73 /* UserDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */; };
 		EDCF276B2AD79E2E00EE688F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EDCF276A2AD79E2E00EE688F /* Localizable.strings */; };
+		EDCF276D2AD8EA1300EE688F /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */; };
 		EDD8B92D2ACCDB7B00FBC109 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EDD8B92C2ACCDB7B00FBC109 /* GoogleService-Info.plist */; };
 		EDD8B94A2ACE0B6900FBC109 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD8B9492ACE0B6900FBC109 /* UserProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED2A00B82ADB25360002DA74 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
 		ED8290DC2ABBB3DF00552D6D /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		ED858E3A2ABFBACD005997B9 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		ED858E3C2ABFBD17005997B9 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -42,6 +45,7 @@
 		EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeperatorView.swift; sourceTree = "<group>"; };
 		EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
 		EDCF276A2AD79E2E00EE688F /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		EDD8B92B2ACCD64A00FBC109 /* Hey, Hobby.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hey, Hobby.entitlements"; sourceTree = "<group>"; };
 		EDD8B92C2ACCDB7B00FBC109 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EDD8B9492ACE0B6900FBC109 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
@@ -102,14 +106,16 @@
 				EDCF27692AD79E1500EE688F /* Resources */,
 				EDD8B92C2ACCDB7B00FBC109 /* GoogleService-Info.plist */,
 				EDD8B92B2ACCD64A00FBC109 /* Hey, Hobby.entitlements */,
+				EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */,
+				ED2A00B82ADB25360002DA74 /* AddFriendView.swift */,
 				ED858E392ABFBAA2005997B9 /* FirebaseAuth */,
 				ED8290DB2ABBB3C300552D6D /* FirebaseFirestore */,
-				EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */,
 				ED858E3C2ABFBD17005997B9 /* SignInView.swift */,
 				EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */,
 				ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */,
 				EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */,
 				EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */,
+				EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */,
 				EDD8B9492ACE0B6900FBC109 /* UserProfileViewModel.swift */,
 				EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */,
 				EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */,
@@ -229,6 +235,8 @@
 				EDB864042AB94FE500DBB6E3 /* SeperatorView.swift in Sources */,
 				EDB863F42AB7BA4A00DBB6E3 /* UserProfileView.swift in Sources */,
 				EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */,
+				ED2A00B92ADB25360002DA74 /* AddFriendView.swift in Sources */,
+				EDCF276D2AD8EA1300EE688F /* WelcomeView.swift in Sources */,
 				ED858E3D2ABFBD17005997B9 /* SignInView.swift in Sources */,
 				EDD8B94A2ACE0B6900FBC109 /* UserProfileViewModel.swift in Sources */,
 				ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */,

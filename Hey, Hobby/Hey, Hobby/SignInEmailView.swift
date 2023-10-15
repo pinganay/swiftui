@@ -38,6 +38,7 @@ struct SignInEmailView: View {
     @Binding var showSignInView: Bool
     @Binding var showUserProfile: Bool
     @Binding var showUserDetails: Bool
+    @Binding var showWelcomeView: Bool
     
     var body: some View {
         NavigationView {
@@ -58,6 +59,7 @@ struct SignInEmailView: View {
                             showUserDetails = true
                             showSignInView = false
                             showUserProfile = false
+                            showWelcomeView = false
                             return
                         } catch {
                             print("SignInEmailView: Sign up failed, \(error.localizedDescription)")
@@ -65,9 +67,10 @@ struct SignInEmailView: View {
                         
                         do {
                             try await viewModel.signIn()
-                            showUserProfile = true
+                            showWelcomeView = true
                             showSignInView = false
                             showUserDetails = false
+                            showUserProfile = false
                             return
                         } catch {
                             print("SignInEmailView: Sign in failed, \(error.localizedDescription)")
@@ -97,6 +100,6 @@ struct SignInEmailView: View {
 
 struct SignInEmailView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInEmailView(showSignInView: .constant(true), showUserProfile: .constant(false), showUserDetails: .constant(false))
+        SignInEmailView(showSignInView: .constant(true), showUserProfile: .constant(false), showUserDetails: .constant(false), showWelcomeView: .constant(false))
     }
 }
