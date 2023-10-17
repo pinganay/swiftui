@@ -16,6 +16,7 @@ import UIKit
     @Published var userMessage = ""
     @Published var userList = [DBUser]()
     @Published var friendsList = [DBUser]()
+    @Published var loadFriendsListFromDB = true
     @Published var selectedFriendId = "" {
         didSet {
             updateFriendList()
@@ -54,24 +55,27 @@ import UIKit
     
     func subscibeToNotifications() {
         for friend in friendsList {
+            print("friend.id : \(friend.id)")
             let predicate = NSPredicate(format: "UserId = %@", friend.id)
             
-            let subscription = CKQuerySubscription(recordType: "Notifications", predicate: predicate, subscriptionID: "notification_added_to_database", options: .firesOnRecordCreation)
+            let subscription = CKQuerySubscription(recordType: "Notifications", predicate: predicate, subscriptionID: "\(friend.id)", options: .firesOnRecordCreation)
             let notification = CKSubscription.NotificationInfo()
             /*
              Reads data from CloudKit then shows body and title on notification
              The value of the "Message" field from CloudKit gets passed as the body of the notification
              The value of the "UserName" field from CloudKit gets passed as the title of the notification
              */
+            
+            
             notification.titleLocalizationKey = "Hey Hobby!\nFrom: %1$@"
             notification.titleLocalizationArgs = ["UserName"]
-            
+
             notification.alertLocalizationKey = "%1$@"
             notification.alertLocalizationArgs = ["Message"]
-            
+
             notification.desiredKeys = ["Message", "UserName"]
             notification.shouldSendContentAvailable = true
-            
+
 //            notification.shouldBadge = true
             notification.soundName = "default"
             
@@ -82,18 +86,39 @@ import UIKit
                 if let error = error {
                     print("subscibeToNotifications Error: \(error.localizedDescription)")
                 } else {
-                    print("subscibeToNotifications: Successfully subscribed to Notifications")
+                    print("subscibeToNotifications: Successfully subscribed to Notifications: \(subcription?.subscriptionID)")
                 }
             }
         }
     }
     
     func unsubscibeToNotifications() {
-        CKContainer.default().publicCloudDatabase.delete(withSubscriptionID: "notification_added_to_database") { id, error in
-            if let error = error {
-                print("unsubscibeToNotifications Error: \(error.localizedDescription)")
+//        CKContainer.default().publicCloudDatabase.delete(withSubscriptionID: "notification_added_to_database") { id, error in
+//            if let error = error {
+//                print("unsubscibeToNotifications Error: \(error.localizedDescription)")
+//            } else {
+//                print("unsubscibeToNotifications: Successfully unsubscribed to Notifications")
+//            }
+//        }
+        CKContainer.default().publicCloudDatabase.fetchAllSubscriptions { [unowned self] subscriptions, error in
+            if error == nil {
+                if let subscriptions = subscriptions {
+                    for subscription in subscriptions {
+                        CKContainer.default().publicCloudDatabase.delete(withSubscriptionID: subscription.subscriptionID) { str, error in
+                            if error != nil {
+                                // do your error handling here!
+                                print(error!.localizedDescription)
+                            }
+                            
+                            print("Unsubscribed \(subscription.subscriptionID) succesfully")
+                        }
+                    }
+                    
+                    // more code to come!
+                }
             } else {
-                print("unsubscibeToNotifications: Successfully unsubscribed to Notifications")
+                // do your error handling here!
+                print(error!.localizedDescription)
             }
         }
     }

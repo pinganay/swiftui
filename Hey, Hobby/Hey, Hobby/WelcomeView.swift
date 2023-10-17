@@ -10,6 +10,7 @@ import SwiftUI
 struct WelcomeView: View {
     @EnvironmentObject var vm: UserProfileViewModel
     @State var currentUser = DBUser.sampleUser
+//    @State private var loadFriendsListFromDB = true
     
     @Binding var showSignInView: Bool
     @Binding var showUserProfile: Bool
@@ -36,6 +37,18 @@ struct WelcomeView: View {
                     
                     Spacer()
                     
+                    NavigationLink {
+                        MessagingView()
+                    } label: {
+                        Image(systemName: "plus.message.fill")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .padding([.leading, .top])
+                    }
+
+                    
+                    Spacer()
+                    
                     NavigationLink("Add Friend") {
                         AddFriendView()
                     }
@@ -53,6 +66,12 @@ struct WelcomeView: View {
             showUserDetails = false
             
             currentUser = await vm.readCurrentUser()
+            
+            //should be called once
+            if vm.loadFriendsListFromDB {
+                vm.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
+                vm.loadFriendsListFromDB = false
+            }
         }
     }
 }

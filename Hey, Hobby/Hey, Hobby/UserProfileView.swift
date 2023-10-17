@@ -21,54 +21,16 @@ struct UserProfile: View {
                         .padding(.trailing, 225)
                         .font(.largeTitle)
                     
-                    Picker("People", selection: $vm.selectedFriendId) {
-                        ForEach(vm.userList, id: \.id) { user in
-                            Text(user.firstName + user.lastName)
+                    Text("Friends")
+                        .padding(.trailing, 5)
+                        .padding()
+                        .font(.largeTitle)
+                    
+                    VStack {
+                        ForEach(vm.friendsList, id: \.id) { friend in
+                            Text(friend.firstName + " " + friend.lastName)
                         }
                     }
-                    .pickerStyle(.menu)
-                    
-                    Section {
-                        Text("Friends")
-                            .padding(.trailing, 5)
-                            .padding()
-                            .font(.largeTitle)
-                        
-                        VStack {
-                            ForEach(vm.friendsList, id: \.id) { friend in
-                                Text(friend.firstName + " " + friend.lastName)
-                            }
-                        }
-                    }
-                        
-                    Seperator(width: 250)
-                    
-                    Section {
-                        Text("Message your Friends")
-                            .padding(.trailing, 5)
-                            .font(.largeTitle)
-                        
-                        TextField("Enter Message", text: $vm.userMessage)
-                            .font(.headline)
-                            .frame(height: 55)
-                            .frame(maxWidth: .infinity)
-                            .background(.gray.opacity(0.4))
-                            .cornerRadius(10)
-                            .padding()
-                        
-                        Button("Send Message") {
-                            let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
-                            vm.addMessage(message: vm.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
-                        }
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(height: 55)
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
-                        .cornerRadius(10)
-                        .padding(.horizontal, 130)
-                    }
-                    
                     Seperator(width: 250)
                     
                     Section {
@@ -119,10 +81,10 @@ struct UserProfile: View {
                 .fullScreenCover(isPresented: $showSignInView) {
                     SignInView()
                 }
-                .task {
-                    let currentUser = await vm.readCurrentUser()
-                    vm.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
-                }
+//                .task {
+//                    let currentUser = await vm.readCurrentUser()
+//                    vm.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
+//                }
             }
         }
     }

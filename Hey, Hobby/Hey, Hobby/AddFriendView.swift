@@ -44,10 +44,6 @@ struct AddFriendView: View {
                     Text("\(user.firstName) \(user.lastName)")
                     Spacer()
                     Button("Add") {
-//                        vm.friendsList.append(user)
-//                        searchedUserList.removeAll { searchedUser in
-//                            searchedUser.id == user.id
-//                        }
                         newFriend = user
                         isFriendAdded = true
                     }
@@ -57,8 +53,9 @@ struct AddFriendView: View {
                 Button("OK") {
                     Task {
                         let loggedInUser = await vm.getLoggedInUser()
+                        vm.selectedFriendId = newFriend.id
                         vm.friendsList.append(newFriend)
-                        vm.updateFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: newFriend.id)
+                        vm.updateFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: vm.selectedFriendId)
                         searchedUserList.removeAll { searchedUser in
                             searchedUser.id == newFriend.id
                         }

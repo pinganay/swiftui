@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		ED2A00B92ADB25360002DA74 /* AddFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A00B82ADB25360002DA74 /* AddFriendView.swift */; };
+		ED2A00BB2ADBB9AC0002DA74 /* MessagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2A00BA2ADBB9AC0002DA74 /* MessagingView.swift */; };
 		ED8290DD2ABBB3DF00552D6D /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8290DC2ABBB3DF00552D6D /* UserManager.swift */; };
 		ED858E382ABFBA66005997B9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = ED858E372ABFBA66005997B9 /* FirebaseAuth */; };
 		ED858E3B2ABFBACD005997B9 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3A2ABFBACD005997B9 /* AuthManager.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		ED2A00B82ADB25360002DA74 /* AddFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendView.swift; sourceTree = "<group>"; };
+		ED2A00BA2ADBB9AC0002DA74 /* MessagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagingView.swift; sourceTree = "<group>"; };
 		ED8290DC2ABBB3DF00552D6D /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		ED858E3A2ABFBACD005997B9 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		ED858E3C2ABFBD17005997B9 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 				EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */,
 				EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */,
 				EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */,
+				ED2A00BA2ADBB9AC0002DA74 /* MessagingView.swift */,
 				EDD8B9492ACE0B6900FBC109 /* UserProfileViewModel.swift */,
 				EDB863FF2AB7BA7300DBB6E3 /* DBUser.swift */,
 				EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */,
@@ -237,6 +240,7 @@
 				EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */,
 				ED2A00B92ADB25360002DA74 /* AddFriendView.swift in Sources */,
 				EDCF276D2AD8EA1300EE688F /* WelcomeView.swift in Sources */,
+				ED2A00BB2ADBB9AC0002DA74 /* MessagingView.swift in Sources */,
 				ED858E3D2ABFBD17005997B9 /* SignInView.swift in Sources */,
 				EDD8B94A2ACE0B6900FBC109 /* UserProfileViewModel.swift in Sources */,
 				ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */,
