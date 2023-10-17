@@ -52,10 +52,19 @@ struct AddFriendView: View {
             .alert("Add Friend", isPresented: $isFriendAdded) {
                 Button("OK") {
                     Task {
+                        //We get the user and add them to the friend list of the current user
                         let loggedInUser = await vm.getLoggedInUser()
                         vm.selectedFriendId = newFriend.id
                         vm.friendsList.append(newFriend)
+                        
+                        //We update the friend list of the current user in the Firstore DB
                         vm.updateFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: vm.selectedFriendId)
+                        
+                        //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
+                        vm.unsubscibeToNotifications()
+                        vm.subscibeToNotifications()
+                        
+                        //We remove the newly added user from the filtered result
                         searchedUserList.removeAll { searchedUser in
                             searchedUser.id == newFriend.id
                         }
