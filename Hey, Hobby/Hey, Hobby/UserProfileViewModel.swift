@@ -17,6 +17,7 @@ import UIKit
     @Published var userList = [DBUser]()
     @Published var friendsList = [DBUser]()
     @Published var loadFriendsListFromDB = true
+    @Published var isUserSubscribed = false
     @Published var selectedFriendId = "" {
         didSet {
             updateFriendList()

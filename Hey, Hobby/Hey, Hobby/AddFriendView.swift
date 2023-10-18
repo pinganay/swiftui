@@ -63,6 +63,7 @@ struct AddFriendView: View {
                         //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
                         vm.unsubscibeToNotifications()
                         vm.subscibeToNotifications()
+                        vm.isUserSubscribed = true
                         
                         //We remove the newly added user from the filtered result
                         searchedUserList.removeAll { searchedUser in

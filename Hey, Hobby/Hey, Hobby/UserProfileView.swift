@@ -15,76 +15,91 @@ struct UserProfile: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
+            VStack {
+                Text("Hey, \(loggedInUser.firstName) \(loggedInUser.lastName)")
+                    .padding(.trailing, 225)
+                    .font(.largeTitle)
+                
+                Text("Friends")
+                    .padding(.trailing, 5)
+                    .padding()
+                    .font(.largeTitle)
+                
                 VStack {
-                    Text("Hey, \(loggedInUser.firstName) \(loggedInUser.lastName)")
-                        .padding(.trailing, 225)
-                        .font(.largeTitle)
-                    
-                    Text("Friends")
-                        .padding(.trailing, 5)
-                        .padding()
-                        .font(.largeTitle)
-                    
-                    VStack {
-                        ForEach(vm.friendsList, id: \.id) { friend in
+                    List(vm.friendsList, id: \.id) { friend in
+                        HStack {
                             Text(friend.firstName + " " + friend.lastName)
+                            
+                            Spacer()
+                            
+                            Button("Unfriend") {
+                                vm.friendsList.removeAll { user in
+                                    user.id == friend.id
+                                }
+                                
+                                vm.updateFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: friend.id)
+                                
+                                vm.unsubscibeToNotifications()
+                                vm.subscibeToNotifications()
+                                vm.isUserSubscribed = true
+                            }
+                            .foregroundColor(.blue)
                         }
                     }
-                    Seperator(width: 250)
-                    
-                    Section {
-                        Text("Recieved Messages")
-                            .padding(.trailing, 5)
-                            .font(.largeTitle)
-                        
-                        ForEach(vm.messageList, id: \.self) { message in
-                            Text(message)
-                        }
-                    }
-                    
-                    Section {
-                        Button("Request notification Permissions") {
-                            vm.requestNotificationPermissions()
-                        }
-                        
-                        Button("Subscribe to notificatios") {
-                            vm.subscibeToNotifications()
-                        }
-                        
-                        Button("Unsubscribe to notificatios") {
-                            vm.unsubscibeToNotifications()
-                        }
-                    }
-                    
-                    Spacer()
-                    
                 }
-                .onAppear {
-                    //when this view loaded, get all users from DB and display them
-                    vm.getAllUsersWithoutCurrentUser()
-                }
-                .navigationTitle("Profile")
-                .task {
-                    loggedInUser = await vm.getLoggedInUser()
-                }
-                .toolbar {
-                    ToolbarItem {
-                        Button("Log Out", role: .destructive) {
-                            vm.signOut()
-                            print("Succesfully Logged out User")
-                            showSignInView = true
-                        }
-
+                Seperator(width: 250)
+                
+                Section {
+                    Text("Recieved Messages")
+                        .padding(.trailing, 5)
+                        .font(.largeTitle)
+                    
+                    ForEach(vm.messageList, id: \.self) { message in
+                        Text(message)
                     }
                 }
-                .fullScreenCover(isPresented: $showSignInView) {
-                    SignInView()
+                
+                Section {
+                    Button("Request notification Permissions") {
+                        vm.requestNotificationPermissions()
+                    }
+                    
+                    Button("Subscribe to notificatios") {
+                        vm.subscibeToNotifications()
+                        vm.isUserSubscribed = true
+                    }
+                    .disabled(vm.isUserSubscribed)
+                    
+                    Button("Unsubscribe to notificatios") {
+                        vm.unsubscibeToNotifications()
+                        vm.isUserSubscribed = false
+                    }
+                    .disabled(!vm.isUserSubscribed)
                 }
-//                .task {
-//                    let currentUser = await vm.readCurrentUser()
-//                    vm.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
-//                }
+                
+                Spacer()
+                
+            }
+            .onAppear {
+                //when this view loaded, get all users from DB and display them
+                vm.getAllUsersWithoutCurrentUser()
+            }
+            .navigationTitle("Profile")
+            .task {
+                loggedInUser = await vm.getLoggedInUser()
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button("Log Out", role: .destructive) {
+                        vm.signOut()
+                        print("Succesfully Logged out User")
+                        showSignInView = true
+                    }
+                    
+                }
+            }
+            .fullScreenCover(isPresented: $showSignInView) {
+                SignInView()
             }
         }
     }
