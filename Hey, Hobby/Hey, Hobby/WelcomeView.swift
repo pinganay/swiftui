@@ -58,6 +58,19 @@ struct WelcomeView: View {
                 .background(.gray.opacity(0.7))
             }
             .navigationTitle("Hey, Hobby!")
+            .toolbar {
+                ToolbarItem {
+                    Button("Log Out", role: .destructive) {
+                        vm.signOut()
+                        print("Succesfully Logged out User")
+                        showSignInView = true
+                    }
+                    
+                }
+            }
+            .fullScreenCover(isPresented: $showSignInView) {
+                SignInView()
+            }
         }
         .task {
             let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()

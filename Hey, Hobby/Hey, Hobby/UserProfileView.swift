@@ -81,22 +81,11 @@ struct UserProfile: View {
                 
             }
             .onAppear {
-                //when this view loaded, get all users from DB and display them
                 vm.getAllUsersWithoutCurrentUser()
             }
             .navigationTitle("Profile")
             .task {
                 loggedInUser = await vm.getLoggedInUser()
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button("Log Out", role: .destructive) {
-                        vm.signOut()
-                        print("Succesfully Logged out User")
-                        showSignInView = true
-                    }
-                    
-                }
             }
             .fullScreenCover(isPresented: $showSignInView) {
                 SignInView()
