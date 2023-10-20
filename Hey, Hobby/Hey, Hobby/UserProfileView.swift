@@ -49,15 +49,15 @@ struct UserProfile: View {
                 }
                 Seperator(width: 250)
                 
-                Section {
-                    Text("Recieved Messages")
-                        .padding(.trailing, 5)
-                        .font(.largeTitle)
-                    
-                    ForEach(vm.messageList, id: \.self) { message in
-                        Text(message)
-                    }
-                }
+                
+//                    Text("Recieved Messages")
+//                        .padding(.trailing, 5)
+//                        .font(.largeTitle)
+//                    
+//                    ForEach(vm.messageList, id: \.self) { message in
+//                        Text(message)
+//                    }
+
                 
                 Section {
                     Button("Request notification Permissions") {
