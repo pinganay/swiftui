@@ -11,7 +11,7 @@ struct MessagingView: View {
     @EnvironmentObject var vm: UserProfileViewModel
     
     var body: some View {
-        Text("Message your Friends")
+        Text("Set your Status")
             .padding(.trailing, 5)
             .font(.largeTitle)
         
