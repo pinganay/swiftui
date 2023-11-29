@@ -20,6 +20,7 @@ struct WelcomeView: View {
     var body: some View {
         NavigationView {
             VStack {
+                Spacer()
                 Text("Welcome, \(currentUser.firstName) \(currentUser.lastName)!")
                     .font(.largeTitle)
                 
