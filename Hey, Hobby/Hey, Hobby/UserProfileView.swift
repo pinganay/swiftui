@@ -14,7 +14,7 @@ struct UserProfile: View {
     @State var loggedInUser: DBUser = DBUser.sampleUser
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Text("Hey, \(loggedInUser.firstName) \(loggedInUser.lastName)")
                     .padding(.trailing, 225)

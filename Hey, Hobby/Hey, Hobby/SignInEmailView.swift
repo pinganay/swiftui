@@ -41,7 +41,7 @@ struct SignInEmailView: View {
     @Binding var showWelcomeView: Bool
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 TextField("Email...", text: $viewModel.email)
                     .padding()

@@ -33,7 +33,7 @@ struct UserDetailsView: View {
     @Binding var showWelcomeView: Bool
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 TextField("First Name...", text: $viewModel.firstName)
                     .padding()

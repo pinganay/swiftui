@@ -39,16 +39,16 @@ struct MessagingView: View {
         .padding(.horizontal, 130)
         
         Seperator(width: 400)
-        
-        Text("Recieved Messages")
-            .padding(.trailing, 5)
-            .font(.largeTitle)
-        
-        List(vm.messageList, id: \.self) { message in
-            Text(message)
-        }
-        
-        Seperator(width: 400)
+//
+//        Text("Recieved Messages")
+//            .padding(.trailing, 5)
+//            .font(.largeTitle)
+//
+//        List(vm.messageList, id: \.self) { message in
+//            Text(message)
+//        }
+//
+//        Seperator(width: 400)
         
         Text("Sent Messages")
             .padding(.trailing, 5)

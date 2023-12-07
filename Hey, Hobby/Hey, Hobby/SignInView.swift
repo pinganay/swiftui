@@ -13,7 +13,7 @@ struct SignInView: View {
     @State var showUserProfile = false
     @State var showUserDetails = false
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 NavigationLink {
                     SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)

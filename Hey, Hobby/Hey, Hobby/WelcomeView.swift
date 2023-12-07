@@ -18,7 +18,7 @@ struct WelcomeView: View {
     @Binding var showWelcomeView: Bool
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Spacer()
                 Text("Welcome, \(currentUser.firstName) \(currentUser.lastName)!")
