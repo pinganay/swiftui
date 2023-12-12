@@ -9,6 +9,7 @@ import Foundation
 import CloudKit
 import UserNotifications
 import UIKit
+import SwiftUI
 
 @MainActor class UserProfileViewModel: ObservableObject {
     
@@ -23,6 +24,12 @@ import UIKit
             updateFriendList()
         }
     }
+    @Published var hobbyList = ["Soccer", "Drawing", "Cooking", "aaSoccerbbb", "Fencing", "aaSocbbb"]
+    @Published var filteredHobbies: [String] = []
+    @Published var disableSendButton = true
+    var buttonColor: Color {
+        return disableSendButton ? .gray : .accentColor
+    }
     
     init() {
         getiCloudStatus()
@@ -35,6 +42,16 @@ import UIKit
         case iCloudAccountRestricted
         case iCloudAccountNotFound
         case iCloudAccountUnknown
+    }
+    
+    func ValidateUserString(_ userString: String) {
+        //if hobbyList.contains(userString.localizedLowercase) {
+        if hobbyList.contains(where: {$0.caseInsensitiveCompare(userString) == .orderedSame}) {
+            disableSendButton = false
+        } else {
+            disableSendButton = true
+        }
+        print(disableSendButton)
     }
     
     func requestNotificationPermissions() {

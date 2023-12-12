@@ -43,7 +43,7 @@ final class UserManager {
     
     func updateFriendsIdForCurrentUser(friendId: String, currentUserId: String) {
         db.collection("users").document(currentUserId).updateData([
-            "friendsId": FieldValue.arrayUnion([friendId])
+            "friendsId": FieldValue.arrayRemove([friendId])
         ])
     }
     

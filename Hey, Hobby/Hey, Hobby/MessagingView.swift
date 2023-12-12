@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MessagingView: View {
     @EnvironmentObject var vm: UserProfileViewModel
@@ -22,8 +23,28 @@ struct MessagingView: View {
             .background(.gray.opacity(0.4))
             .cornerRadius(10)
             .padding()
+            .onChange(of: vm.userMessage) { message in
+                vm.ValidateUserString(message)
+                if message.count >= 3 {
+                    vm.filteredHobbies = vm.hobbyList.filter { hobby in
+                        hobby.lowercased().contains(message.lowercased())
+                    }
+                    print(vm.filteredHobbies)
+                } else {
+                    vm.filteredHobbies = []
+                }
+            }
         
+        HStack(spacing: 50) {
+            Text(vm.filteredHobbies.count > 0 ? "Did you mean: " : "")
+        }
+        ForEach(vm.filteredHobbies, id: \.self) { filteredHobby in
+            Button(filteredHobby) {
+                vm.userMessage = filteredHobby
+            }
+        }
         Button("Send Message") {
+            print("Send Message button clicked")
             Task {
                 let loggedInUser = await vm.getLoggedInUser()
                 let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
@@ -34,21 +55,22 @@ struct MessagingView: View {
         .foregroundColor(.white)
         .frame(height: 55)
         .frame(maxWidth: .infinity)
-        .background(.blue)
+        .background(vm.buttonColor)
         .cornerRadius(10)
         .padding(.horizontal, 130)
+        .disabled(vm.disableSendButton)
         
         Seperator(width: 400)
-//
-//        Text("Recieved Messages")
-//            .padding(.trailing, 5)
-//            .font(.largeTitle)
-//
-//        List(vm.messageList, id: \.self) { message in
-//            Text(message)
-//        }
-//
-//        Seperator(width: 400)
+        //
+        //        Text("Recieved Messages")
+        //            .padding(.trailing, 5)
+        //            .font(.largeTitle)
+        //
+        //        List(vm.messageList, id: \.self) { message in
+        //            Text(message)
+        //        }
+        //
+        //        Seperator(width: 400)
         
         Text("Sent Messages")
             .padding(.trailing, 5)
