@@ -21,8 +21,14 @@ struct WelcomeView: View {
         NavigationStack {
             VStack {
                 Spacer()
-                Text("Welcome, \(currentUser.firstName) \(currentUser.lastName)!")
-                    .font(.largeTitle)
+                
+                //If loading the user info takes too long, this displays the loading view
+                if currentUser.firstName == "Dummy" {
+                    LoadingView()
+                } else {
+                    Text("Hey, \(currentUser.firstName) \(currentUser.lastName)")
+                        .font(.largeTitle)
+                }
                 
                 Spacer()
                 

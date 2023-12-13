@@ -16,9 +16,14 @@ struct UserProfile: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Hey, \(loggedInUser.firstName) \(loggedInUser.lastName)")
-                    .padding(.trailing, 225)
-                    .font(.largeTitle)
+                //If loading the user info takes too long, this displays the loading view
+                if loggedInUser.firstName == "Dummy" {
+                    LoadingView()
+                } else {
+                    Text("Hey, \(loggedInUser.firstName) \(loggedInUser.lastName)")
+                        .padding(.trailing, 150)
+                        .font(.largeTitle)
+                }
                 
                 Text("Friends")
                     .padding(.trailing, 5)
