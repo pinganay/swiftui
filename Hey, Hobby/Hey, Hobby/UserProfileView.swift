@@ -42,7 +42,8 @@ struct UserProfile: View {
                                     user.id == friend.id
                                 }
                                 
-                                vm.updateFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: friend.id)
+                                vm.isFriendAdded = false
+                                vm.removeFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: friend.id)
                                 
                                 vm.unsubscibeToNotifications()
                                 vm.subscibeToNotifications()

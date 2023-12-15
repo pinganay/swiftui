@@ -12,18 +12,19 @@ import FirebaseFirestoreSwift
 
 final class UserManager {
     static let shared = UserManager()
-    let db = Firestore.firestore()
+    //let db = Firestore.firestore()
+    let userCollection = Firestore.firestore().collection("users")
     
     private init() {}
 
     func readUserData(userId: String) async throws -> DBUser {
-        try await db.collection("users").document(userId).getDocument(as: DBUser.self)
+        try await userCollection.document(userId).getDocument(as: DBUser.self)
     }
     
     func readAllUsers() async throws -> [DBUser] {
         var userList = [DBUser]()
         
-        let querySnapshot = try await db.collection("users").getDocuments()
+        let querySnapshot = try await userCollection.getDocuments()
         
         for document in querySnapshot.documents {
             guard let user = try? document.data(as: DBUser.self) else {
@@ -39,19 +40,25 @@ final class UserManager {
     }
     
     func writeUserData(user: DBUser) async throws {
-        try db.collection("users").document(user.id).setData(from: user)
+        try userCollection.document(user.id).setData(from: user)
     }
     
-    func updateFriendsIdForCurrentUser(friendId: String, currentUserId: String) {
-        db.collection("users").document(currentUserId).updateData([
+    func removeFriendsIdForCurrentUser(friendId: String, currentUserId: String) {
+        userCollection.document(currentUserId).updateData([
             "friendsId": FieldValue.arrayRemove([friendId])
+        ])
+    }
+    
+    func addFriendsIdForCurrentUser(friendId: String, currentUserId: String) {
+        userCollection.document(currentUserId).updateData([
+            "friendsId": FieldValue.arrayUnion([friendId])
         ])
     }
     
     func getUsersBy(fieldName: String, fieldValue: String) async throws -> [DBUser] {
         var userList = [DBUser]()
         
-        let querySnapshot = try await db.collection("users").whereField(fieldName, isEqualTo: fieldValue).getDocuments()
+        let querySnapshot = try await userCollection.whereField(fieldName, isEqualTo: fieldValue).getDocuments()
         
         for document in querySnapshot.documents {
             guard let user = try? document.data(as: DBUser.self) else {

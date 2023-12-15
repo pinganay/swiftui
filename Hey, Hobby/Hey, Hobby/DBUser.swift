@@ -19,6 +19,7 @@ struct DBUser: Codable, Hashable, Equatable {
     var firstName: String
     var lastName: String
     var friendsId = [String]()
+    //var phoneNumber: String
     
     static func ==(lhs: DBUser, rhs: DBUser) -> Bool {
         return lhs.id == rhs.id

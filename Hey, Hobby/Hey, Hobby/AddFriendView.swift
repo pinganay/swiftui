@@ -58,7 +58,8 @@ struct AddFriendView: View {
                         vm.friendsList.append(newFriend)
                         
                         //We update the friend list of the current user in the Firstore DB
-                        vm.updateFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: vm.selectedFriendId)
+                        vm.isFriendAdded = true
+                        vm.addFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: vm.selectedFriendId)
                         
                         //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
                         vm.unsubscibeToNotifications()

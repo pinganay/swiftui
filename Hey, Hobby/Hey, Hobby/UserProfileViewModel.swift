@@ -19,9 +19,14 @@ import SwiftUI
     @Published var friendsList = [DBUser]()
     @Published var loadFriendsListFromDB = true
     @Published var isUserSubscribed = false
+    @Published var isFriendAdded = true
     @Published var selectedFriendId = "" {
         didSet {
-            updateFriendList()
+            if isFriendAdded {
+                addFriendsIdForCurrentUserInDB(currentUserId: selectedFriendId)
+            } else {
+                removeFriendsIdForCurrentUserInDB(currentUserId: selectedFriendId)
+            }
         }
     }
     @Published var hobbyList = ["Soccer", "Drawing", "Cooking", "aaSoccerbbb", "Fencing", "aaSocbbb"]
@@ -231,15 +236,23 @@ import SwiftUI
         self.messageList.append(message)
     }
     
-    func updateFriendsIdForCurrentUserInDB(currentUserId: String) {
-        UserManager.shared.updateFriendsIdForCurrentUser(friendId: selectedFriendId, currentUserId: currentUserId)
+    func removeFriendsIdForCurrentUserInDB(currentUserId: String) {
+        UserManager.shared.removeFriendsIdForCurrentUser(friendId: selectedFriendId, currentUserId: currentUserId)
     }
     
-    func updateFriendsIdForCurrentUserInDB(currentUserId: String, friendId: String) {
-        UserManager.shared.updateFriendsIdForCurrentUser(friendId: friendId, currentUserId: currentUserId)
+    func addFriendsIdForCurrentUserInDB(currentUserId: String) {
+        UserManager.shared.addFriendsIdForCurrentUser(friendId: selectedFriendId, currentUserId: currentUserId)
     }
     
-    func updateFriendList() {
+    func removeFriendsIdForCurrentUserInDB(currentUserId: String, friendId: String) {
+        UserManager.shared.removeFriendsIdForCurrentUser(friendId: friendId, currentUserId: currentUserId)
+    }
+    
+    func addFriendsIdForCurrentUserInDB(currentUserId: String, friendId: String) {
+        UserManager.shared.addFriendsIdForCurrentUser(friendId: friendId, currentUserId: currentUserId)
+    }
+    
+    func removeFriendList() {
         Task {
             let user = try await readUserData(userId: selectedFriendId)
             let isDuplicate = searchFor(user: user, in: friendsList)
@@ -248,7 +261,21 @@ import SwiftUI
             } else {
                 friendsList.append(user)
                 let currentUser = await readCurrentUser()
-                updateFriendsIdForCurrentUserInDB(currentUserId: currentUser.id)
+                removeFriendsIdForCurrentUserInDB(currentUserId: currentUser.id)
+            }
+        }
+    }
+    
+    func addFriendList() {
+        Task {
+            let user = try await readUserData(userId: selectedFriendId)
+            let isDuplicate = searchFor(user: user, in: friendsList)
+            if isDuplicate {
+                print("UserProfileViewModel Error: User already in friends list")
+            } else {
+                friendsList.append(user)
+                let currentUser = await readCurrentUser()
+                addFriendsIdForCurrentUserInDB(currentUserId: currentUser.id)
             }
         }
     }
