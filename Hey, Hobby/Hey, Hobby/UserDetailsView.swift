@@ -10,14 +10,13 @@ import SwiftUI
 final class UserDetailsViewModel: ObservableObject {
     @Published var firstName = ""
     @Published var lastName = ""
+    @Published var phoneNumber = ""
     
     func save() {
         Task {
             do {
                 let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
-                
-                try await UserManager.shared.writeUserData(user: DBUser(id: authenticatedUser.uid, firstName: firstName, lastName: lastName))
-                //try await UserManager.shared.writeUserData(user: DBUser(id: authenticatedUser.uid, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber))
+                try await UserManager.shared.writeUserData(user: DBUser(id: authenticatedUser.uid, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber))
             } catch {
                 print("UserDetailsViewModel: Error \(error.localizedDescription)")
             }
@@ -44,10 +43,10 @@ struct UserDetailsView: View {
                     .padding()
                     .background(.gray.opacity(0.4))
                     .cornerRadius(10)
-//                TextField("Phone Number...", text: $viewModel.phoneNumber)
-//                    .padding()
-//                    .background(.gray.opacity(0.4))
-//                    .cornerRadius(10)
+                TextField("Phone Number...", text: $viewModel.phoneNumber)
+                    .padding()
+                    .background(.gray.opacity(0.4))
+                    .cornerRadius(10)
                 
                 Button("Save") {
                     viewModel.save()

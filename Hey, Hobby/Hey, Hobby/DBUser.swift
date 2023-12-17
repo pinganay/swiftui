@@ -19,13 +19,13 @@ struct DBUser: Codable, Hashable, Equatable {
     var firstName: String
     var lastName: String
     var friendsId = [String]()
-    //var phoneNumber: String
+    var phoneNumber: String
     
     static func ==(lhs: DBUser, rhs: DBUser) -> Bool {
         return lhs.id == rhs.id
     }
     
-    static let sampleUser = DBUser(id: "Dummy", firstName: "Dummy", lastName: "Dummy")
+    static let sampleUser = DBUser(id: "Dummy", firstName: "Dummy", lastName: "Dummy", phoneNumber: "1234567890")
 }
 
 struct Community {

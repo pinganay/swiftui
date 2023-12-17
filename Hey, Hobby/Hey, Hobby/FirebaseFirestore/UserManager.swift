@@ -13,7 +13,7 @@ import FirebaseFirestoreSwift
 final class UserManager {
     static let shared = UserManager()
     //let db = Firestore.firestore()
-    let userCollection = Firestore.firestore().collection("users")
+    let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
 
@@ -55,14 +55,21 @@ final class UserManager {
         ])
     }
     
-    func getUsersBy(fieldName: String, fieldValue: String) async throws -> [DBUser] {
+    func getUsersBy(fNameField: String, fNameValue: String, lNameField: String, lNameValue: String, phoneNumberField: String, phoneNumberValue: String) async throws -> [DBUser] {
         var userList = [DBUser]()
         
-        let querySnapshot = try await userCollection.whereField(fieldName, isEqualTo: fieldValue).getDocuments()
+        let querySnapshot = try await userCollection
+            .whereField(fNameField, isEqualTo: fNameValue)
+            .whereField(lNameField, isEqualTo: lNameValue)
+            .whereField(phoneNumberField, isEqualTo: phoneNumberValue)
+            .getDocuments()
+        
+        print(fNameValue)
+        print(lNameValue)
         
         for document in querySnapshot.documents {
             guard let user = try? document.data(as: DBUser.self) else {
-                print("UserManager getUsersBy Error: Document is not correct")
+                print("UserManager getUsersBy Error:     Document is not correct")
                 return userList
             }
             
