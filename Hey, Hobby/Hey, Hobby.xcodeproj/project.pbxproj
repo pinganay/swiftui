@@ -15,6 +15,7 @@
 		ED858E3D2ABFBD17005997B9 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3C2ABFBD17005997B9 /* SignInView.swift */; };
 		ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */; };
 		ED9135A52B295AAC008BBDFC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9135A42B295AAC008BBDFC /* LoadingView.swift */; };
+		EDB0DD442B3116CC00E14B4C /* HobbyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0DD432B3116CC00E14B4C /* HobbyManager.swift */; };
 		EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */; };
 		EDB863F42AB7BA4A00DBB6E3 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */; };
 		EDB863F62AB7BA4D00DBB6E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 		ED858E3C2ABFBD17005997B9 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		ED9135A42B295AAC008BBDFC /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		EDB0DD432B3116CC00E14B4C /* HobbyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HobbyManager.swift; sourceTree = "<group>"; };
 		EDB863EE2AB7BA4A00DBB6E3 /* Hey, Hobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hey, Hobby.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hey__HobbyApp.swift; sourceTree = "<group>"; };
 		EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				ED8290DC2ABBB3DF00552D6D /* UserManager.swift */,
+				EDB0DD432B3116CC00E14B4C /* HobbyManager.swift */,
 			);
 			path = FirebaseFirestore;
 			sourceTree = "<group>";
@@ -111,10 +114,10 @@
 				EDD8B92C2ACCDB7B00FBC109 /* GoogleService-Info.plist */,
 				EDD8B92B2ACCD64A00FBC109 /* Hey, Hobby.entitlements */,
 				EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */,
-				ED2A00B82ADB25360002DA74 /* AddFriendView.swift */,
 				ED858E392ABFBAA2005997B9 /* FirebaseAuth */,
 				ED8290DB2ABBB3C300552D6D /* FirebaseFirestore */,
 				ED858E3C2ABFBD17005997B9 /* SignInView.swift */,
+				ED2A00B82ADB25360002DA74 /* AddFriendView.swift */,
 				EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */,
 				ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */,
 				EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */,
@@ -244,6 +247,7 @@
 				EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */,
 				ED2A00B92ADB25360002DA74 /* AddFriendView.swift in Sources */,
 				EDCF276D2AD8EA1300EE688F /* WelcomeView.swift in Sources */,
+				EDB0DD442B3116CC00E14B4C /* HobbyManager.swift in Sources */,
 				ED2A00BB2ADBB9AC0002DA74 /* MessagingView.swift in Sources */,
 				ED858E3D2ABFBD17005997B9 /* SignInView.swift in Sources */,
 				EDD8B94A2ACE0B6900FBC109 /* UserProfileViewModel.swift in Sources */,

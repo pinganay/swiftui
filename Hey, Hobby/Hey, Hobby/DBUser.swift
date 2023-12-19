@@ -7,13 +7,6 @@
 
 import Foundation
 
-enum Hobby: String, Codable {
-    case Soccer = "Soccer"
-    case Cricket = "Cricket"
-    case Chess = "Chess"
-    case Painting = "Painting"
-}
-
 struct DBUser: Codable, Hashable, Equatable {
     var id: String
     var firstName: String
@@ -26,10 +19,4 @@ struct DBUser: Codable, Hashable, Equatable {
     }
     
     static let sampleUser = DBUser(id: "Dummy", firstName: "Dummy", lastName: "Dummy", phoneNumber: "1234567890")
-}
-
-struct Community {
-    var id: String
-    let name: String
-    var members: [DBUser]
 }

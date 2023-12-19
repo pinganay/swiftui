@@ -29,7 +29,7 @@ import SwiftUI
             }
         }
     }
-    @Published var hobbyList = ["Soccer", "Drawing", "Cooking", "aaSoccerbbb", "Fencing", "aaSocbbb"]
+    @Published var hobbyList = [""]
     @Published var filteredHobbies: [String] = []
     @Published var disableSendButton = true
     var buttonColor: Color {
@@ -49,7 +49,15 @@ import SwiftUI
         case iCloudAccountUnknown
     }
     
-    func ValidateUserString(_ userString: String) {
+    func loadHobbiesFromDB() async {
+        do {
+            hobbyList = try await HobbyManager.shared.readHobbyList()
+        } catch {
+            print("There was an error loading the data: \(error.localizedDescription)")
+        }
+    }
+    
+    func validateUserString(_ userString: String) {
         //if hobbyList.contains(userString.localizedLowercase) {
         if hobbyList.contains(where: {$0.caseInsensitiveCompare(userString) == .orderedSame}) {
             disableSendButton = false
