@@ -11,8 +11,11 @@ final class UserDetailsViewModel: ObservableObject {
     @Published var firstName = ""
     @Published var lastName = ""
     @Published var phoneNumber = ""
+    @Published var isFirstNameValid = false
+    @Published var isLastNameValid = false
+    @Published var isPhoneNumberValid = false
     
-    func save() {
+    func saveUser() {
         Task {
             do {
                 let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
@@ -35,27 +38,73 @@ struct UserDetailsView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                TextField("First Name...", text: $viewModel.firstName)
-                    .padding()
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
-                TextField("Last Name...", text: $viewModel.lastName)
-                    .padding()
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
-                TextField("Phone Number...", text: $viewModel.phoneNumber)
-                    .padding()
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
+                Section {
+                    Text(viewModel.isFirstNameValid ? "" : "You first name cannot be empty or contain any space")
+                        .foregroundColor(.red)
+                        .font(.caption)
+                    
+                    TextField("First Name...", text: $viewModel.firstName)
+                        .padding()
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .onChange(of: viewModel.firstName) { _ in
+                            if viewModel.firstName.containsWhitespace || viewModel.firstName.isEmpty {
+                                viewModel.isFirstNameValid = false
+                            } else {
+                                viewModel.isFirstNameValid = true
+                            }
+                        }
+                }
+                
+                Section {
+                    Text(viewModel.isLastNameValid ? "" : "You last name cannot be empty or contain any space")
+                        .foregroundColor(.red)
+                        .font(.caption)
+                    
+                    TextField("Last Name...", text: $viewModel.lastName)
+                        .padding()
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .onChange(of: viewModel.lastName) { _ in
+                            if viewModel.lastName.containsWhitespace || viewModel.lastName.isEmpty {
+                                viewModel.isLastNameValid = false
+                            } else {
+                                viewModel.isLastNameValid = true
+                            }
+                        }
+                }
+                
+                Section {
+                    Text(viewModel.isPhoneNumberValid ? "" : "Your phone number should have 8-13 digits and cannot be empty or contain any space")
+                        .foregroundColor(.red)
+                        .font(.caption)
+                    
+                    TextField("Phone Number...", text: $viewModel.phoneNumber)
+                        .padding()
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .onChange(of: viewModel.phoneNumber) { _ in
+                            if !viewModel.phoneNumber.isPhoneNumberLengthValid || !viewModel.phoneNumber.isInt || viewModel.phoneNumber.containsWhitespace || viewModel.phoneNumber.isEmpty {
+                                viewModel.isPhoneNumberValid = false
+                            } else {
+                                viewModel.isPhoneNumberValid = true
+                                print("Phone number should have 8-13 digits")
+                            }
+                        }
+                }
                 
                 Button("Save") {
-                    viewModel.save()
+                    viewModel.isFirstNameValid = true
+                    viewModel.isLastNameValid = true
+                    viewModel.isPhoneNumberValid = true
+                    viewModel.saveUser()
                     showWelcomeView = true
                     showUserDetails = false
                     showSignInView = false
                     showUserProfile = false
                     dismiss()
                 }
+                .disabled(!viewModel.isFirstNameValid || !viewModel.isLastNameValid || !viewModel.isPhoneNumberValid)
             }
             .padding()
             

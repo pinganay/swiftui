@@ -16,6 +16,7 @@
 		ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */; };
 		ED9135A52B295AAC008BBDFC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9135A42B295AAC008BBDFC /* LoadingView.swift */; };
 		EDB0DD442B3116CC00E14B4C /* HobbyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0DD432B3116CC00E14B4C /* HobbyManager.swift */; };
+		EDB0DD4A2B32A02700E14B4C /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0DD492B32A02700E14B4C /* StringExtension.swift */; };
 		EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */; };
 		EDB863F42AB7BA4A00DBB6E3 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */; };
 		EDB863F62AB7BA4D00DBB6E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDB863F52AB7BA4D00DBB6E3 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		ED9135A42B295AAC008BBDFC /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		EDB0DD432B3116CC00E14B4C /* HobbyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HobbyManager.swift; sourceTree = "<group>"; };
+		EDB0DD492B32A02700E14B4C /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		EDB863EE2AB7BA4A00DBB6E3 /* Hey, Hobby.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hey, Hobby.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDB863F12AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hey__HobbyApp.swift; sourceTree = "<group>"; };
 		EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 				ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */,
 				EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */,
 				EDB863F32AB7BA4A00DBB6E3 /* UserProfileView.swift */,
+				EDB0DD492B32A02700E14B4C /* StringExtension.swift */,
 				ED9135A42B295AAC008BBDFC /* LoadingView.swift */,
 				EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */,
 				ED2A00BA2ADBB9AC0002DA74 /* MessagingView.swift */,
@@ -242,6 +245,7 @@
 				ED8290DD2ABBB3DF00552D6D /* UserManager.swift in Sources */,
 				ED858E3B2ABFBACD005997B9 /* AuthManager.swift in Sources */,
 				EDB864042AB94FE500DBB6E3 /* SeperatorView.swift in Sources */,
+				EDB0DD4A2B32A02700E14B4C /* StringExtension.swift in Sources */,
 				EDB863F42AB7BA4A00DBB6E3 /* UserProfileView.swift in Sources */,
 				ED9135A52B295AAC008BBDFC /* LoadingView.swift in Sources */,
 				EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */,
