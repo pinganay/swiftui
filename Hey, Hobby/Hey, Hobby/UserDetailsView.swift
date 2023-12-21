@@ -84,13 +84,14 @@ struct UserDetailsView: View {
                         .background(.gray.opacity(0.4))
                         .cornerRadius(10)
                         .onChange(of: viewModel.phoneNumber) { _ in
-                            if !viewModel.phoneNumber.isPhoneNumberLengthValid || !viewModel.phoneNumber.isInt || viewModel.phoneNumber.containsWhitespace || viewModel.phoneNumber.isEmpty {
+                            if !viewModel.phoneNumber.isPhoneNumberLengthValid || !viewModel.phoneNumber.isInt || viewModel.phoneNumber.isEmpty {
                                 viewModel.isPhoneNumberValid = false
                             } else {
                                 viewModel.isPhoneNumberValid = true
                                 print("Phone number should have 8-13 digits")
                             }
                         }
+                        .keyboardType(.numberPad)
                 }
                 
                 Button("Save") {

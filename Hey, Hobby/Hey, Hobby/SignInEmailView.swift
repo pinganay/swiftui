@@ -47,8 +47,10 @@ struct SignInEmailView: View {
                     .padding()
                     .background(.gray.opacity(0.4))
                     .cornerRadius(10)
+                    .keyboardType(.emailAddress)
                 
                 Text("Password should have 6 digits or more")
+                    .font(.caption)
                 
                 SecureField("Password...", text: $viewModel.password)
                     .padding()
