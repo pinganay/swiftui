@@ -33,6 +33,7 @@ struct AddFriendView: View {
                     .padding()
                     .background(.gray.opacity(0.4))
                     .cornerRadius(10)
+                    .keyboardType(.numberPad)
             }
             .padding()
             

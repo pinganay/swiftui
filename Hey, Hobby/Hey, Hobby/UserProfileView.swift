@@ -11,19 +11,44 @@ import CloudKit
 struct UserProfile: View {
     @EnvironmentObject var vm: UserProfileViewModel
     @Binding var showSignInView: Bool
-    @State var loggedInUser: DBUser = DBUser.sampleUser
+//    @State var loggedInUser: DBUser = DBUser.sampleUser
+    @State var showEditPhoneNumberScreen = false
     
     var body: some View {
         NavigationStack {
             VStack {
+                Text("Settings")
+                    .padding(.trailing, 5)
+                    .padding()
+                    .font(.largeTitle)
+                
                 //If loading the user info takes too long, this displays the loading view
-                if loggedInUser.firstName == "Dummy" {
+                if vm.loggedInUser.firstName == "Dummy" {
                     LoadingView()
                 } else {
-                    Text("Hey, \(loggedInUser.firstName) \(loggedInUser.lastName)")
-                        .padding(.trailing, 150)
-                        .font(.largeTitle)
+                    VStack(alignment: .leading) {
+                        Text("First Name: \(vm.loggedInUser.firstName)")
+                        Text("Last Name: \(vm.loggedInUser.lastName)")
+                        HStack {
+                            Text("Phone Number: \(vm.loggedInUser.phoneNumber)")
+                            
+                            Button {
+                                showEditPhoneNumberScreen = true
+                            } label: {
+                                Text("Edit")
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .frame(height: 25)
+                                    .frame(width: 50)
+                                    .background(.blue)
+                                    .cornerRadius(10)
+                            }
+                        }
+                    }
+                    .padding(.trailing, 125)
                 }
+                
+                Seperator(width: 250)
                 
                 Text("Friends")
                     .padding(.trailing, 5)
@@ -43,7 +68,7 @@ struct UserProfile: View {
                                 }
                                 
                                 vm.isFriendAdded = false
-                                vm.removeFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: friend.id)
+                                vm.removeFriendsIdForCurrentUserInDB(currentUserId: vm.loggedInUser.id, friendId: friend.id)
                                 
                                 vm.unsubscibeToNotifications()
                                 vm.subscibeToNotifications()
@@ -53,6 +78,7 @@ struct UserProfile: View {
                         }
                     }
                 }
+                
                 Seperator(width: 250)
                 
                 
@@ -91,10 +117,13 @@ struct UserProfile: View {
             }
             .navigationTitle("Profile")
             .task {
-                loggedInUser = await vm.getLoggedInUser()
+                vm.loggedInUser = await vm.getLoggedInUser()
             }
             .fullScreenCover(isPresented: $showSignInView) {
                 SignInView()
+            }
+            .sheet(isPresented: $showEditPhoneNumberScreen) {
+                EditPhoneNumberView()
             }
         }
     }

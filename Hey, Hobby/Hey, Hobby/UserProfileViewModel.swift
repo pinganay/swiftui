@@ -32,6 +32,7 @@ import SwiftUI
     @Published var hobbyList = [""]
     @Published var filteredHobbies: [String] = []
     @Published var disableSendButton = true
+    @Published var loggedInUser: DBUser = DBUser.sampleUser
     var buttonColor: Color {
         return disableSendButton ? .gray : .accentColor
     }
