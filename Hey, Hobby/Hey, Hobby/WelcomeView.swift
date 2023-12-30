@@ -36,10 +36,16 @@ struct WelcomeView: View {
                     NavigationLink {
                         UserProfile(showSignInView: $showSignInView)
                     } label: {
-                        Image(systemName: "person.circle")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .padding([.leading, .top])
+                        VStack(alignment: .center) {
+                            Image(systemName: "person.circle")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .padding([.top])
+                            
+                            Text("Profile")
+                                .font(.system(size: 10))
+                        }
+                        .padding(.leading)
                     }
                     
                     Spacer()
@@ -47,20 +53,35 @@ struct WelcomeView: View {
                     NavigationLink {
                         MessagingView()
                     } label: {
-                        Image(systemName: "plus.message.fill")
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .padding([.leading, .top])
+                        VStack(alignment: .center) {
+                            Image(systemName: "plus.message.fill")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .padding([.top])
+                            
+                            Text("Set Status")
+                                .font(.system(size: 10))
+                        }
+                        .padding(.leading)
                     }
 
                     
                     Spacer()
                     
-                    NavigationLink("Add Friend") {
+                    NavigationLink {
                         AddFriendView()
+                    } label: {
+                        VStack {
+                            Image(systemName: "person.3.fill")
+                                .resizable()
+                                .frame(width: 66, height: 40)
+                                .padding([.top])
+                            
+                            Text("Add Friend")
+                                .font(.system(size: 10))
+                        }
                     }
-                    .font(.headline)
-                    .padding([.trailing, .top])
+                    .padding(.trailing)
                 }
                 .background(.gray.opacity(0.7))
             }
