@@ -41,7 +41,10 @@ struct AddFriendView: View {
                 Task {
                     do {
                         searchedUserList = try await UserManager.shared.getUsersBy(fNameField: "firstName", fNameValue: searchedUserFirstName, lNameField: "lastName", lNameValue: searchedUserLastName, phoneNumberField: "phoneNumber", phoneNumberValue: searchedUserPhoneNumber)
+                        
+                        
                     }
+                    
                 }
             } label: {
                 Text("Search")
@@ -58,9 +61,16 @@ struct AddFriendView: View {
                 HStack {
                     Text("\(user.firstName) \(user.lastName)")
                     Spacer()
-                    Button("Add") {
-                        newFriend = user
-                        isFriendAdded = true
+                    
+                    if vm.isUserAlreadyFriend(searchedUser: user) {
+                        Text("User is already a friend")
+                            .font(.system(size: 12))
+                            .foregroundColor(.red)
+                    } else {
+                        Button("Add") {
+                            newFriend = user
+                            isFriendAdded = true
+                        }
                     }
                 }
             }

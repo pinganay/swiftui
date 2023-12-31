@@ -50,6 +50,10 @@ import SwiftUI
         case iCloudAccountUnknown
     }
     
+    func isUserAlreadyFriend(searchedUser: DBUser) -> Bool {
+        friendsList.contains(searchedUser)
+    }
+    
     func loadHobbiesFromDB() async {
         do {
             hobbyList = try await HobbyManager.shared.readHobbyList()

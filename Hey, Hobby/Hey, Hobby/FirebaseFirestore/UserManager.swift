@@ -70,7 +70,7 @@ final class UserManager {
         
         for document in querySnapshot.documents {
             guard let user = try? document.data(as: DBUser.self) else {
-                print("UserManager getUsersBy Error:     Document is not correct")
+                print("UserManager getUsersBy Error: Document is not correct")
                 return userList
             }
             

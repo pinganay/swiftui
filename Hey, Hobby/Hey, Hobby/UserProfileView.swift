@@ -11,8 +11,8 @@ import CloudKit
 struct UserProfile: View {
     @EnvironmentObject var vm: UserProfileViewModel
     @Binding var showSignInView: Bool
-//    @State var loggedInUser: DBUser = DBUser.sampleUser
     @State var showEditPhoneNumberScreen = false
+    @State private var showUnfriendWarning = false
     
     var body: some View {
         NavigationStack {
@@ -63,16 +63,17 @@ struct UserProfile: View {
                             Spacer()
                             
                             Button("Unfriend") {
-                                vm.friendsList.removeAll { user in
-                                    user.id == friend.id
-                                }
-                                
-                                vm.isFriendAdded = false
-                                vm.removeFriendsIdForCurrentUserInDB(currentUserId: vm.loggedInUser.id, friendId: friend.id)
-                                
-                                vm.unsubscibeToNotifications()
-                                vm.subscibeToNotifications()
-                                vm.isUserSubscribed = true
+                                showUnfriendWarning = true
+//                                vm.friendsList.removeAll { user in
+//                                    user.id == friend.id
+//                                }
+//
+//                                vm.isFriendAdded = false
+//                                vm.removeFriendsIdForCurrentUserInDB(currentUserId: vm.loggedInUser.id, friendId: friend.id)
+//
+//                                vm.unsubscibeToNotifications()
+//                                vm.subscibeToNotifications()
+//                                vm.isUserSubscribed = true
                             }
                             .foregroundColor(.blue)
                         }
@@ -124,6 +125,26 @@ struct UserProfile: View {
             }
             .sheet(isPresented: $showEditPhoneNumberScreen) {
                 EditPhoneNumberView()
+            }
+            .alert("Unfriend", isPresented: $showUnfriendWarning) {
+                Button("Unfriend", role: .destructive) {
+                    for friend in vm.friendsList {
+                        vm.friendsList.removeAll { user in
+                            user.id == friend.id
+                        }
+                        
+                        vm.isFriendAdded = false
+                        vm.removeFriendsIdForCurrentUserInDB(currentUserId: vm.loggedInUser.id, friendId: friend.id)
+                        
+                        vm.unsubscibeToNotifications()
+                        vm.subscibeToNotifications()
+                        vm.isUserSubscribed = true
+                    }
+                }
+                
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Are you sure you want to unfriend this user?")
             }
         }
     }
