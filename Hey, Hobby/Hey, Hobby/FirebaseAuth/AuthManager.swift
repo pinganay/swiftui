@@ -48,12 +48,18 @@ final class AuthManager {
         try Auth.auth().signOut()
     }
     
-    func getAuthenticatedUser() throws -> AuthDataResultModel{
+    func getAuthenticatedUser() throws -> AuthDataResultModel {
         guard let user = Auth.auth().currentUser else {
             //Handle Error Properly
             throw URLError(.badServerResponse)
         }
         
         return AuthDataResultModel(user: user)
+    }
+    
+    func sendPasswordResetEmail(userEmail: String) {
+        Auth.auth().sendPasswordReset(withEmail: userEmail) { error in
+            print("sendPasswordResetEmail() error: \(String(describing: error?.localizedDescription))")
+        }
     }
 }

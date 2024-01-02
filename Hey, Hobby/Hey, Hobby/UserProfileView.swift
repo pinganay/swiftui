@@ -13,6 +13,7 @@ struct UserProfile: View {
     @Binding var showSignInView: Bool
     @State var showEditPhoneNumberScreen = false
     @State private var showUnfriendWarning = false
+    @State private var showPasswordResetText = false
     
     var body: some View {
         NavigationStack {
@@ -44,6 +45,33 @@ struct UserProfile: View {
                                     .cornerRadius(10)
                             }
                         }
+                        
+                        HStack {
+                            Text("Reset Password")
+                            
+                            Button {
+                                do {
+                                    let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
+                                    guard let userEmail = authenticatedUser.email else {
+                                        print("There was an error authenticating the user")
+                                        return
+                                    }
+                                    
+                                    showPasswordResetText = true
+                                    AuthManager.shared.sendPasswordResetEmail(userEmail: userEmail)
+                                } catch {
+                                    print("\(error.localizedDescription)")
+                                }
+                            } label: {
+                                Text("Reset")
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .frame(height: 25)
+                                    .frame(width: 50)
+                                    .background(.blue)
+                                    .cornerRadius(10)
+                            }
+                        }
                     }
                     .padding(.trailing, 125)
                 }
@@ -64,16 +92,6 @@ struct UserProfile: View {
                             
                             Button("Unfriend") {
                                 showUnfriendWarning = true
-//                                vm.friendsList.removeAll { user in
-//                                    user.id == friend.id
-//                                }
-//
-//                                vm.isFriendAdded = false
-//                                vm.removeFriendsIdForCurrentUserInDB(currentUserId: vm.loggedInUser.id, friendId: friend.id)
-//
-//                                vm.unsubscibeToNotifications()
-//                                vm.subscibeToNotifications()
-//                                vm.isUserSubscribed = true
                             }
                             .foregroundColor(.blue)
                         }
@@ -145,6 +163,11 @@ struct UserProfile: View {
                 Button("Cancel", role: .cancel) {}
             } message: {
                 Text("Are you sure you want to unfriend this user?")
+            }
+            .alert("Reset Password", isPresented: $showPasswordResetText) {
+                Button("Ok") {}
+            } message: {
+                Text("A link has been sent to your email. Please click on the link to reset your password.")
             }
         }
     }

@@ -12,6 +12,7 @@ import SwiftUI
     @Published var password = ""
     var authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
     @Published var emailVerificationText = ""
+    @Published var passwordResetText = ""
     
     func signUp() async throws {
         guard !email.isEmpty, !password.isEmpty else {
@@ -59,8 +60,19 @@ struct SignInEmailView: View {
                     .background(.gray.opacity(0.4))
                     .cornerRadius(10)
                 
+                Button("Forgot your password? Type your email above and click here") {
+                    AuthManager.shared.sendPasswordResetEmail(userEmail: viewModel.email)
+                    viewModel.passwordResetText = "A link has been sent to your email. Please click on the link to reset your password and login again."
+                }
+                .font(.caption)
+                
+                Text(viewModel.passwordResetText)
+                    .font(.caption)
+                
                 Button {
                     Task {
+                        viewModel.passwordResetText = ""
+                        
                         do {
                             try? await viewModel.signIn()
                             
@@ -79,7 +91,6 @@ struct SignInEmailView: View {
                             }
                             
                             if authenticatedUser.isEmailVerified {
-//                                try await viewModel.signIn()
                                 showUserDetails = false
                                 showSignInView = false
                                 showUserProfile = false
@@ -93,17 +104,6 @@ struct SignInEmailView: View {
                         } catch {
                             print("SignInEmailView: Sign up failed, \(error.localizedDescription)")
                         }
-                        
-//                        do {
-//                            try await viewModel.signIn()
-//                            showWelcomeView = true
-//                            showSignInView = false
-//                            showUserDetails = false
-//                            showUserProfile = false
-//                            return
-//                        } catch {
-//                            print("SignInEmailView: Sign in failed, \(error.localizedDescription)")
-//                        }
                     }
                 } label: {
                     Text("Sign In")
