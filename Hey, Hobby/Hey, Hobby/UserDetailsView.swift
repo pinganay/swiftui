@@ -99,9 +99,9 @@ struct UserDetailsView: View {
                     viewModel.isLastNameValid = true
                     viewModel.isPhoneNumberValid = true
                     viewModel.saveUser()
-                    showWelcomeView = true
+                    showWelcomeView = false
                     showUserDetails = false
-                    showSignInView = false
+                    showSignInView = true
                     showUserProfile = false
                     dismiss()
                 }

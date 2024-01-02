@@ -10,6 +10,8 @@ import SwiftUI
 @MainActor final class SignInEmailViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
+    var authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
+    @Published var emailVerificationText = ""
     
     func signUp() async throws {
         guard !email.isEmpty, !password.isEmpty else {
@@ -60,26 +62,48 @@ struct SignInEmailView: View {
                 Button {
                     Task {
                         do {
-                            try await viewModel.signUp()
-                            showUserDetails = true
-                            showSignInView = false
-                            showUserProfile = false
-                            showWelcomeView = false
+                            try? await viewModel.signIn()
+                            
+                            viewModel.authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
+                            
+                            guard let authenticatedUser = viewModel.authenticatedUser else {
+                                print("Could not authenticate user")
+                                try await viewModel.signUp()
+                                viewModel.authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
+                                showUserDetails = true
+                                showSignInView = false
+                                showUserProfile = false
+                                showWelcomeView = false
+                                viewModel.emailVerificationText = "A verfication link has been sent to your email. Please click on the link to verify and login again."
+                                return
+                            }
+                            
+                            if authenticatedUser.isEmailVerified {
+//                                try await viewModel.signIn()
+                                showUserDetails = false
+                                showSignInView = false
+                                showUserProfile = false
+                                showWelcomeView = true
+                                viewModel.emailVerificationText = ""
+                            } else {
+                                viewModel.emailVerificationText = "A verfication link has been sent to your email. Please click on the link to verify and login again."
+                            }
+                            
                             return
                         } catch {
                             print("SignInEmailView: Sign up failed, \(error.localizedDescription)")
                         }
                         
-                        do {
-                            try await viewModel.signIn()
-                            showWelcomeView = true
-                            showSignInView = false
-                            showUserDetails = false
-                            showUserProfile = false
-                            return
-                        } catch {
-                            print("SignInEmailView: Sign in failed, \(error.localizedDescription)")
-                        }
+//                        do {
+//                            try await viewModel.signIn()
+//                            showWelcomeView = true
+//                            showSignInView = false
+//                            showUserDetails = false
+//                            showUserProfile = false
+//                            return
+//                        } catch {
+//                            print("SignInEmailView: Sign in failed, \(error.localizedDescription)")
+//                        }
                     }
                 } label: {
                     Text("Sign In")
@@ -91,6 +115,7 @@ struct SignInEmailView: View {
                         .cornerRadius(10)
                 }
                 
+                Text(viewModel.emailVerificationText)
                 
                 Spacer()
             }

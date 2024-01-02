@@ -11,10 +11,12 @@ import FirebaseAuth
 struct AuthDataResultModel {
     let uid: String
     let email: String?
+    let isEmailVerified: Bool
     
     init(user: User) {
         self.uid = user.uid
         self.email = user.email
+        self.isEmailVerified = user.isEmailVerified
     }
     
 }
@@ -26,6 +28,13 @@ final class AuthManager {
     @discardableResult
     func createUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
+        do {
+            try await authDataResult.user.sendEmailVerification()
+        } catch {
+            print("createUser() error: \(error.localizedDescription)")
+        }
+        
+        print(authDataResult.user.isEmailVerified.description)
         return AuthDataResultModel(user: authDataResult.user)
     }
     
