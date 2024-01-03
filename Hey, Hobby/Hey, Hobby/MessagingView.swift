@@ -10,6 +10,7 @@ import Combine
 
 struct MessagingView: View {
     @EnvironmentObject var vm: UserProfileViewModel
+    @EnvironmentObject var delegate: AppDelegate
     
     var body: some View {
         VStack {
@@ -75,6 +76,7 @@ struct MessagingView: View {
                 .padding(.trailing, 5)
                 .font(.largeTitle)
             
+            Text(delegate.body ?? "No body")
             List(vm.messageList, id: \.self) { message in
                 Text(message)
             }

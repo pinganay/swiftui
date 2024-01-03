@@ -11,6 +11,8 @@ import Firebase
 @main
 struct Hey__HobbyApp: App {
     
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     @StateObject var vm = UserProfileViewModel()
     
     init() {
