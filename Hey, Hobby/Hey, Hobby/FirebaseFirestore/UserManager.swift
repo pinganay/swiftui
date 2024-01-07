@@ -17,6 +17,7 @@ final class UserManager {
     //let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
+    
 
     func readUserData(userId: String) async throws -> DBUser {
         try await userCollection.document(userId).getDocument(as: DBUser.self)

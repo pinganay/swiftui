@@ -7,14 +7,12 @@
 
 import Foundation
 import UIKit
+import CloudKit
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, ObservableObject {
     
-    @Published var title: String?
-    @Published var body: String?
-    @Published var date: String?
-    @Published var time: String?
-    @Published var debugString: String?
+    @Published var date = "Date not found"
+    @Published var time = "Time not found"
     @Published var recievedMessages = [String]()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -29,9 +27,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         return true
     }
     
-    /*
-     This function is called when notification is received and user taps on it
-     */
+     //This function is called when notification is received and user taps on it
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -43,7 +39,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         if(application.applicationState == .active){
             //Prints the message when user tapped the notification bar when the app is in foreground
             print("user tapped the notification bar when the app is in foreground")
-            debugString = "userNotificationCenter() didReceive ; .active"
             print(userInfo)
             //Get the title of userInfo
             
@@ -53,7 +48,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         //This will run when the app is killed
         if(application.applicationState == .background){
             print("Received notification when the app is in background")
-            debugString = "userNotificationCenter() didReceive ; .background"
             print(userInfo)
             //Get the title of userInfo
             
@@ -62,23 +56,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         
         if (application.applicationState == .inactive) {
             print("user tapped the notification bar when the app is in inactive state")
-            debugString = "userNotificationCenter() didReceive ; .inactive"
             print(userInfo)
-//            guard let aps = userInfo["aps"] as? [String: AnyObject] else {
-//                completionHandler()
-//                return
-//            }
-//
-//            date = response.notification.date.formatted(date: .numeric, time: .omitted)
-//            time = response.notification.date.formatted(date: .omitted, time: .shortened)
-//            print("\(response.notification.date.formatted(date: .omitted, time: .shortened))")
-//            print("\(response.notification.date.formatted(date: .numeric, time: .omitted))")
-//
-//            let alert = aps["alert"] as? [String: String]
-//            title = alert?["title"]
-//            body = alert?["body"]
-//            print(title ?? "nil")
-//            print(body ?? "nil")
             
             proccesUserInfoDidRecieve(userInfo: userInfo, response: response)
         }
@@ -98,54 +76,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         let userInfo = willPresent.request.content.userInfo
 
         let application = UIApplication.shared
-
-//        if (application.applicationState == .active) {
-//            //Prints the message when user tapped the notification bar when the app is in foreground
-//            print("user tapped the notification bar when the app is in foreground")
-//            debugString = "userNotificationCenter() willPresent ; .active"
-//            print(userInfo)
-//
-////            guard let aps = userInfo["aps"] as? [String: AnyObject] else {
-////                return
-////            }
-////            let alert = aps["alert"] as? [String: String]
-////            title = alert?["title"]
-////            body = alert?["body"]
-////            print(title ?? "nil")
-////            print(body ?? "nil")
-//
-//        }
-//
-//        if (application.applicationState == .inactive) {
-//            print("user tapped the notification bar when the app is in inactive state")
-//            debugString = "userNotificationCenter() willPresent ; .inactive"
-//
-////            guard let aps = userInfo["aps"] as? [String: AnyObject] else {
-////                return
-////            }
-////            let alert = aps["alert"] as? [String: String]
-////            title = alert?["title"]
-////            body = alert?["body"]
-////            print(title ?? "nil")
-////            print(body ?? "nil")
-//
-//        }
-//
-//        if (application.applicationState == .background) {
-//            print("notification received when the app is in background")
-//            debugString = "userNotificationCenter() willPresent ; .background"
-//            print(userInfo)
-//
-////            guard let aps = userInfo["aps"] as? [String: AnyObject] else {
-////                return
-////            }
-////            let alert = aps["alert"] as? [String: String]
-////            title = alert?["title"]
-////            body = alert?["body"]
-////            print(title ?? "nil")
-////            print(body ?? "nil")
-//
-//        }
 
         withCompletionHandler([.alert, .sound, .badge])
 
@@ -175,21 +105,33 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 //    }
     
     func proccesUserInfoDidRecieve(userInfo: [AnyHashable : Any], response: UNNotificationResponse) {
+        print(userInfo)
         guard let aps = userInfo["aps"] as? [String: AnyObject] else {
             return
         }
         
+        var userName = ""
+        var message = ""
+                if let ck = userInfo["ck"] as? [String: Any] {
+                    if let qry = ck["qry"] as? [String: Any] {
+                        if let af = qry["af"] as? [String: Any] {
+                            if let key = af["UserName"] as? String {
+                                userName = key
+                                print("UserName: \(userName)")
+                            }
+                            
+                            if let key = af["Message"] as? String {
+                                message = key
+                                print("Message: \(message)")
+                            }
+                        }
+                    }
+                }
+        
         date = response.notification.date.formatted(date: .numeric, time: .omitted)
         time = response.notification.date.formatted(date: .omitted, time: .shortened)
         
-        let alert = aps["alert"] as? [String: String]
-        title = alert?["title"]
-        body = alert?["body"]
-        print(title ?? "nil")
-        print(body ?? "nil")
-        
-        let fullMessage = "\(date ?? "") : \(time ?? "") : \(body ?? "")"
-        recievedMessages.append(fullMessage)
+        recievedMessages.append("\(date):\(time) - \(userName) -> \(message)")
         
         //This is explicitly used since we can't use an environment object in this class
         guard let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser() else { return }

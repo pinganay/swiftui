@@ -89,6 +89,13 @@ struct MessagingView: View {
         }
         .task {
             await vm.loadHobbiesFromDB()
+            do {
+                let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
+                let currentUser = try await UserManager.shared.readUserData(userId: authenticatedUser.uid)
+                delegate.recievedMessages = currentUser.recievedMessages
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }
