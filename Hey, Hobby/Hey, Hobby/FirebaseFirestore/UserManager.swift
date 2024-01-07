@@ -56,6 +56,15 @@ final class UserManager {
         ])
     }
     
+    
+    //Updates recieved messages property for user in db
+    //Called when user recieves and taps status notification from friend
+    func updateRecievedMessages(forCurrentUserId currentUserId: String, recievedMessages: [String]) {
+        userCollection.document(currentUserId).updateData([
+            "recievedMessages": FieldValue.arrayUnion(recievedMessages)
+        ])
+    }
+    
     func getUsersBy(fNameField: String, fNameValue: String, lNameField: String, lNameValue: String, phoneNumberField: String, phoneNumberValue: String) async throws -> [DBUser] {
         var userList = [DBUser]()
         

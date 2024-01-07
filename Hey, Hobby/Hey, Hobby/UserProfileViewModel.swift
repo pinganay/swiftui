@@ -89,30 +89,31 @@ import SwiftUI
         }
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                  didReceive response: UNNotificationResponse,
-                                  withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        // Print message ID.
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//          print("Message ID: \(messageID)")
-//        }
-        
-        let application = UIApplication.shared
-         
-         if(application.applicationState == .active){
-           //Prints the message when user tapped the notification bar when the app is in foreground
-           print(userInfo)
-           //Get the title of userInfo
-         }
-         
-         if(application.applicationState == .inactive)
-         {
-           print("user tapped the notification bar when the app is in background")
-         }
-
-        completionHandler()
-      }
+    
+//    func userNotificationCenter(_ center: UNUserNotificationCenter,
+//                                  didReceive response: UNNotificationResponse,
+//                                  withCompletionHandler completionHandler: @escaping () -> Void) {
+//        let userInfo = response.notification.request.content.userInfo
+//        // Print message ID.
+////        if let messageID = userInfo[gcmMessageIDKey] {
+////          print("Message ID: \(messageID)")
+////        }
+//
+//        let application = UIApplication.shared
+//
+//         if(application.applicationState == .active){
+//           //Prints the message when user tapped the notification bar when the app is in foreground
+//           print(userInfo)
+//           //Get the title of userInfo
+//         }
+//
+//         if(application.applicationState == .inactive)
+//         {
+//           print("user tapped the notification bar when the app is in background")
+//         }
+//
+//        completionHandler()
+//      }
     
     func subscibeToNotifications() {
         for friend in friendsList {
