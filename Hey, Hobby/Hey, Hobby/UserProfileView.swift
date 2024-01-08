@@ -11,6 +11,9 @@ import CloudKit
 struct UserProfile: View {
     @EnvironmentObject var vm: UserProfileViewModel
     @Binding var showSignInView: Bool
+    @Binding var showUserProfile: Bool
+    @Binding var showUserDetails: Bool
+    @Binding var showWelcomeView: Bool
     @State var showEditPhoneNumberScreen = false
     @State private var showUnfriendWarning = false
     @State private var showPasswordResetText = false
@@ -18,7 +21,7 @@ struct UserProfile: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("Settings")
+                Text("Manage User Settings")
                     .padding(.trailing, 5)
                     .padding()
                     .font(.largeTitle)
@@ -72,6 +75,8 @@ struct UserProfile: View {
                                     .cornerRadius(10)
                             }
                         }
+                        
+                        DeleteUserView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
                     }
                     .padding(.trailing, 125)
                 }
@@ -173,8 +178,46 @@ struct UserProfile: View {
     }
 }
 
+struct DeleteUserView: View {
+    @Binding var showSignInView: Bool
+    @Binding var showUserProfile: Bool
+    @Binding var showUserDetails: Bool
+    @Binding var showWelcomeView: Bool
+    @State private var showDeleteConfirmation = false
+    
+    var body: some View {
+        HStack {
+            Text("Delete user")
+            Button("Delete", role: .destructive) {
+                showDeleteConfirmation = true
+            }
+        }
+        .alert("Delete User", isPresented: $showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) {
+                do {
+                    let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
+                    AuthManager.shared.deleteCurrentUser()
+                    UserManager.shared.deleteUserDocument(documentId: authenticatedUser.uid)
+                    showSignInView = true
+                    showUserDetails = false
+                    showUserProfile = false
+                    showWelcomeView = false
+                    
+                } catch {
+                    print("DeleteUserView() error: \(error.localizedDescription)")
+                }
+                
+            }
+        } message: {
+            Text("Once you delete, you will have to sign up again to use this app. Are you sure you want to delete?")
+        }
+
+    }
+}
+
 struct UserProfile_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfile(showSignInView: .constant(true))
+        UserProfile(showSignInView: .constant(true), showUserProfile: .constant(false), showUserDetails: .constant(false), showWelcomeView: .constant(false))
     }
 }

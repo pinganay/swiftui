@@ -25,6 +25,23 @@ final class AuthManager {
     static let shared = AuthManager()
     private init() {}
     
+    // This fuction deletes user from authentication db
+    func deleteCurrentUser() {
+        guard let currentUser = Auth.auth().currentUser else {
+            print("Couldn't get current user")
+            return
+        }
+        
+        currentUser.delete { error in
+            if let error = error {
+                print("deleteCurrentUser(): There was an error while deleting the user: \(error.localizedDescription)")
+            }
+            return
+        }
+        
+        print("deleteCurrentUser(): Succesfully deleted the current user")
+    }
+    
     @discardableResult
     func createUser(email: String, password: String) async throws -> AuthDataResultModel {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)

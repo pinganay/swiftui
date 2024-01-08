@@ -17,8 +17,17 @@ final class UserManager {
     //let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
-    
 
+    func deleteUserDocument(documentId: String) {
+        userCollection.document(documentId).delete { error in
+            if let error = error {
+                print("deleteUserDocument(): There was an error while deleting the document: \(error.localizedDescription)")
+            }
+        }
+        
+        print("deleteUserDocument(): Succesfully deleted the document")
+    }
+    
     func readUserData(userId: String) async throws -> DBUser {
         try await userCollection.document(userId).getDocument(as: DBUser.self)
     }

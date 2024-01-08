@@ -14,60 +14,79 @@ struct MessagingView: View {
     
     var body: some View {
         VStack {
-            
             Section {
-                Text("Set your Status")
-                    .padding(.trailing, 5)
-                    .font(.largeTitle)
-                
-                TextField("Enter Message", text: $vm.userMessage)
-                    .font(.headline)
-                    .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
-                    .padding()
-                    .onChange(of: vm.userMessage) { message in
-                        vm.validateUserString(message)
-                        if message.count >= 3 {
-                            vm.filteredHobbies = vm.hobbyList.filter { hobby in
-                                hobby.lowercased().contains(message.lowercased())
+                HStack {
+//                    Text("Set your Status")
+//                        .padding(.trailing, 5)
+//                        //.font(.largeTitle)
+                    
+                    TextField("Enter your status", text: $vm.userMessage)
+                        .font(.headline)
+                        .padding()
+                        .frame(height: 50)
+                        .frame(maxWidth: .infinity)
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .onChange(of: vm.userMessage) { message in
+                            vm.validateUserString(message)
+                            if message.count >= 3 {
+                                vm.filteredHobbies = vm.hobbyList.filter { hobby in
+                                    hobby.lowercased().contains(message.lowercased())
+                                }
+                            } else {
+                                vm.filteredHobbies = []
                             }
-                        } else {
-                            vm.filteredHobbies = []
+                        }
+                        .padding()
+                    
+                    Button("Set Status") {
+                        Task {
+                            let loggedInUser = await vm.getLoggedInUser()
+                            let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
+                            vm.addMessage(message: vm.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
                         }
                     }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(width: 100 ,height: 50)
+                    //.frame(maxWidth: .infinity)
+                    .background(vm.buttonColor)
+                    .cornerRadius(10)
+                    .padding()
+                    .disabled(vm.disableSendButton)
+                }
                 
                 HStack(spacing: 50) {
                     Text(vm.filteredHobbies.count > 0 ? "Did you mean: " : "")
                 }
+                
                 ForEach(vm.filteredHobbies, id: \.self) { filteredHobby in
                     Button(filteredHobby) {
                         vm.userMessage = filteredHobby
                     }
                 }
                 
-                Button("Send Message") {
-                    Task {
-                        let loggedInUser = await vm.getLoggedInUser()
-                        let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
-                        vm.addMessage(message: vm.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
-                    }
-                }
-                .font(.headline)
-                .foregroundColor(.white)
-                .frame(height: 55)
-                .frame(maxWidth: .infinity)
-                .background(vm.buttonColor)
-                .cornerRadius(10)
-                .padding(.horizontal, 130)
-                .disabled(vm.disableSendButton)
+//                Button("Send Message") {
+//                    Task {
+//                        let loggedInUser = await vm.getLoggedInUser()
+//                        let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
+//                        vm.addMessage(message: vm.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
+//                    }
+//                }
+//                .font(.headline)
+//                .foregroundColor(.white)
+//                .frame(height: 55)
+//                .frame(maxWidth: .infinity)
+//                .background(vm.buttonColor)
+//                .cornerRadius(10)
+//                .padding(.horizontal, 130)
+//                .disabled(vm.disableSendButton)
             }
             
             Seperator(width: 400)
             
             
-            Text("Sent Messages")
+            Text("My Status History")
                 .padding(.trailing, 5)
                 .font(.largeTitle)
             
@@ -77,7 +96,7 @@ struct MessagingView: View {
             
             Seperator(width: 400)
             
-            Text("Recieved Messages")
+            Text("My Friends' Status History")
                 .padding(.trailing, 5)
                 .font(.largeTitle)
             
@@ -85,7 +104,7 @@ struct MessagingView: View {
                 Text(message)
             }
             
-            Spacer()
+            //Spacer()
         }
         .task {
             await vm.loadHobbiesFromDB()

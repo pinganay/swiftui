@@ -122,7 +122,7 @@ struct SignInEmailView: View {
             .padding()
             .navigationTitle("Sign In With Email")
             .fullScreenCover(isPresented: $showUserProfile) {
-                UserProfile(showSignInView: $showSignInView)
+                UserProfile(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
             }
         }
     }
