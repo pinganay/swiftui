@@ -11,9 +11,9 @@ import CloudKit
 struct UserProfile: View {
     @EnvironmentObject var vm: UserProfileViewModel
     @Binding var showSignInView: Bool
-    @Binding var showUserProfile: Bool
-    @Binding var showUserDetails: Bool
-    @Binding var showWelcomeView: Bool
+//    @Binding var showUserProfile: Bool
+//    @Binding var showUserDetails: Bool
+//    @Binding var showWelcomeView: Bool
     @State var showEditPhoneNumberScreen = false
     @State private var showUnfriendWarning = false
     @State private var showPasswordResetText = false
@@ -76,7 +76,7 @@ struct UserProfile: View {
                             }
                         }
                         
-                        DeleteUserView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
+                        DeleteUserView()
                     }
                     .padding(.trailing, 125)
                 }
@@ -104,16 +104,6 @@ struct UserProfile: View {
                 }
                 
                 Seperator(width: 250)
-                
-                
-//                    Text("Recieved Messages")
-//                        .padding(.trailing, 5)
-//                        .font(.largeTitle)
-//                    
-//                    ForEach(vm.messageList, id: \.self) { message in
-//                        Text(message)
-//                    }
-
                 
                 Section {
                     Button("Request notification Permissions") {
@@ -179,10 +169,11 @@ struct UserProfile: View {
 }
 
 struct DeleteUserView: View {
-    @Binding var showSignInView: Bool
-    @Binding var showUserProfile: Bool
-    @Binding var showUserDetails: Bool
-    @Binding var showWelcomeView: Bool
+    @State private var showSignInView = false
+//    @Binding var showUserProfile: Bool
+//    @Binding var showUserDetails: Bool
+//    @Binding var showWelcomeView: Bool
+    //@State private var showSignInView2 = false
     @State private var showDeleteConfirmation = false
     
     var body: some View {
@@ -192,22 +183,28 @@ struct DeleteUserView: View {
                 showDeleteConfirmation = true
             }
         }
+        /*
+         We are callig SignInView() in fullScreenCover() instead of directly from "delete" button
+         This is because we cannot call a view from a button click
+         Another option for this is to use a NavigationLink instead of inside the "delete" button
+         This won't work because you cannot use a NavigationLink inside of an alert
+         */
+        .fullScreenCover(isPresented: $showSignInView) {
+            SignInView()
+        }
         .alert("Delete User", isPresented: $showDeleteConfirmation) {
             Button("Cancel", role: .cancel) {}
             Button("Delete", role: .destructive) {
-                do {
-                    let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
-                    AuthManager.shared.deleteCurrentUser()
-                    UserManager.shared.deleteUserDocument(documentId: authenticatedUser.uid)
-                    showSignInView = true
-                    showUserDetails = false
-                    showUserProfile = false
-                    showWelcomeView = false
-                    
-                } catch {
-                    print("DeleteUserView() error: \(error.localizedDescription)")
+                Task {
+                    do {
+                        let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
+                        await AuthManager.shared.deleteCurrentUser()
+                        UserManager.shared.deleteUserDocument(documentId: authenticatedUser.uid)
+                        showSignInView = true
+                    } catch {
+                        print("DeleteUserView() error: \(error.localizedDescription)")
+                    }
                 }
-                
             }
         } message: {
             Text("Once you delete, you will have to sign up again to use this app. Are you sure you want to delete?")
@@ -218,6 +215,6 @@ struct DeleteUserView: View {
 
 struct UserProfile_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfile(showSignInView: .constant(true), showUserProfile: .constant(false), showUserDetails: .constant(false), showWelcomeView: .constant(false))
+        UserProfile(showSignInView: .constant(true))
     }
 }

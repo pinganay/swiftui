@@ -26,18 +26,23 @@ final class AuthManager {
     private init() {}
     
     // This fuction deletes user from authentication db
-    func deleteCurrentUser() {
+    func deleteCurrentUser() async {
         guard let currentUser = Auth.auth().currentUser else {
             print("Couldn't get current user")
             return
         }
         
-        currentUser.delete { error in
-            if let error = error {
-                print("deleteCurrentUser(): There was an error while deleting the user: \(error.localizedDescription)")
-            }
-            return
+        do {
+            try await currentUser.delete()
+        } catch {
+            print("deleteCurrentUser() error: There was an error while deleting the user: \(error.localizedDescription)")
         }
+//        currentUser.delete { error in
+//            if let error = error {
+//                print("deleteCurrentUser(): There was an error while deleting the user: \(error.localizedDescription)")
+//            }
+//            return
+//        }
         
         print("deleteCurrentUser(): Succesfully deleted the current user")
     }

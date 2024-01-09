@@ -13,8 +13,8 @@ import FirebaseFirestoreSwift
 final class UserManager {
     static let shared = UserManager()
     //let db = Firestore.firestore()
-    let userCollection = Firestore.firestore().collection("users")
-    //let userCollection = Firestore.firestore().collection("testusers")
+    //let userCollection = Firestore.firestore().collection("users")
+    let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
 

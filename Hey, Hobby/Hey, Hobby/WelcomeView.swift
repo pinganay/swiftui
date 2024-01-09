@@ -34,7 +34,7 @@ struct WelcomeView: View {
                 
                 HStack {
                     NavigationLink {
-                        UserProfile(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
+                        UserProfile(showSignInView: $showSignInView)
                     } label: {
                         VStack(alignment: .center) {
                             Image(systemName: "person.circle")
