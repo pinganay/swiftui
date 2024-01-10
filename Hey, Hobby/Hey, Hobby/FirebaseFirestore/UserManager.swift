@@ -18,12 +18,18 @@ final class UserManager {
     
     private init() {}
 
-    func deleteUserDocument(documentId: String) {
-        userCollection.document(documentId).delete { error in
-            if let error = error {
-                print("deleteUserDocument(): There was an error while deleting the document: \(error.localizedDescription)")
-            }
+    func deleteUserDocument(documentId: String) async {
+        do {
+            try await userCollection.document(documentId).delete()
+        } catch {
+            print("deleteUserDocument(): There was an error while deleting the document: \(error.localizedDescription)")
         }
+        
+//        userCollection.document(documentId).delete { error in
+//            if let error = error {
+//                print("deleteUserDocument(): There was an error while deleting the document: \(error.localizedDescription)")
+//            }
+//        }
         
         print("deleteUserDocument(): Succesfully deleted the document")
     }

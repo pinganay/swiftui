@@ -198,8 +198,8 @@ struct DeleteUserView: View {
                 Task {
                     do {
                         let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
+                        await UserManager.shared.deleteUserDocument(documentId: authenticatedUser.uid)
                         await AuthManager.shared.deleteCurrentUser()
-                        UserManager.shared.deleteUserDocument(documentId: authenticatedUser.uid)
                         showSignInView = true
                     } catch {
                         print("DeleteUserView() error: \(error.localizedDescription)")
