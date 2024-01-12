@@ -15,7 +15,7 @@ import SwiftUI
             let user = try AuthManager.shared.getAuthenticatedUser()
             let userData = try await UserManager.shared.readUserData(userId: user.uid)
             
-            return DBUser(id: userData.id, firstName: userData.firstName, lastName: userData.lastName, phoneNumber: phoneNumber)
+            return DBUser(id: userData.id, firstName: userData.firstName, lastName: userData.lastName, phoneNumber: phoneNumber, emailAddress: userData.emailAddress)
         } catch {
             print(error.localizedDescription)
         }

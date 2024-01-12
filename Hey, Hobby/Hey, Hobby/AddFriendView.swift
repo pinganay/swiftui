@@ -6,56 +6,110 @@
 //
 
 import SwiftUI
+
+@MainActor class AddFriendViewModel: ObservableObject {
+    @Published var disableSearchButton = true
+    @Published var searchedUserPhoneNumber = ""
+    @Published var searchedUserEmail = ""
     
+    func validateFriendDetails() {
+        if (searchedUserEmail.isEmpty && searchedUserPhoneNumber.isEmpty) || searchedUserEmail.containsWhitespace || searchedUserPhoneNumber.containsWhitespace {
+            disableSearchButton = true
+        } else {
+            disableSearchButton = false
+        }
+    }
+}
+
 struct AddFriendView: View {
     @EnvironmentObject var vm: UserProfileViewModel
     @State private var isFriendAdded = false
     @State private var newFriend = DBUser.sampleUser
-    @State private var searchedUserFirstName = ""
-    @State private var searchedUserLastName = ""
-    @State private var searchedUserPhoneNumber = ""
+//    @State private var searchedUserFirstName = ""
+//    @State private var searchedUserLastName = ""
+//    @State private var searchedUserPhoneNumber = ""
+//    @State private var searchedUserEmail = ""
     @State private var searchedUserList = [DBUser]()
+    @StateObject var addFriendVM = AddFriendViewModel()
     
     var body: some View {
         VStack {
             VStack {
-                TextField("Enter your friend's first name", text: $searchedUserFirstName)
-                    .padding()
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
-                
-                TextField("Enter your friend's last name", text: $searchedUserLastName)
-                    .padding()
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
-                
-                TextField("Enter your friend's phone number", text: $searchedUserPhoneNumber)
+//                TextField("Enter your friend's first name", text: $searchedUserFirstName)
+//                    .padding()
+//                    .background(.gray.opacity(0.4))
+//                    .cornerRadius(10)
+//
+//                TextField("Enter your friend's last name", text: $searchedUserLastName)
+//                    .padding()
+//                    .background(.gray.opacity(0.4))
+//                    .cornerRadius(10)
+
+                TextField("Enter your friend's phone number", text: $addFriendVM.searchedUserPhoneNumber)
                     .padding()
                     .background(.gray.opacity(0.4))
                     .cornerRadius(10)
                     .keyboardType(.numberPad)
+                    .onChange(of: addFriendVM.searchedUserPhoneNumber) { _ in
+                        addFriendVM.validateFriendDetails()
+                    }
+                
+                Text("OR")
+                    .font(.title3)
+                
+                TextField("Enter your friend's email address", text: $addFriendVM.searchedUserEmail)
+                    .padding()
+                    .background(.gray.opacity(0.4))
+                    .cornerRadius(10)
+                    .onChange(of: addFriendVM.searchedUserEmail) { _ in
+                        addFriendVM.validateFriendDetails()
+                    }
+                    .keyboardType(.emailAddress)
+                
+                Text(addFriendVM.disableSearchButton ? "Fields cannot be empty or have space" : "")
+                    .font(.caption)
+                    .foregroundColor(.red)
             }
             .padding()
             
-            Button {
+//            Button {
+//                Task {
+//                    do {
+////                        searchedUserList = try await UserManager.shared.getUsersBy(fNameField: "firstName", fNameValue: searchedUserFirstName, lNameField: "lastName", lNameValue: searchedUserLastName, phoneNumberField: "phoneNumber", phoneNumberValue: searchedUserPhoneNumber)
+//
+//                        searchedUserList = try await UserManager.shared.getUsersByEmailAndPhoneNumber(emailValue: searchedUserEmail, phoneNumberValue: searchedUserPhoneNumber)
+//                    } catch {
+//                        print("Error: \(error.localizedDescription)")
+//                    }
+//                }
+//            } label: {
+//                Text("Search")
+//                    .font(.headline)
+//                    .foregroundColor(.white)
+//                    .frame(height: 55)
+//                    .frame(width: 200)
+//                    .background(.blue)
+//                    .cornerRadius(10)
+//            }
+            
+            Button("Search") {
                 Task {
                     do {
-                        searchedUserList = try await UserManager.shared.getUsersBy(fNameField: "firstName", fNameValue: searchedUserFirstName, lNameField: "lastName", lNameValue: searchedUserLastName, phoneNumberField: "phoneNumber", phoneNumberValue: searchedUserPhoneNumber)
+                        //searchedUserList = try await UserManager.shared.getUsersBy(fNameField: "firstName", fNameValue: searchedUserFirstName, lNameField: "lastName", lNameValue: searchedUserLastName, phoneNumberField: "phoneNumber", phoneNumberValue: searchedUserPhoneNumber)
                         
-                        
+                        searchedUserList = try await UserManager.shared.getUsersByEmailAndPhoneNumber(emailValue: addFriendVM.searchedUserEmail, phoneNumberValue: addFriendVM.searchedUserPhoneNumber)
+                    } catch {
+                        print("Error: \(error.localizedDescription)")
                     }
-                    
                 }
-            } label: {
-                Text("Search")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(height: 55)
-                    .frame(width: 200)
-                    .background(.blue)
-                    .cornerRadius(10)
             }
-
+            .font(.headline)
+            .foregroundColor(.white)
+            .frame(height: 55)
+            .frame(width: 200)
+            .background(addFriendVM.disableSearchButton ? .gray : .accentColor)
+            .cornerRadius(10)
+            .disabled(addFriendVM.disableSearchButton)
 
             List(searchedUserList, id: \.id) { user in
                 HStack {

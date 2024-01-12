@@ -13,8 +13,8 @@ import FirebaseFirestoreSwift
 final class UserManager {
     static let shared = UserManager()
     //let db = Firestore.firestore()
-    let userCollection = Firestore.firestore().collection("users")
-    //let userCollection = Firestore.firestore().collection("testusers")
+    //let userCollection = Firestore.firestore().collection("users")
+        let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
 
@@ -90,9 +90,6 @@ final class UserManager {
             .whereField(phoneNumberField, isEqualTo: phoneNumberValue)
             .getDocuments()
         
-        print(fNameValue)
-        print(lNameValue)
-        
         for document in querySnapshot.documents {
             guard let user = try? document.data(as: DBUser.self) else {
                 print("UserManager getUsersBy Error: Document is not correct")
@@ -105,6 +102,56 @@ final class UserManager {
         }
 
         print("UserManager final COunt: \(userList.count)")
+        return userList
+    }
+    
+    func getUsersByEmailAndPhoneNumber(emailValue: String, phoneNumberValue: String) async throws -> [DBUser] {
+        var userList = [DBUser]()
+        
+        let querySnapshot = try await userCollection.whereFilter(
+            Filter.orFilter([
+            Filter.whereField("emailAddress", isEqualTo: emailValue.lowercased()),
+            Filter.whereField("phoneNumber", isEqualTo: phoneNumberValue),
+            Filter.andFilter([
+                Filter.whereField("emailAddress", isEqualTo: emailValue),
+                Filter.whereField("phoneNumber", isEqualTo: phoneNumberValue)
+            ])
+        ])).getDocuments()
+        
+        
+        
+//        let querySnapshot2 = try await userCollection.whereFilter(
+//            Filter.orFilter([
+//                Filter.andFilter([
+//                    Filter.whereField("emailAddress", isEqualTo: emailValue),
+//                    Filter.whereField("phoneNumber", isEqualTo: phoneNumberValue)
+//                ])
+//            ]
+//            )
+//            ).getDocuments()
+//        
+//        let querySnapshot3 = try await userCollection.whereFilter(
+//            Filter.orFilter([
+//                Filter.whereField("emailAddress", isEqualTo: emailValue.lowercased()),
+//                Filter.whereField("phoneNumber", isEqualTo: phoneNumberValue)
+//            ]
+//            )
+//            ).getDocuments()
+//        
+//        
+//        let querySnapshot4: QuerySnapshot
+//        if !emailValue.isEmpty && !phoneNumberValue.isEmpty {
+//            querySnapshot4 = querySnapshot2
+//        } else {
+//            querySnapshot4 = querySnapshot3
+//        }
+        
+        
+        for document in querySnapshot.documents {
+            let user = try document.data(as: DBUser.self)
+            userList.append(user)
+        }
+        
         return userList
     }
 }

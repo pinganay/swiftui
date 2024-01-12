@@ -33,6 +33,7 @@ struct UserProfile: View {
                     VStack(alignment: .leading) {
                         Text("First Name: \(vm.loggedInUser.firstName)")
                         Text("Last Name: \(vm.loggedInUser.lastName)")
+                        Text("Email Address: \(vm.loggedInUser.emailAddress)")
                         HStack {
                             Text("Phone Number: \(vm.loggedInUser.phoneNumber)")
                             
