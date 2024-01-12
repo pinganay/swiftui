@@ -31,6 +31,7 @@ struct AddFriendView: View {
 //    @State private var searchedUserEmail = ""
     @State private var searchedUserList = [DBUser]()
     @StateObject var addFriendVM = AddFriendViewModel()
+    @State private var userNotFoundText = ""
     
     var body: some View {
         VStack {
@@ -98,6 +99,8 @@ struct AddFriendView: View {
                         //searchedUserList = try await UserManager.shared.getUsersBy(fNameField: "firstName", fNameValue: searchedUserFirstName, lNameField: "lastName", lNameValue: searchedUserLastName, phoneNumberField: "phoneNumber", phoneNumberValue: searchedUserPhoneNumber)
                         
                         searchedUserList = try await UserManager.shared.getUsersByEmailAndPhoneNumber(emailValue: addFriendVM.searchedUserEmail, phoneNumberValue: addFriendVM.searchedUserPhoneNumber)
+                        
+                        userNotFoundText = searchedUserList.isEmpty ? "User Not Found" : ""
                     } catch {
                         print("Error: \(error.localizedDescription)")
                     }
@@ -110,7 +113,11 @@ struct AddFriendView: View {
             .background(addFriendVM.disableSearchButton ? .gray : .accentColor)
             .cornerRadius(10)
             .disabled(addFriendVM.disableSearchButton)
-
+            
+            Text(userNotFoundText)
+                .font(.caption)
+                .foregroundColor(.red)
+            
             List(searchedUserList, id: \.id) { user in
                 HStack {
                     Text("\(user.firstName) \(user.lastName)")
