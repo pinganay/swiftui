@@ -20,13 +20,19 @@ final class HobbyManager {
     let hobbyCollection = Firestore.firestore().collection("hobbyList")
     
     private init() {}
-    
-    func readHobbyList() async throws -> [String] {
+
+    func readHobbyList() async throws -> Set<String> {
         let hobbyList = try await hobbyCollection.document("hobbyDocument").getDocument(as: HobbyList.self)
-        return hobbyList.hobbies
+        // We change the array to set because we don't want duplicates
+        // Also it is faster to search for items in a set
+        let hobbySet = Set(hobbyList.hobbies)
+        return hobbySet
     }
     
     func writeToHobbyList(hobbyList: [String]) async throws {
-        try hobbyCollection.document("hobbyDocument").setData(from: hobbyList)
+        //try hobbyCollection.document("hobbyDocument").setData(from: hobbyList)
+        try await hobbyCollection.document("hobbyDocument").updateData([
+            "hobbies" : FieldValue.arrayUnion(hobbyList)
+            ])
     }
 }

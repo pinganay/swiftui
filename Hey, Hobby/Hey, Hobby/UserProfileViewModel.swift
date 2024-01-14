@@ -29,7 +29,7 @@ import SwiftUI
             }
         }
     }
-    @Published var hobbyList = [""]
+    @Published var hobbyList: Set<String> = [""]
     @Published var filteredHobbies: [String] = []
     @Published var disableSendButton = true
     @Published var loggedInUser: DBUser = DBUser.sampleUser
