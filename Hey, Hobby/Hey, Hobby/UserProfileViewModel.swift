@@ -12,8 +12,8 @@ import UIKit
 import SwiftUI
 
 @MainActor class UserProfileViewModel: ObservableObject {
-    
     @Published var messageList = [String]()
+    @Published var statusHistory = [String]()
     @Published var userMessage = ""
     @Published var userList = [DBUser]()
     @Published var friendsList = [DBUser]()

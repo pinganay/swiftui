@@ -15,6 +15,7 @@ struct DBUser: Codable, Hashable, Equatable {
     var phoneNumber: String
     var emailAddress: String
     var recievedMessages = [String]()
+    var statusHistory = [String]()
     
     static func ==(lhs: DBUser, rhs: DBUser) -> Bool {
         return lhs.id == rhs.id

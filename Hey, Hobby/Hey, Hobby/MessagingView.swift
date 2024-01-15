@@ -43,6 +43,8 @@ struct MessagingView: View {
                         Task {
                             let loggedInUser = await vm.getLoggedInUser()
                             let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
+                            vm.statusHistory.append(vm.userMessage)
+                            UserManager.shared.updateStatusHistory(forCurrentUserId: loggedInUser.id, statusHistory: vm.statusHistory)
                             vm.addMessage(message: vm.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
                         }
                     }
@@ -90,8 +92,8 @@ struct MessagingView: View {
                 .padding(.trailing, 5)
                 .font(.largeTitle)
             
-            List(vm.messageList, id: \.self) { message in
-                Text(message)
+            List(vm.statusHistory, id: \.self) { status in
+                Text(status)
             }
             
             Seperator(width: 400)
@@ -100,17 +102,16 @@ struct MessagingView: View {
                 .padding(.trailing, 5)
                 .font(.largeTitle)
             
-            List(delegate.recievedMessages, id: \.self) { message in
-                Text(message)
+            List(delegate.recievedMessages, id: \.self) { recievedStatus in
+                Text(recievedStatus)
             }
-            
-            //Spacer()
         }
         .task {
             await vm.loadHobbiesFromDB()
             do {
                 let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
                 let currentUser = try await UserManager.shared.readUserData(userId: authenticatedUser.uid)
+                vm.statusHistory = currentUser.statusHistory
                 delegate.recievedMessages = currentUser.recievedMessages
             } catch {
                 print(error.localizedDescription)

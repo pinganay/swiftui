@@ -13,8 +13,8 @@ import FirebaseFirestoreSwift
 final class UserManager {
     static let shared = UserManager()
     //let db = Firestore.firestore()
-    let userCollection = Firestore.firestore().collection("users")
-    //let userCollection = Firestore.firestore().collection("testusers")
+    //let userCollection = Firestore.firestore().collection("users")
+    let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
 
@@ -78,6 +78,12 @@ final class UserManager {
     func updateRecievedMessages(forCurrentUserId currentUserId: String, recievedMessages: [String]) {
         userCollection.document(currentUserId).updateData([
             "recievedMessages": FieldValue.arrayUnion(recievedMessages)
+        ])
+    }
+    
+    func updateStatusHistory(forCurrentUserId currentUserId: String, statusHistory: [String]) {
+        userCollection.document(currentUserId).updateData([
+            "statusHistory": FieldValue.arrayUnion(statusHistory)
         ])
     }
     
