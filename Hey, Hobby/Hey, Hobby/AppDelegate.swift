@@ -136,6 +136,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         //This is explicitly used since we can't use an environment object in this class
         guard let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser() else { return }
         
-        UserManager.shared.updateRecievedMessages(forCurrentUserId: authenticatedUser.uid, recievedMessages: recievedMessages)
+        UserManager.shared.addRecievedMessages(forCurrentUserId: authenticatedUser.uid, recievedMessages: recievedMessages)
     }
 }

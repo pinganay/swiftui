@@ -8,9 +8,65 @@
 import SwiftUI
 import Combine
 
+class MessagingViewModel: AppDelegate {
+    @EnvironmentObject var userProfileVM: UserProfileViewModel
+    @EnvironmentObject var delegate: AppDelegate
+    
+    enum StatusCategory {
+        case sent, recieved
+    }
+    
+    func deleteOldRecievedStatus(forStatusCategory statusCategory: StatusCategory, messageList: [String]) {
+        var expiredmessages = [String]()
+        var index = messageList.count - 1
+        
+        while index >= 0 {
+            let statusSubstrings = messageList[index].components(separatedBy: " -")
+            let statusDateString = statusSubstrings[0]
+            
+            print(statusDateString)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy:HH:mm a"
+            
+            guard let statusDate = dateFormatter.date(from: statusDateString) else {
+                print("deleteOldRecievedStatus() error: Failed to get Date object from recieved status")
+                return
+            }
+            
+            guard let daysDiff = Calendar.current.dateComponents([.day], from: statusDate, to: Date()).day else {
+                print("deleteOldRecievedStatus() error: Cannot find difference between days")
+                return
+            }
+            
+            //This will mark a recieved status to be deleted if it is more than 2 days old
+            if daysDiff >= 2 {
+                expiredmessages.append(messageList[index])
+            }
+            
+            index -= 1
+        }
+        
+        print(expiredmessages)
+        
+        do {
+            let currentUser = try AuthManager.shared.getAuthenticatedUser()
+            
+            if statusCategory == .recieved {
+                UserManager.shared.deleteRecievedMessages(forCurrentUserId: currentUser.uid, recievedMessages: expiredmessages)
+            } else {
+                UserManager.shared.deleteStatusHistory(forCurrentUserId: currentUser.uid, statusHistory: expiredmessages)
+            }
+        } catch {
+            print("deleteOldRecievedStatus() error: \(error.localizedDescription)")
+        }
+    }
+}
+
 struct MessagingView: View {
     @EnvironmentObject var vm: UserProfileViewModel
     @EnvironmentObject var delegate: AppDelegate
+    @StateObject var messagingVM = MessagingViewModel()
     
     var body: some View {
         VStack {
@@ -43,8 +99,12 @@ struct MessagingView: View {
                         Task {
                             let loggedInUser = await vm.getLoggedInUser()
                             let loggedInUserFullName = "\(loggedInUser.firstName) \(loggedInUser.lastName)"
-                            vm.statusHistory.append(vm.userMessage)
-                            UserManager.shared.updateStatusHistory(forCurrentUserId: loggedInUser.id, statusHistory: vm.statusHistory)
+                            
+                            let date = Date().formatted(date: .numeric, time: .omitted)
+                            let time = Date().formatted(date: .omitted, time: .shortened)
+                            
+                            vm.statusHistory.append("\(date):\(time) -> \(vm.userMessage)")
+                            UserManager.shared.addStatusHistory(forCurrentUserId: loggedInUser.id, statusHistory: vm.statusHistory)
                             vm.addMessage(message: vm.userMessage, userId: loggedInUser.id, currentUserName: loggedInUserFullName)
                         }
                     }
@@ -111,7 +171,25 @@ struct MessagingView: View {
             do {
                 let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
                 let currentUser = try await UserManager.shared.readUserData(userId: authenticatedUser.uid)
+                
+                /*
+                 This loads the status history of the current user from db
+                 Also, the status history is then stored in the viewModel to update the UI as soon as the MessagingView is shown
+                 */
                 vm.statusHistory = currentUser.statusHistory
+                /*
+                 This loads the list of recieved status of the current user from db
+                 Also, the list of recieved status is then stored in the delegate to update the UI as soon as the MessagingView is shown
+                 */
+                
+                //The timer will call the deleteOldRecievedStatus function every 3 hours
+                Timer.scheduledTimer(withTimeInterval: 3600 * 3, repeats: true) { timer in
+                //Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { timer in
+                    print("timer called")
+                    messagingVM.deleteOldRecievedStatus(forStatusCategory: .recieved, messageList: currentUser.recievedMessages)
+                    messagingVM.deleteOldRecievedStatus(forStatusCategory: .sent, messageList: currentUser.statusHistory)
+                }
+                
                 delegate.recievedMessages = currentUser.recievedMessages
             } catch {
                 print(error.localizedDescription)

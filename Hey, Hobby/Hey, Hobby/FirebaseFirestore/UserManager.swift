@@ -12,9 +12,8 @@ import FirebaseFirestoreSwift
 
 final class UserManager {
     static let shared = UserManager()
-    //let db = Firestore.firestore()
-    //let userCollection = Firestore.firestore().collection("users")
-    let userCollection = Firestore.firestore().collection("testusers")
+    let userCollection = Firestore.firestore().collection("users")
+    //let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
 
@@ -75,15 +74,29 @@ final class UserManager {
     
     //Updates recieved messages property for user in db
     //Called when user recieves and taps status notification from friend
-    func updateRecievedMessages(forCurrentUserId currentUserId: String, recievedMessages: [String]) {
+    func addRecievedMessages(forCurrentUserId currentUserId: String, recievedMessages: [String]) {
         userCollection.document(currentUserId).updateData([
             "recievedMessages": FieldValue.arrayUnion(recievedMessages)
         ])
     }
     
-    func updateStatusHistory(forCurrentUserId currentUserId: String, statusHistory: [String]) {
+    func deleteRecievedMessages(forCurrentUserId currentUserId: String, recievedMessages: [String]) {
+        print(currentUserId)
+        print(recievedMessages)
+        userCollection.document(currentUserId).updateData([
+            "recievedMessages": FieldValue.arrayRemove(recievedMessages)
+        ])
+    }
+    
+    func addStatusHistory(forCurrentUserId currentUserId: String, statusHistory: [String]) {
         userCollection.document(currentUserId).updateData([
             "statusHistory": FieldValue.arrayUnion(statusHistory)
+        ])
+    }
+    
+    func deleteStatusHistory(forCurrentUserId currentUserId: String, statusHistory: [String]) {
+        userCollection.document(currentUserId).updateData([
+            "statusHistory": FieldValue.arrayRemove(statusHistory)
         ])
     }
     
