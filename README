@@ -2,3 +2,15 @@ git status
 git add .
 git commit -m "git commands"
 git push origin main
+
+
+
+
+
+SWIFT KNOWLEDGE
+===============
+1. To change color of Launch screen do the following:
+	1. Click on the project file from left panel in xcode
+	2. Go to Info tab
+	3. Look for "Launch Screen" and add "Background color" key
+	4. Add a color from xcassets as its value

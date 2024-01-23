@@ -39,10 +39,6 @@ struct UserDetailsView: View {
         NavigationStack {
             VStack {
                 Section {
-                    Text(viewModel.isFirstNameValid ? "" : "You first name cannot be empty or contain any space")
-                        .foregroundColor(.red)
-                        .font(.caption)
-                    
                     TextField("First Name...", text: $viewModel.firstName)
                         .padding()
                         .background(.gray.opacity(0.4))
@@ -54,13 +50,12 @@ struct UserDetailsView: View {
                                 viewModel.isFirstNameValid = true
                             }
                         }
+                    
+                    Text(viewModel.isFirstNameValid ? "" : "You first name cannot be empty or contain any space")
+                        .warningModifier()
                 }
                 
                 Section {
-                    Text(viewModel.isLastNameValid ? "" : "You last name cannot be empty or contain any space")
-                        .foregroundColor(.red)
-                        .font(.caption)
-                    
                     TextField("Last Name...", text: $viewModel.lastName)
                         .padding()
                         .background(.gray.opacity(0.4))
@@ -72,13 +67,12 @@ struct UserDetailsView: View {
                                 viewModel.isLastNameValid = true
                             }
                         }
+                    
+                    Text(viewModel.isLastNameValid ? "" : "You last name cannot be empty or contain any space")
+                        .warningModifier()
                 }
                 
                 Section {
-                    Text(viewModel.isPhoneNumberValid ? "" : "Your phone number should have 8-13 digits and cannot be empty or contain any space")
-                        .foregroundColor(.red)
-                        .font(.caption)
-                    
                     TextField("Phone Number...", text: $viewModel.phoneNumber)
                         .padding()
                         .background(.gray.opacity(0.4))
@@ -92,6 +86,9 @@ struct UserDetailsView: View {
                             }
                         }
                         .keyboardType(.numberPad)
+                    
+                    Text(viewModel.isPhoneNumberValid ? "" : "Your phone number should have 8-13 digits and cannot be empty or contain any space")
+                        .warningModifier()
                 }
                 
                 Button("Save") {
@@ -105,10 +102,13 @@ struct UserDetailsView: View {
                     showUserProfile = false
                     dismiss()
                 }
+                .buttonModifier(width: 100)
                 .disabled(!viewModel.isFirstNameValid || !viewModel.isLastNameValid || !viewModel.isPhoneNumberValid)
+                
+                Spacer()
             }
             .padding()
-            
+            .background(.themeColor)
             .navigationTitle("Enter your Name")
         }
     }

@@ -111,8 +111,8 @@ struct MessagingView: View {
                     .font(.headline)
                     .foregroundColor(.white)
                     .frame(width: 100 ,height: 50)
-                    //.frame(maxWidth: .infinity)
                     .background(vm.buttonColor)
+                    .opacity(0.9)
                     .cornerRadius(10)
                     .padding()
                     .disabled(vm.disableSendButton)
@@ -126,6 +126,7 @@ struct MessagingView: View {
                     Button(filteredHobby) {
                         vm.userMessage = filteredHobby
                     }
+                    .buttonModifier(width: 250, height: 20)
                 }
                 
 //                Button("Send Message") {
@@ -150,22 +151,47 @@ struct MessagingView: View {
             
             Text("My Status History")
                 .padding(.trailing, 5)
-                .font(.largeTitle)
+                .foregroundColor(.white)
+                .font(.titleScript)
             
             List(vm.statusHistory, id: \.self) { status in
                 Text(status)
+                    .listRowBackground(Color("AppIconColor"))
             }
+            .overlay(Section {
+                if(vm.statusHistory.isEmpty) {
+                    ZStack {
+                        Color.themeColor.ignoresSafeArea()
+                    }
+                }
+            })
+            .listStyle(.inset)
+            .background(.themeColor)
+            .scrollContentBackground(.hidden)
             
             Seperator(width: 400)
             
             Text("My Friends' Status History")
                 .padding(.trailing, 5)
-                .font(.largeTitle)
+                .foregroundColor(.white)
+                .font(.titleScript)
             
             List(delegate.recievedMessages, id: \.self) { recievedStatus in
                 Text(recievedStatus)
+                    .listRowBackground(Color("AppIconColor"))
             }
+            .overlay(Section {
+                if(delegate.recievedMessages.isEmpty) {
+                    ZStack {
+                        Color.themeColor.ignoresSafeArea()
+                    }
+                }
+            })
+            .listStyle(.inset)
+            .background(.themeColor)
+            .scrollContentBackground(.hidden)
         }
+        .background(.themeColor)
         .task {
             await vm.loadHobbiesFromDB()
             do {

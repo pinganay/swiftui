@@ -24,7 +24,8 @@ struct UserProfile: View {
                 Text("Manage User Settings")
                     .padding(.trailing, 5)
                     .padding()
-                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                    .font(.titleScript)
                 
                 //If loading the user info takes too long, this displays the loading view
                 if vm.loggedInUser.firstName == "Dummy" {
@@ -41,12 +42,7 @@ struct UserProfile: View {
                                 showEditPhoneNumberScreen = true
                             } label: {
                                 Text("Edit")
-                                    .bold()
-                                    .foregroundColor(.white)
-                                    .frame(height: 25)
-                                    .frame(width: 50)
-                                    .background(.blue)
-                                    .cornerRadius(10)
+                                    .buttonModifier(width: 100)
                             }
                         }
                         
@@ -68,12 +64,7 @@ struct UserProfile: View {
                                 }
                             } label: {
                                 Text("Reset")
-                                    .bold()
-                                    .foregroundColor(.white)
-                                    .frame(height: 25)
-                                    .frame(width: 50)
-                                    .background(.blue)
-                                    .cornerRadius(10)
+                                    .buttonModifier(width: 100)
                             }
                         }
                         
@@ -87,7 +78,8 @@ struct UserProfile: View {
                 Text("Friends")
                     .padding(.trailing, 5)
                     .padding()
-                    .font(.largeTitle)
+                    .foregroundColor(.white)
+                    .font(.titleScript)
                 
                 VStack {
                     List(vm.friendsList, id: \.id) { friend in
@@ -99,9 +91,20 @@ struct UserProfile: View {
                             Button("Unfriend") {
                                 showUnfriendWarning = true
                             }
-                            .foregroundColor(.blue)
+                            .buttonModifier(width: 100)
                         }
+                        .listRowBackground(Color("AppIconColor"))
                     }
+                    .overlay(Section {
+                        if(vm.friendsList.isEmpty) {
+                            ZStack {
+                                Color.themeColor.ignoresSafeArea()
+                            }
+                        }
+                    })
+                    .listStyle(.inset)
+                    .background(.themeColor)
+                    .scrollContentBackground(.hidden)
                 }
                 
                 Seperator(width: 250)
@@ -110,27 +113,41 @@ struct UserProfile: View {
                     Button("Request notification Permissions") {
                         vm.requestNotificationPermissions()
                     }
+                    .buttonModifier(width: 275)
                     
-                    Button("Subscribe to notificatios") {
+                    Button("Subscribe to notifications") {
                         vm.subscibeToNotifications()
                         vm.isUserSubscribed = true
                     }
                     .disabled(vm.isUserSubscribed)
+                    .buttonModifier(width: 275)
                     
-                    Button("Unsubscribe to notificatios") {
+                    Button("Unsubscribe to notifications") {
                         vm.unsubscibeToNotifications()
                         vm.isUserSubscribed = false
                     }
                     .disabled(!vm.isUserSubscribed)
+                    .buttonModifier(width: 275)
                 }
                 
                 Spacer()
                 
             }
+            .background(.themeColor)
             .onAppear {
                 vm.getAllUsersWithoutCurrentUser()
             }
-            .navigationTitle("Profile")
+            //.navigationTitle("Profile")
+            // Use toolbar instead of .navigationTitle, so that font can be customized
+            .toolbar {
+                ToolbarItem(placement: .principal) { // <3>
+                    VStack {
+                        Text("Profile")
+                            .foregroundColor(.white)
+                            .font(.titleScript)
+                    }
+                }
+            }
             .task {
                 vm.loggedInUser = await vm.getLoggedInUser()
             }
@@ -183,6 +200,7 @@ struct DeleteUserView: View {
             Button("Delete", role: .destructive) {
                 showDeleteConfirmation = true
             }
+            .buttonModifier(width: 100)
         }
         /*
          We are callig SignInView() in fullScreenCover() instead of directly from "delete" button

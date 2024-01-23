@@ -61,12 +61,7 @@ struct EditPhoneNumberView: View {
                     dismiss()
                 }
             }
-            .font(.headline)
-            .foregroundColor(.white)
-            .frame(height: 55)
-            .frame(width: 200)
-            .background(!vm.isPhoneNumberValid ? .gray : .accentColor)
-            .cornerRadius(10)
+            .buttonModifier(width: 200)
             .disabled(!vm.isPhoneNumberValid)
         }
         .onChange(of: vm.phoneNumber) { _ in

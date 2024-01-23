@@ -27,7 +27,8 @@ struct WelcomeView: View {
                     LoadingView()
                 } else {
                     Text("Hey, \(currentUser.firstName) \(currentUser.lastName)")
-                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                        .font(.titleScript)
                 }
                 
                 Spacer()
@@ -85,19 +86,36 @@ struct WelcomeView: View {
                 }
                 .background(.gray.opacity(0.7))
             }
-            .navigationTitle("Hey, Hobby!")
+            //.navigationTitle("Hey, Hobby!")
+            // Use toolbar instead of .navigationTitle, so that font can be customized
+            .toolbar {
+                ToolbarItem(placement: .principal) { // <3>
+                    VStack {
+                        Text("Hey, Hobby!")
+                            .foregroundColor(.white)
+                            .font(.titleScript)
+                    }
+                }
+            }
+            .background(.themeColor)
             .toolbar {
                 ToolbarItem {
-                    Button("Log Out", role: .destructive) {
+                    Button("Log Out") {
                         vm.signOut()
                         print("Succesfully Logged out User")
                         showSignInView = true
                     }
-                    
+                    .buttonModifier(width: 80)
                 }
             }
             .fullScreenCover(isPresented: $showSignInView) {
                 SignInView()
+            }
+        }
+        .onAppear {
+            for family in UIFont.familyNames.sorted() {
+                let names = UIFont.fontNames(forFamilyName: family)
+                print("Family: \(family) Font names: \(names)")
             }
         }
         .task {

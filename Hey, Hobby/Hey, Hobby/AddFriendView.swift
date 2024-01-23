@@ -36,16 +36,6 @@ struct AddFriendView: View {
     var body: some View {
         VStack {
             VStack {
-//                TextField("Enter your friend's first name", text: $searchedUserFirstName)
-//                    .padding()
-//                    .background(.gray.opacity(0.4))
-//                    .cornerRadius(10)
-//
-//                TextField("Enter your friend's last name", text: $searchedUserLastName)
-//                    .padding()
-//                    .background(.gray.opacity(0.4))
-//                    .cornerRadius(10)
-
                 TextField("Enter your friend's phone number", text: $addFriendVM.searchedUserPhoneNumber)
                     .padding()
                     .background(.gray.opacity(0.4))
@@ -68,36 +58,13 @@ struct AddFriendView: View {
                     .keyboardType(.emailAddress)
                 
                 Text(addFriendVM.disableSearchButton ? "Fields cannot be empty or have space" : "")
-                    .font(.caption)
-                    .foregroundColor(.red)
+                    .warningModifier()
             }
             .padding()
-            
-//            Button {
-//                Task {
-//                    do {
-////                        searchedUserList = try await UserManager.shared.getUsersBy(fNameField: "firstName", fNameValue: searchedUserFirstName, lNameField: "lastName", lNameValue: searchedUserLastName, phoneNumberField: "phoneNumber", phoneNumberValue: searchedUserPhoneNumber)
-//
-//                        searchedUserList = try await UserManager.shared.getUsersByEmailAndPhoneNumber(emailValue: searchedUserEmail, phoneNumberValue: searchedUserPhoneNumber)
-//                    } catch {
-//                        print("Error: \(error.localizedDescription)")
-//                    }
-//                }
-//            } label: {
-//                Text("Search")
-//                    .font(.headline)
-//                    .foregroundColor(.white)
-//                    .frame(height: 55)
-//                    .frame(width: 200)
-//                    .background(.blue)
-//                    .cornerRadius(10)
-//            }
             
             Button("Search") {
                 Task {
                     do {
-                        //searchedUserList = try await UserManager.shared.getUsersBy(fNameField: "firstName", fNameValue: searchedUserFirstName, lNameField: "lastName", lNameValue: searchedUserLastName, phoneNumberField: "phoneNumber", phoneNumberValue: searchedUserPhoneNumber)
-                        
                         searchedUserList = try await UserManager.shared.getUsersByEmailAndPhoneNumber(emailValue: addFriendVM.searchedUserEmail, phoneNumberValue: addFriendVM.searchedUserPhoneNumber)
                         
                         userNotFoundText = searchedUserList.isEmpty ? "User Not Found" : ""
@@ -121,6 +88,7 @@ struct AddFriendView: View {
             List(searchedUserList, id: \.id) { user in
                 HStack {
                     Text("\(user.firstName) \(user.lastName)")
+                    
                     Spacer()
                     
                     if vm.isUserAlreadyFriend(searchedUser: user) {
@@ -132,9 +100,21 @@ struct AddFriendView: View {
                             newFriend = user
                             isFriendAdded = true
                         }
+                        .buttonModifier(width: 100)
                     }
                 }
+                .listRowBackground(Color("AppIconColor"))
             }
+            .overlay(Section {
+                if(searchedUserList.isEmpty) {
+                    ZStack {
+                        Color.themeColor.ignoresSafeArea()
+                    }
+                }
+            })
+            .listStyle(.inset)
+            .background(.themeColor)
+            .scrollContentBackground(.hidden)
             .alert("Add Friend", isPresented: $isFriendAdded) {
                 Button("OK") {
                     Task {
@@ -166,7 +146,18 @@ struct AddFriendView: View {
                 Text("Are you sure you want to add \(newFriend.firstName) \(newFriend.lastName) to your friends list?")
             }
         }
-        .navigationTitle("Add Friends")
+        .background(.themeColor)
+        //.navigationTitle("Add Friends")
+        // Use toolbar instead of .navigationTitle, so that font can be customized
+        .toolbar {
+            ToolbarItem(placement: .principal) { // <3>
+                VStack {
+                    Text("Add Friends")
+                        .foregroundColor(.white)
+                        .font(.titleScript)
+                }
+            }
+        }
     }
 }
 

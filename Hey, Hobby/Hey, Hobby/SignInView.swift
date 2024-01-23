@@ -19,18 +19,24 @@ struct SignInView: View {
                     SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
                 } label: {
                     Text("Sign In With Email")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(height: 55)
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
-                        .cornerRadius(10)
+                        .buttonModifier(width: 400, height: 50)
                 }
                 
                 Spacer()
             }
             .padding()
-            .navigationTitle("Sign In")
+            //.navigationTitle("Sign In")
+            // Use toolbar instead of .navigationTitle, so that font can be customized
+            .toolbar {
+                ToolbarItem(placement: .principal) { // <3>
+                    VStack {
+                        Text("Sign In")
+                            .foregroundColor(.white)
+                            .font(.titleScript)
+                    }
+                }
+            }
+            .background(.themeColor)
         }
         .onAppear {
             let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()

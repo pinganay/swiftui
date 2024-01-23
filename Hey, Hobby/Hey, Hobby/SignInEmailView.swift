@@ -46,28 +46,32 @@ struct SignInEmailView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                TextField("Email...", text: $viewModel.email)
-                    .padding()
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
-                    .keyboardType(.emailAddress)
-                
-                Text("Password should have 6 digits or more")
-                    .font(.caption)
-                
-                SecureField("Password...", text: $viewModel.password)
-                    .padding()
-                    .background(.gray.opacity(0.4))
-                    .cornerRadius(10)
+                Section {
+                    TextField("Email...", text: $viewModel.email)
+                        .padding()
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(10)
+                        .keyboardType(.emailAddress)
+                    
+                    Text("Password should have 6 digits or more")
+                        .warningModifier()
+                    
+                    SecureField("Password...", text: $viewModel.password)
+                        .padding()
+                        .background(.gray.opacity(0.4))
+                        .cornerRadius(10)
+                }
                 
                 Button("Forgot your password? Type your email above and click here") {
                     AuthManager.shared.sendPasswordResetEmail(userEmail: viewModel.email)
                     viewModel.passwordResetText = "A link has been sent to your email. Please click on the link to reset your password and login again."
                 }
-                .font(.caption)
+                .buttonModifier(width: 400, height: 50)
                 
                 Text(viewModel.passwordResetText)
                     .font(.caption)
+                
+                Spacer()
                 
                 Button {
                     Task {
@@ -107,20 +111,34 @@ struct SignInEmailView: View {
                     }
                 } label: {
                     Text("Sign In")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(height: 55)
-                        .frame(maxWidth: .infinity)
-                        .background(.blue)
-                        .cornerRadius(10)
+                        .buttonModifier(width: 400, height: 50)
                 }
                 
                 Text(viewModel.emailVerificationText)
                 
-                Spacer()
+                //Section is there to prevent overflowing the 10 view elements limit for VStack
+                Section {
+                    //To reduce space between sign in button and forgot password button
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                }
             }
             .padding()
-            .navigationTitle("Sign In With Email")
+            //.navigationTitle("Sign In With Email")
+            // Use toolbar instead of .navigationTitle, so that font can be customized
+            .toolbar {
+                ToolbarItem(placement: .principal) { // <3>
+                    VStack {
+                        Text("Sign In With Email")
+                            .foregroundColor(.white)
+                            .font(.titleScript)
+                    }
+                }
+            }
+
+            .background(.themeColor)
             .fullScreenCover(isPresented: $showUserProfile) {
                 UserProfile(showSignInView: $showSignInView)
             }
