@@ -25,7 +25,6 @@ struct SignInView: View {
                 Spacer()
             }
             .padding()
-            //.navigationTitle("Sign In")
             // Use toolbar instead of .navigationTitle, so that font can be customized
             .toolbar {
                 ToolbarItem(placement: .principal) { // <3>

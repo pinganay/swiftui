@@ -40,13 +40,14 @@ struct WelcomeView: View {
                         VStack(alignment: .center) {
                             Image(systemName: "person.circle")
                                 .resizable()
-                                .frame(width: 40, height: 40)
+                                .frame(width: 30, height: 30)
                                 .padding([.top])
                             
                             Text("Profile")
-                                .font(.system(size: 10))
+                                .font(.system(size: 16.5))
+                                .bold()
                         }
-                        .padding(.leading)
+//                        .padding(.leading)
                     }
                     
                     Spacer()
@@ -55,17 +56,17 @@ struct WelcomeView: View {
                         MessagingView()
                     } label: {
                         VStack(alignment: .center) {
-                            Image(systemName: "plus.message.fill")
+                            Image(systemName: "message.fill")
                                 .resizable()
-                                .frame(width: 40, height: 40)
+                                .frame(width: 30, height: 30)
                                 .padding([.top])
                             
-                            Text("Set Status")
-                                .font(.system(size: 10))
+                            Text("Status")
+                                .font(.system(size: 16.5))
+                                .bold()
                         }
-                        .padding(.leading)
+//                        .padding(.leading)
                     }
-
                     
                     Spacer()
                     
@@ -75,20 +76,48 @@ struct WelcomeView: View {
                         VStack {
                             Image(systemName: "person.3.fill")
                                 .resizable()
-                                .frame(width: 66, height: 40)
+                                .frame(width: 54, height: 30)
                                 .padding([.top])
                             
-                            Text("Add Friend")
-                                .font(.system(size: 10))
+                            Text("Friend")
+                                .font(.system(size: 16.5))
+                                .bold()
                         }
                     }
-                    .padding(.trailing)
+//                    .padding(.trailing)
+                    
+                    Spacer()
+                    
+                    NavigationLink {
+                        InfoView()
+                    } label: {
+                        VStack {
+                            Image(systemName: "info.circle.fill")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .padding([.top])
+                            
+                            Text("About")
+                                .font(.system(size: 16.5))
+                                .bold()
+                        }
+                    }
                 }
-                .background(.gray.opacity(0.7))
+                .padding([.trailing, .leading])
+                .background(.gray.opacity(0.35))
             }
             //.navigationTitle("Hey, Hobby!")
             // Use toolbar instead of .navigationTitle, so that font can be customized
             .toolbar {
+//                ToolbarItem {
+//                    NavigationLink {
+//                        InfoView()
+//                    } label: {
+//                        Image(systemName: "info.circle.fill")
+//                            .background(.red)
+//                    }
+//                }
+                
                 ToolbarItem(placement: .principal) { // <3>
                     VStack {
                         Text("Hey, Hobby!")
@@ -96,9 +125,7 @@ struct WelcomeView: View {
                             .font(.titleScript)
                     }
                 }
-            }
-            .background(.themeColor)
-            .toolbar {
+                
                 ToolbarItem {
                     Button("Log Out") {
                         vm.signOut()
@@ -108,6 +135,17 @@ struct WelcomeView: View {
                     .buttonModifier(width: 80)
                 }
             }
+            .background(.themeColor)
+//            .toolbar {
+//                ToolbarItem {
+//                    Button("Log Out") {
+//                        vm.signOut()
+//                        print("Succesfully Logged out User")
+//                        showSignInView = true
+//                    }
+//                    .buttonModifier(width: 80)
+//                }
+//            }
             .fullScreenCover(isPresented: $showSignInView) {
                 SignInView()
             }

@@ -32,4 +32,8 @@ extension Font {
     static var titleScript: Font {
         self.custom("Bukhari-Script", size: 34)
     }
+    
+    static var titleScriptSmall: Font {
+        self.custom("Bukhari-Script", size: 25)
+    }
 }

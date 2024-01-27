@@ -25,6 +25,7 @@
 		ED858E3F2ABFBF36005997B9 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */; };
 		ED9135A52B295AAC008BBDFC /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9135A42B295AAC008BBDFC /* LoadingView.swift */; };
 		ED9F47C32B5E32B600E5959C /* ViewExtension-ViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9F47C22B5E32B600E5959C /* ViewExtension-ViewModifiers.swift */; };
+		ED9F47C72B6489B900E5959C /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9F47C62B6489B900E5959C /* InfoView.swift */; };
 		EDB0DD442B3116CC00E14B4C /* HobbyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0DD432B3116CC00E14B4C /* HobbyManager.swift */; };
 		EDB0DD4A2B32A02700E14B4C /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0DD492B32A02700E14B4C /* StringExtension.swift */; };
 		EDB0DD4C2B35306400E14B4C /* EditPhoneNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB0DD4B2B35306400E14B4C /* EditPhoneNumberView.swift */; };
@@ -64,6 +65,7 @@
 		ED858E3E2ABFBF36005997B9 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		ED9135A42B295AAC008BBDFC /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		ED9F47C22B5E32B600E5959C /* ViewExtension-ViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewExtension-ViewModifiers.swift"; sourceTree = "<group>"; };
+		ED9F47C62B6489B900E5959C /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		EDB0DD432B3116CC00E14B4C /* HobbyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HobbyManager.swift; sourceTree = "<group>"; };
 		EDB0DD492B32A02700E14B4C /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		EDB0DD4B2B35306400E14B4C /* EditPhoneNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPhoneNumberView.swift; sourceTree = "<group>"; };
@@ -76,7 +78,7 @@
 		EDB864032AB94FE500DBB6E3 /* SeperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeperatorView.swift; sourceTree = "<group>"; };
 		EDBA31F92AC25E9F009D3B73 /* UserDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsView.swift; sourceTree = "<group>"; };
 		EDCF276A2AD79E2E00EE688F /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		EDD8B92B2ACCD64A00FBC109 /* Hey, Hobby.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hey, Hobby.entitlements"; sourceTree = "<group>"; };
 		EDD8B92C2ACCDB7B00FBC109 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EDD8B9492ACE0B6900FBC109 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				EDB0DD4B2B35306400E14B4C /* EditPhoneNumberView.swift */,
 				EDB0DD492B32A02700E14B4C /* StringExtension.swift */,
 				ED9135A42B295AAC008BBDFC /* LoadingView.swift */,
+				ED9F47C62B6489B900E5959C /* InfoView.swift */,
 				EDCF276C2AD8EA1300EE688F /* WelcomeView.swift */,
 				ED8204C52B5DD77C0067CA61 /* FontExtension-CustomFont.swift */,
 				ED2A00BA2ADBB9AC0002DA74 /* MessagingView.swift */,
@@ -294,6 +297,7 @@
 				ED9135A52B295AAC008BBDFC /* LoadingView.swift in Sources */,
 				EDB863F22AB7BA4A00DBB6E3 /* Hey__HobbyApp.swift in Sources */,
 				ED2A00B92ADB25360002DA74 /* AddFriendView.swift in Sources */,
+				ED9F47C72B6489B900E5959C /* InfoView.swift in Sources */,
 				EDCF276D2AD8EA1300EE688F /* WelcomeView.swift in Sources */,
 				EDB0DD442B3116CC00E14B4C /* HobbyManager.swift in Sources */,
 				ED4DC45B2B44E9BC00DAA306 /* AppDelegate.swift in Sources */,
