@@ -298,7 +298,7 @@ import SwiftUI
             if isDuplicate {
                 print("UserProfileViewModel Error: User already in friends list")
             } else {
-                friendsList.append(user)
+                if !friendsList.contains(user) {friendsList.append(user)}
                 let currentUser = await readCurrentUser()
                 removeFriendsIdForCurrentUserInDB(currentUserId: currentUser.id)
             }
@@ -367,12 +367,17 @@ import SwiftUI
         }
     }
     
+    /*
+     This fuction takes an array of user id's and gets corresponding DBUser object
+     Then it checks friendsList array and if it doesn't have it already, then appends it
+     Once appended, friends list will be displayed in profile view
+     */
     func loadCurrentUserFriendsList(userIdList: [String]) {
         for id in userIdList {
             Task {
                 do {
                     let user = try await readUserData(userId: id)
-                    friendsList.append(user)
+                    if !friendsList.contains(user) {friendsList.append(user)}
                 } catch {
                     print("UserProfileViewModel Error: \(error.localizedDescription)")
                 }

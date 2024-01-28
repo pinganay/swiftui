@@ -12,8 +12,8 @@ import FirebaseFirestoreSwift
 
 final class UserManager {
     static let shared = UserManager()
-    let userCollection = Firestore.firestore().collection("users")
-    //let userCollection = Firestore.firestore().collection("testusers")
+    //let userCollection = Firestore.firestore().collection("users")
+    let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
 
@@ -35,6 +35,21 @@ final class UserManager {
     
     func readUserData(userId: String) async throws -> DBUser {
         try await userCollection.document(userId).getDocument(as: DBUser.self)
+    }
+    
+    func fetchDBUsers(userIDList: [String]) async -> [DBUser] {
+        var userList = [DBUser]()
+        
+        do {
+            for userID in userIDList {
+                let user = try await readUserData(userId: userID)
+                userList.append(user)
+            }
+        } catch {
+            print("fetchDBUsers() error: \(error.localizedDescription)")
+        }
+        
+        return userList
     }
     
     func readAllUsers() async throws -> [DBUser] {
@@ -71,6 +86,62 @@ final class UserManager {
         ])
     }
     
+    func addFriendsId(forUserId userId: String, friendId: String) {
+        userCollection.document(userId).updateData([
+            "friendsId": FieldValue.arrayUnion([friendId])
+        ])
+    }
+    
+    //This function removes the friend request id from the current user's friendRequestsRecieved list
+    func deleteUserIDFromFriendRequestsRecieved(userId: String) {
+        do {
+            let currentUserId = try AuthManager.shared.getAuthenticatedUser().uid
+            userCollection.document(currentUserId).updateData([
+                "friendRequestsRecieved": FieldValue.arrayRemove([userId])
+            ])
+        } catch {
+            print("deleteRequestsForFriendApproval() error: \(error.localizedDescription)")
+        }
+    }
+    
+    //This function removes the friend request id that was sent from the current user's friendRequestsSent list
+    func deleteUserIDFromFriendRequestsSent(userId: String) {
+        do {
+            let currentUserId = try AuthManager.shared.getAuthenticatedUser().uid
+            userCollection.document(userId).updateData([
+                "friendRequestsSent": FieldValue.arrayRemove([currentUserId])
+            ])
+        } catch {
+            print("deleteRequestsForFriendApproval() error: \(error.localizedDescription)")
+        }
+    }
+    
+    //This function updates the friendRequestsRecieved for the friend and updates the friendRequestsSent for the current user
+    //We only need to pass in the friend's id to the function
+    //The current user id is accesible in this class, so we don't have to pass it into this function
+    func updateRequestsForFriendApproval(friendId: String) {
+//        userCollection.document(currentUserId).updateData([
+//            "friendsId": FieldValue.arrayUnion([friendId])
+//        ])
+        var currentUserId = ""
+        
+        do {
+            let currentUser = try AuthManager.shared.getAuthenticatedUser()
+            currentUserId = currentUser.uid
+        } catch {
+            print("updateRequestsForFriendApproval() error: \(error.localizedDescription)")
+        }
+        
+        //This will update the friendRequestsSent array for the current user
+        userCollection.document(currentUserId).updateData([
+            "friendRequestsSent": FieldValue.arrayUnion([friendId])
+        ])
+        
+        //This will update the friendRequestsRecieved array for the friend
+        userCollection.document(friendId).updateData([
+            "friendRequestsRecieved": FieldValue.arrayUnion([currentUserId])
+        ])
+    }
     
     //Updates recieved messages property for user in db
     //Called when user recieves and taps status notification from friend

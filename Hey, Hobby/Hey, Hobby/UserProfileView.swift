@@ -134,8 +134,11 @@ struct UserProfile: View {
                 
             }
             .background(.themeColor)
-            .onAppear {
+            .task {
+                //This codes fetches the friendsList from the db to display in the "friends" section
+                let currentUser = await vm.readCurrentUser()
                 vm.getAllUsersWithoutCurrentUser()
+                vm.loadCurrentUserFriendsList(userIdList: currentUser.friendsId)
             }
             //.navigationTitle("Profile")
             // Use toolbar instead of .navigationTitle, so that font can be customized
