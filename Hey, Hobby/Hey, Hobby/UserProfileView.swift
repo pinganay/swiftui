@@ -161,6 +161,7 @@ struct UserProfile: View {
                 EditPhoneNumberView()
             }
             .alert("Unfriend", isPresented: $showUnfriendWarning) {
+                // Remove the friend from local objcet, so that UI gets updated and doesn't show thte unfriended user
                 Button("Unfriend", role: .destructive) {
                     for friend in vm.friendsList {
                         vm.friendsList.removeAll { user in
@@ -168,7 +169,13 @@ struct UserProfile: View {
                         }
                         
                         vm.isFriendAdded = false
-                        vm.removeFriendsIdForCurrentUserInDB(currentUserId: vm.loggedInUser.id, friendId: friend.id)
+                        // Remove the above unfriended user from DB document of both current user and unfriended user
+                        //vm.removeFriendsIdForCurrentUserInDB(currentUserId: vm.loggedInUser.id, friendId: friend.id)
+                        Task {
+                            let currentUser = await vm.getLoggedInUser()
+                            UserManager.shared.deleteFriendsId(forUserId: friend.id, friendId: currentUser.id)
+                            UserManager.shared.deleteFriendsId(forUserId: currentUser.id, friendId: friend.id)
+                        }
                         
                         vm.unsubscibeToNotifications()
                         vm.subscibeToNotifications()

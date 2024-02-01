@@ -338,6 +338,38 @@ import SwiftUI
         return false
     }
     
+    // This retuns the DBUser object of logged in user
+    func fetchLoggedInUserData() async throws -> DBUser {
+        let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
+        let user = try await UserManager.shared.readUserData(userId: authenticatedUser.uid)
+        return user
+    }
+    
+    // This retuns the DBUser object of user id provided
+    func fetchUserData(forUserId userId: String) async throws -> DBUser {
+        let user = try await UserManager.shared.readUserData(userId: userId)
+        return user
+    }
+    
+    func readUserData(userId: String) async throws -> DBUser {
+        
+        let readUserDataTask =  Task { () -> DBUser in
+            let user = try await UserManager.shared.readUserData(userId: userId)
+            return user
+        }
+        
+        let readUserDataTaskResult = await readUserDataTask.result
+        
+        do {
+            let dbUser = try readUserDataTaskResult.get()
+            return dbUser
+        } catch {
+            print("UserProfileView Error: \(error.localizedDescription)")
+            return DBUser.sampleUser
+        }
+    }
+
+    
     func getLoggedInUser() async -> DBUser {
         let readUserDataTask = Task { () -> DBUser in
             do {
@@ -382,24 +414,6 @@ import SwiftUI
                     print("UserProfileViewModel Error: \(error.localizedDescription)")
                 }
             }
-        }
-    }
-    
-    func readUserData(userId: String) async throws -> DBUser {
-        
-        let readUserDataTask =  Task { () -> DBUser in
-            let user = try await UserManager.shared.readUserData(userId: userId)
-            return user
-        }
-        
-        let readUserDataTaskResult = await readUserDataTask.result
-        
-        do {
-            let dbUser = try readUserDataTaskResult.get()
-            return dbUser
-        } catch {
-            print("UserProfileView Error: \(error.localizedDescription)")
-            return DBUser.sampleUser
         }
     }
     

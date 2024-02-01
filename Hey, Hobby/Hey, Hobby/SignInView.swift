@@ -14,26 +14,34 @@ struct SignInView: View {
     @State var showUserDetails = false
     var body: some View {
         NavigationStack {
-            VStack {
-                NavigationLink {
-                    SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
-                } label: {
-                    Text("Sign In With Email")
-                        .buttonModifier(width: 400, height: 50)
+            HStack {
+                Spacer()
+                
+                VStack {
+                    VStack {
+                        NavigationLink {
+                            SignInEmailView(showSignInView: $showSignInView, showUserProfile: $showUserProfile, showUserDetails: $showUserDetails, showWelcomeView: $showWelcomeView)
+                        } label: {
+                            Text("Sign In With Email")
+                                .buttonModifier(width: 400, height: 50)
+                        }
+                        
+                        Spacer()
+                    }
+                    //.padding()
+                    // Use toolbar instead of .navigationTitle, so that font can be customized
+                    .toolbar {
+                        ToolbarItem(placement: .principal) { // <3>
+                            VStack {
+                                Text("Sign In")
+                                    .foregroundColor(.white)
+                                    .font(.titleScript)
+                            }
+                        }
+                    }
                 }
                 
                 Spacer()
-            }
-            .padding()
-            // Use toolbar instead of .navigationTitle, so that font can be customized
-            .toolbar {
-                ToolbarItem(placement: .principal) { // <3>
-                    VStack {
-                        Text("Sign In")
-                            .foregroundColor(.white)
-                            .font(.titleScript)
-                    }
-                }
             }
             .background(.themeColor)
         }

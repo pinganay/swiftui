@@ -12,8 +12,8 @@ import FirebaseFirestoreSwift
 
 final class UserManager {
     static let shared = UserManager()
-    //let userCollection = Firestore.firestore().collection("users")
-    let userCollection = Firestore.firestore().collection("testusers")
+    let userCollection = Firestore.firestore().collection("users")
+    //let userCollection = Firestore.firestore().collection("testusers")
     
     private init() {}
 
@@ -35,6 +35,12 @@ final class UserManager {
     
     func readUserData(userId: String) async throws -> DBUser {
         try await userCollection.document(userId).getDocument(as: DBUser.self)
+    }
+    
+    func setSubcriptionNeeded(to value: Bool, for userId: String) {
+        userCollection.document(userId).updateData([
+            "subscriptionNeeded": value
+        ])
     }
     
     func fetchDBUsers(userIDList: [String]) async -> [DBUser] {
@@ -86,9 +92,27 @@ final class UserManager {
         ])
     }
     
-    func addFriendsId(forUserId userId: String, friendId: String) {
+    /*
+     This function adds id of a friend to the friend list of another user
+     To call this function pass the user id where add has to happen and pass id of friend which has to be added
+     */
+    func addFriendsId(forUserId userId: String, friendId: String) async {
+        do {
+            try await userCollection.document(userId).updateData([
+                "friendsId": FieldValue.arrayUnion([friendId])
+            ])
+        } catch {
+            print("UserManager.swift: addFriendsId() error: \(error.localizedDescription)")
+        }
+    }
+    
+    /*
+     This function deletes id of a friend from the friend list of another user
+     To call this function pass the user id from where delete has to happen and pass id of friend which has to be deleted
+     */
+    func deleteFriendsId(forUserId userId: String, friendId: String) {
         userCollection.document(userId).updateData([
-            "friendsId": FieldValue.arrayUnion([friendId])
+            "friendsId": FieldValue.arrayRemove([friendId])
         ])
     }
     

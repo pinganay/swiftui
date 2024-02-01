@@ -11,6 +11,7 @@ import SwiftUI
     @Published var disableSearchButton = true
     @Published var searchedUserPhoneNumber = ""
     @Published var searchedUserEmail = ""
+    @Published var subscriptionNeeded = false
     
     
     func validateFriendDetails() {
@@ -131,10 +132,10 @@ struct AddFriendView: View {
                             UserManager.shared.updateRequestsForFriendApproval(friendId: vm.selectedFriendId)
                             //vm.addFriendsIdForCurrentUserInDB(currentUserId: loggedInUser.id, friendId: vm.selectedFriendId)
                             
-                            //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
-                            vm.unsubscibeToNotifications()
-                            vm.subscibeToNotifications()
-                            vm.isUserSubscribed = true
+//                            //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
+//                            vm.unsubscibeToNotifications()
+//                            vm.subscibeToNotifications()
+//                            vm.isUserSubscribed = true
                             
                             //We remove the newly added user from the filtered result
                             searchedUserList.removeAll { searchedUser in
@@ -149,6 +150,16 @@ struct AddFriendView: View {
                 } message: {
                     Text("Are you sure you want to add \(newFriend.firstName) \(newFriend.lastName) to your friends list?")
                 }
+//                .alert("Subscribe to your friends", isPresented: $addFriendVM.subscriptionNeeded) {
+//                    Button("Subscribe") {
+//                        //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
+//                        vm.unsubscibeToNotifications()
+//                        vm.subscibeToNotifications()
+//                        vm.isUserSubscribed = true
+//                    }
+//                } message: {
+//                    Text("One or more of your friend requests have been approved. Please click on the button to subscribe to them.")
+//                }
                 
                 Seperator(width: 250)
                 
@@ -166,6 +177,34 @@ struct AddFriendView: View {
                     }
                 }
             }
+        }
+        .task {
+            let currentUser = await vm.getLoggedInUser()
+            if currentUser.subscriptionNeeded {
+                addFriendVM.subscriptionNeeded = true
+            }
+        }
+        .alert("🥳Request Approved!🥳", isPresented: $addFriendVM.subscriptionNeeded) {
+            Button("OK") {
+                
+                // Because current users friend request was Accepted, a new friend id in the databse was added
+                // We need to get the new object for current user
+                // And then subscribe again, so that we subscribe for the newly added friedn also
+                Task {
+                    let currentUser = await vm.getLoggedInUser()
+                    vm.friendsList = await UserManager.shared.fetchDBUsers(userIDList: currentUser.friendsId)
+                    UserManager.shared.setSubcriptionNeeded(to: false, for: currentUser.id)
+                }
+                
+                //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
+                vm.unsubscibeToNotifications()
+                vm.subscibeToNotifications()
+                vm.isUserSubscribed = true
+                
+                
+            }
+        } message: {
+            Text("Congratulations! One or more of your friend requests have been approved!")
         }
     }
 }
@@ -192,17 +231,37 @@ struct FriendRequestsView: View {
                     
                     Button("Accept") {
                         Task {
+                            // We need the current user from DB, so that we can update its friend id with new one and also update its friend with current user as friend
                             currentUser = await vm.getLoggedInUser()
                             //UserManager.shared.addFriendsIdForCurrentUser(friendId: user.id, currentUserId: currentUser.id)
-                            UserManager.shared.addFriendsId(forUserId: user.id, friendId: currentUser.id)
-                            UserManager.shared.addFriendsId(forUserId: currentUser.id, friendId: user.id)
+                            await UserManager.shared.addFriendsId(forUserId: user.id, friendId: currentUser.id)
+                            await UserManager.shared.addFriendsId(forUserId: currentUser.id, friendId: user.id)
                             
                             UserManager.shared.deleteUserIDFromFriendRequestsRecieved(userId: currentUser.id)
                             UserManager.shared.deleteUserIDFromFriendRequestsSent(userId: user.id)
                             
+                            // Now that friend request is accepted, time to clean it up from the request queue
                             recievedRequestDBUSers.removeAll { dbUser in
                                 dbUser.id == user.id
                             }
+                            
+                            // As we are adding new friend id in the databse, we need to get the new object for current user
+                            // And then subscribe again, so that we subscribe for the newly added friedn too
+                            //currentUser = await vm.getLoggedInUser()
+                            currentUser = try await vm.fetchLoggedInUserData()
+                            vm.friendsList = await UserManager.shared.fetchDBUsers(userIDList: currentUser.friendsId)
+                            
+                            print(vm.friendsList)
+                            
+                            //We unsubscribe and resubscribe to notifications so that it adds a new subscription for the newly added friend
+                            vm.unsubscibeToNotifications()
+                            vm.subscibeToNotifications()
+                            vm.isUserSubscribed = true
+                            
+                            // Set this true for the user who sent the friend request
+                            // That user will see an alert whe its set to true
+                            UserManager.shared.setSubcriptionNeeded(to: true, for: user.id)
+                            
                         }
                     }
                     .buttonModifier(width: 100)
@@ -254,7 +313,9 @@ struct FriendRequestsView: View {
             currentUser = await vm.getLoggedInUser()
             await sentRequestDBUSers = UserManager.shared.fetchDBUsers(userIDList: currentUser.friendRequestsSent)
             await recievedRequestDBUSers = UserManager.shared.fetchDBUsers(userIDList: currentUser.friendRequestsRecieved)
-            
+//            if currentUser.subscriptionNeeded {
+//                addFriendVM.subscriptionNeeded = true
+//            }
         }
     }
 }

@@ -18,10 +18,11 @@ struct DBUser: Codable, Hashable, Equatable {
     var statusHistory = [String]()
     var friendRequestsRecieved = [String]()
     var friendRequestsSent = [String]()
+    var subscriptionNeeded: Bool
     
     static func ==(lhs: DBUser, rhs: DBUser) -> Bool {
         return lhs.id == rhs.id
     }
     
-    static let sampleUser = DBUser(id: "Dummy", firstName: "Dummy", lastName: "Dummy", phoneNumber: "1234567890", emailAddress: "test@abc.com")
+    static let sampleUser = DBUser(id: "Dummy", firstName: "Dummy", lastName: "Dummy", phoneNumber: "1234567890", emailAddress: "test@abc.com", subscriptionNeeded: false)
 }

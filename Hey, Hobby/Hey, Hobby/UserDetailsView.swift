@@ -19,7 +19,7 @@ final class UserDetailsViewModel: ObservableObject {
         Task {
             do {
                 let authenticatedUser = try AuthManager.shared.getAuthenticatedUser()
-                try await UserManager.shared.writeUserData(user: DBUser(id: authenticatedUser.uid, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, emailAddress: authenticatedUser.email ?? "Unknown email"))
+                try await UserManager.shared.writeUserData(user: DBUser(id: authenticatedUser.uid, firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, emailAddress: authenticatedUser.email ?? "Unknown email", subscriptionNeeded: false))
             } catch {
                 print("UserDetailsViewModel: Error \(error.localizedDescription)")
             }

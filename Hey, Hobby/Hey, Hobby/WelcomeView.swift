@@ -7,11 +7,16 @@
 
 import SwiftUI
 
+//@MainActor class WelcomeViewModel: ObservableObject {
+//    var showTermsOfService = false
+//}
+
 struct WelcomeView: View {
     @EnvironmentObject var vm: UserProfileViewModel
+//    @StateObject var welcomeVM = WelcomeViewModel()
     @State var currentUser = DBUser.sampleUser
 //    @State private var loadFriendsListFromDB = true
-    
+//    @Environment(\.dismiss) var dismiss
     @Binding var showSignInView: Bool
     @Binding var showUserProfile: Bool
     @Binding var showUserDetails: Bool
@@ -151,10 +156,13 @@ struct WelcomeView: View {
             }
         }
         .onAppear {
-            for family in UIFont.familyNames.sorted() {
-                let names = UIFont.fontNames(forFamilyName: family)
-                print("Family: \(family) Font names: \(names)")
-            }
+//            for family in UIFont.familyNames.sorted() {
+//                let names = UIFont.fontNames(forFamilyName: family)
+//                print("Family: \(family) Font names: \(names)")
+//            }
+            
+            vm.requestNotificationPermissions()
+            //welcomeVM.showTermsOfService = true
         }
         .task {
             let authenticatedUser = try? AuthManager.shared.getAuthenticatedUser()
@@ -170,6 +178,30 @@ struct WelcomeView: View {
                 vm.loadFriendsListFromDB = false
             }
         }
+//        .sheet(isPresented: $welcomeVM.showTermsOfService) {
+//            HStack {
+//                Spacer()
+//
+//                VStack {
+//                    Text("Terms Of Service")
+//                        .font(.titleScriptSmall)
+//
+//                    Spacer(minLength: 100)
+//
+//                    ScrollView {
+//                        Text("Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2 Hello World  Hello World 2")
+//                    }
+//
+//                    Button("Accept") {
+//                        dismiss()
+//                    }
+//                }
+//                .interactiveDismissDisabled()
+//
+//                Spacer()
+//            }
+//            .background(.themeColor)
+//        }
     }
 }
 
